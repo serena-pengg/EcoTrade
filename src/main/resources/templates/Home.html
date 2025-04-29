@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <!--meta tags-->
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Services Listing HTML5 CSS3 template">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript, services, listing">
+    <meta name="author" content="Ui-DesignLab">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--end meta tags-->
+
+    <title>GreenFree-Home</title>
+    <!--stylesheets-->
+    <link rel="icon" th:href="@{/img/logo2.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/vendor/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/OwlCarousel2-2.2.1/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/OwlCarousel2-2.2.1/owl.theme.green.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/perfect-scrollbar/css/perfect-scrollbar.min.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <!--end stylesheets-->
+
+    <!--google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cairo%7CNosifer%7CPoppins%7CQuicksand:700%7CRaleway%7CTangerine%7CHind+Vadodara" rel="stylesheet">
+    <!--end google fonts-->
+
+    </style>
+</head>
+<body>
+
+
+
+
+<!--navigation bars-->
+
+<nav class="site-top-nav">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/img/logo.png}" alt="">
+            <strong>EcoTrade Global</strong>
+        </a>
+    </div>
+    <ul class="site-menu">
+        <li>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+        </li>
+        <li>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+        </li>
+        <li>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+        </li>
+        <li>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+        </li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+    </ul>
+</nav>
+
+<!--end navigation bars-->
+
+<!--banner-->
+<div class="index-two-banner">
+
+    <div class="owl-carousel owl-theme">
+        <div class="item">
+            <div class="product-item">
+                <div class="item-image"><img th:src="@{/img/watch.png}" alt=""></div>
+                <div class="item-info">
+                    <h3 style="font-size:50px !important;font-weight: bolder;"> Welcome to EcoTrade Global</h3>
+                    <strong style="font-size:45px !important;">Shop Tax-Free Across Borders.</strong>
+                    <p style="font-size:20px !important">
+                        Enjoy a seamless cross-border shopping experience powered by Hainan Free Trade Port policies. 
+                        Discover eco-friendly products at unbeatable prices — without the tax burden.<br>
+                    </p>
+                    <div class="call-action">
+                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Discover Now</a>
+                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="product-item">
+                <div class="item-image"><img th:src="@{/img/CHANEL.png}" alt=""></div>
+                <div class="item-info">
+                    <h2 style="font-size:50px !important;font-weight: bolder;">Shop Green, Live Clean</h2>
+                    <strong style="font-size:45px !important;">Join the Green Trade Revolution</strong>
+                    <p style="font-size:20px !important">
+                        We recommend high-rated eco products using AI and smart algorithms. Reduce your carbon footprint while enjoying global quality goods — it's better for you and the planet.
+                    </p>
+                    <div class="call-action">
+                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Discover Now</a>
+                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--end banner-->
+
+<!--general categories-->
+<div class="g-heading">
+    <strong class="ui-text-info">Items Variety</strong>
+    <h3>Get What You Want! Trade Easily, Save Wisely.</h3>
+</div>
+<div class="general-categories">
+    <div class="g-category">
+        <img th:src="@{/img/items/B.png}" alt="">
+        <a th:href="@{/search-results?category=Beauty}" class="g-category-info">
+            <strong>Beauty</strong>
+        </a>
+    </div>
+    <div class="g-category">
+        <img th:src="@{/img/items/A.png}" alt="">
+        <a th:href="@{/search-results?category=Accessories}" class="g-category-info">
+            <strong>Accessories</strong>
+        </a>
+    </div>
+    <div class="g-category">
+        <img th:src="@{/img/items/C.png}" alt="">
+        <a th:href="@{/search-results?category=Fashion}" class="g-category-info">
+            <strong>Fashion</strong>
+        </a>
+    </div>
+    <div class="g-category">
+        <img th:src="@{/img/items/E.png}" alt="">
+        <a th:href="@{/search-results?category=Electronics}" class="g-category-info">
+            <strong>Electronics</strong>
+        </a>
+    </div>
+    <div class="g-category">
+        <img th:src="@{/img/items/F.png}" alt="">
+        <a th:href="@{/search-results?category=Food & Alcohol}" class="g-category-info">
+            <strong>Food & Alcohol</strong>
+        </a>
+    </div>
+    <div class="g-category">
+        <img th:src="@{/img/items/E2.png}" alt="">
+        <a th:href="@{/search-results?category=Essentials}" class="g-category-info">
+            <strong>Essentials</strong>
+        </a>
+    </div>
+</div>
+<!--end general categories-->
+
+<!--recommended items-->
+<div class="recommended-section">
+    <div class="section-header">
+        <div class="section-header-top">
+            <h2>Recommended For You</h2>
+            <div class="sort-options">
+                <a href="#" class="sort-btn" data-sort="eco-score">
+                    <i class="fa fa-leaf"></i> Highest Eco Score
+                </a>
+                <a href="#" class="sort-btn" data-sort="price-asc">
+                    <i class="fa fa-rmb"></i> Lowest Price
+                </a>
+                <a href="#" class="sort-btn" data-sort="date">
+                    <i class="fa fa-clock-o"></i> Latest
+                </a>
+            </div>
+        </div>
+        <p class="section-subtitle">Discover Eco-Friendly Products That Match Your Interests!</p>
+    </div>
+    
+    <div class="recommended-grid">
+        <div class="product-card" th:each="product : ${recommendedProducts}">
+            <div class="product-badge eco-prime" th:if="${product.ecoScore >= 4}" 
+                 data-tooltip="This product has a low carbon footprint and supports sustainable living.">
+                ♻️ Eco+
+            </div>
+            <div class="product-badge eco-good" th:if="${product.ecoScore >= 3 and product.ecoScore < 4}" 
+                 data-tooltip="Sustainability isn't about perfection — it's about better choices.">
+                🌱 	Green★
+            </div>
+            <div class="product-image">
+                <img th:src="${product.imageUrl}" alt="" th:if="${product.imageUrl != null}"
+                     class="img-fluid product-main-image" onerror="this.src='/img/items/l-item.png'">
+                <img th:src="@{/img/items/l-item.png}" alt="" th:unless="${product.imageUrl != null}"
+                     class="img-fluid product-main-image">
+                <div class="product-overlay">
+                    <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
+                        <button type="submit" class="add-to-cart-btn">
+                            <i class="fa fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">
+                    <a href="#" class="product-name-link" th:text="${product.name}"
+                       th:data-image="${product.imageUrl}">Product Name</a>
+                </h3>
+                <div class="product-meta">
+                    <span class="price" th:text="${'¥' + #numbers.formatDecimal(product.price, 0, 2)}">¥99.99</span>
+                    <span class="date" th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy')}">12/09/2019</span>
+                </div>
+                <div class="eco-rating" th:if="${product.ecoScore != null}">
+                    <span class="eco-label">Eco Score</span>
+                    <div class="eco-stars">
+                        <i th:each="i : ${#numbers.sequence(1, 5)}"
+                           th:class="${product.ecoScore >= i ? 'fa fa-star' : 
+                                     (product.ecoScore >= i - 0.5 ? 'fa fa-star-half-o' : 'fa fa-star-o')}"
+                           style="color: #28a745;"></i>
+                    </div>
+                    <span class="eco-score-value" th:text="${#numbers.formatDecimal(product.ecoScore, 1, 1)}">0.0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.recommended-section {
+    padding: 40px 5rem;
+    background-color: #f8f9fa;
+}
+
+.section-header {
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 0 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 120px;
+}
+
+.section-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.section-header h2 {
+    color: #195d09;
+    font-size: 50px;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-subtitle {
+    color: #495057;
+    font-size: 25px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.sort-options {
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+}
+
+.sort-btn {
+    padding: 12px 25px;
+    background-color: #fff;
+    border: 2px solid #195d09;
+    border-radius: 30px;
+    color: #195d09;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+        cursor: pointer;
+}
+
+.sort-btn:hover {
+    background-color: #195d09;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(25, 93, 9, 0.2);
+}
+
+.sort-btn i {
+    font-size: 18px;
+}
+
+.recommended-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 0 2rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: visible;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    height: 420px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+    .product-main-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    transition: transform 0.3s ease;
+        cursor: pointer;
+}
+
+    .product-card:hover .product-main-image {
+    transform: scale(1.05);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.add-to-cart-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.add-to-cart-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.add-to-cart-btn i {
+    font-size: 20px;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-name {
+    font-size: 16px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.product-name a {
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.product-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.price {
+    color: #195d09;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    color: #7f8c8d;
+    font-size: 13px;
+}
+
+.eco-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.eco-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.eco-label {
+    color: #28a745;
+    font-size: 13px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.eco-score-value {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 3;
+    cursor: help;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.product-badge::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #05793f;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    width: max-content;
+    max-width: 220px;
+    text-align: center;
+    white-space: normal;
+    z-index: 4;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(0, 168, 84, 0.2);
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.2px;
+}
+
+.product-badge::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(255, 255, 255, 0.98) transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 4;
+    pointer-events: none;
+    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.product-badge:hover::after,
+.product-badge:hover::before {
+    opacity: 1;
+    visibility: visible;
+    bottom: calc(100% + 12px);
+}
+
+.product-badge:hover::before {
+    bottom: calc(100% + 6px);
+}
+
+.eco-prime {
+    background-color: #00a854;
+    border: 1px solid #00924a;
+    box-shadow: 0 2px 4px rgba(0, 168, 84, 0.2);
+}
+
+.eco-good {
+    background-color: #65b027;
+    border: 1px solid #599919;
+    box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+}
+
+.eco-prime::after {
+    color: #00a854;
+    border: 1px solid rgba(0, 168, 84, 0.2);
+}
+
+.eco-good::after {
+    color: #27ae60;
+    border: 1px solid rgba(39, 174, 96, 0.2);
+}
+
+@media (max-width: 1200px) {
+    .recommended-section {
+        padding: 40px 3rem;
+    }
+    
+    .recommended-grid {
+        gap: 20px;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .recommended-section {
+        padding: 30px 1.5rem;
+    }
+    
+    .recommended-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .section-header {
+        min-height: 160px;
+    }
+    
+    .section-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .section-header h2 {
+        font-size: 28px;
+    }
+    
+    .section-subtitle {
+        font-size: 16px;
+    }
+    
+    .sort-options {
+        position: static;
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+    
+    .sort-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 12px 25px;
+        font-size: 15px;
+    }
+    
+    .add-to-cart-btn i {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .recommended-section {
+        padding: 20px 1rem;
+    }
+    
+    .recommended-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .product-image {
+        height: 180px;
+    }
+    
+    .section-header {
+        min-height: 180px;
+    }
+    
+    .section-header h2 {
+        font-size: 24px;
+    }
+    
+    .section-subtitle {
+        font-size: 15px;
+    }
+    
+    .sort-options {
+        gap: 10px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .add-to-cart-btn i {
+        font-size: 16px;
+    }
+}
+
+    .sort-btn.active {
+        background-color: #195d09;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(25, 93, 9, 0.2);
+    }
+
+    .product-name-link {
+        cursor: pointer;
+        transition: color 0.3s ease;
+        display: block;
+        padding: 5px 0;
+    }
+
+    .product-name-link:hover {
+        color: #195d09;
+        text-decoration: none;
+    }
+
+    .product-image {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-main-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    .product-card:hover .product-main-image {
+        transform: scale(1.05);
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    #previewImage {
+        max-width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+    }
+
+    .modal-dialog {
+        max-width: 90%;
+        margin: 1.75rem auto;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px 20px;
+    }
+
+    .modal-title {
+        color: #195d09;
+        font-weight: 600;
+    }
+
+    .close {
+        font-size: 24px;
+        color: #6c757d;
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 封装点击事件绑定函数
+        function bindProductNameClickEvents() {
+            const productNameLinks = document.querySelectorAll('.product-name-link');
+
+            productNameLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const productCard = this.closest('.product-card');
+                    const productImage = productCard.querySelector('.product-main-image');
+                    const productName = this.textContent; // 获取商品名称
+
+                    if (productImage) {
+                        const imageUrl = productImage.src;
+                        const previewImage = document.getElementById('previewImage');
+                        const modalTitle = document.getElementById('imagePreviewModalLabel');
+
+                        previewImage.src = imageUrl;
+                        modalTitle.textContent = productName; // 设置模态框标题为商品名称
+
+                        // 显示模态框
+                        $('#imagePreviewModal').modal('show');
+                    }
+                });
+            });
+        }
+
+        // 初始绑定点击事件
+        bindProductNameClickEvents();
+
+        // 添加排序功能
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        const productGrid = document.querySelector('.recommended-grid');
+        let products = Array.from(productGrid.children);
+
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // 移除所有按钮的active类
+                sortButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加当前按钮的active类
+                this.classList.add('active');
+
+                const sortType = this.dataset.sort;
+
+                // 根据排序类型重新排序产品
+                products.sort((a, b) => {
+                    switch(sortType) {
+                        case 'eco-score':
+                            const scoreA = parseFloat(a.querySelector('.eco-score-value').textContent);
+                            const scoreB = parseFloat(b.querySelector('.eco-score-value').textContent);
+                            return scoreB - scoreA;
+                        case 'price-asc':
+                            const priceA = parseFloat(a.querySelector('.price').textContent.replace('¥', ''));
+                            const priceB = parseFloat(b.querySelector('.price').textContent.replace('¥', ''));
+                            return priceA - priceB;
+                        case 'date':
+                            const dateA = new Date(a.querySelector('.date').textContent.split('/').reverse().join('-'));
+                            const dateB = new Date(b.querySelector('.date').textContent.split('/').reverse().join('-'));
+                            return dateB - dateA;
+                        default:
+                            return 0;
+                    }
+                });
+
+                // 清空并重新添加排序后的产品
+                productGrid.innerHTML = '';
+                products.forEach(product => {
+                    productGrid.appendChild(product);
+                });
+
+                // 重新绑定点击事件
+                bindProductNameClickEvents();
+    });
+        });
+    });
+</script>
+<!--end recommended items-->
+
+<!--chat box-->
+<a href="#" class="chat-box-btn" id="chat-box-btn">
+    <i class="fa fa-comment icon-sw"></i>
+</a>
+
+<div class="chat-box">
+    <div class="chat-top">
+        <section>
+            <h6 class="org-name">EcoTrade Global</h6>
+            <div class="repliers">
+                <div class="r-img">
+                    <img th:src="@{/img/user2.jpg}" alt="">
+                    <strong class="name">Vincent</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="chat-flow" id="chat-flow">
+        <p class="outbound">
+            Hello, Anyone there?
+        </p>
+        <p class="inbound">
+            Hi, Vincent here. How may I be of service.
+        </p>
+    </div>
+    <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
+        <div class="input-group">
+            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+            <div class="input-group-append">
+                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatFlow = document.getElementById('chat-flow');
+
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            // 添加用户消息到聊天框
+            const userMessage = document.createElement('p');
+            userMessage.className = 'outbound';
+            userMessage.textContent = message;
+            chatFlow.appendChild(userMessage);
+
+            // 发送消息到服务器
+            fetch('/api/chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("Oops, we haven't got JSON!");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.response) {
+                    const aiMessage = document.createElement('p');
+                    aiMessage.className = 'inbound';
+                    aiMessage.textContent = data.response;
+                    chatFlow.appendChild(aiMessage);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+                chatFlow.scrollTop = chatFlow.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'inbound';
+                errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
+                chatFlow.appendChild(errorMessage);
+            });
+
+            // 清空输入框
+            messageInput.value = '';
+        }
+    }
+
+    // 点击发送按钮
+    sendButton.addEventListener('click', sendMessage);
+
+    // 按回车键发送
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+});
+</script>
+
+<!--end chat box-->
+
+<!--footer section-->
+<footer class="footer">
+    <div class="footer-item">
+        <strong>Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+    </div>
+    <div class="footer-item">
+        <strong>Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+    </div>
+    <div class="footer-item">
+        <strong>Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
+        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+    </div>
+    <div class="footer-item">
+        <strong>Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+    </div>
+</footer>
+<div class="bottom-strip">
+    <div class="cards-accepted">
+        <em>Cards Accepted:</em>
+        <img th:src="@{/img/card-logos.png}" alt="">
+    </div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
+</div>
+<!--end footer section-->
+
+<!--page loader-->
+<div class="page-loader">
+    <div class="loader"><img th:src="@{/img/logo.png}" alt=""></div>
+</div>
+<!--end page loader-->
+
+<!--scripts-->
+<script th:src="@{/vendor/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/vendor/js/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/js/alertify.js}"></script>
+<script th:src="@{/vendor/js/jquery.knob.min.js}"></script>
+<!--[if IE]><script type="text/javascript" th:src="@{/vendor/js/excanvas.js}"></script><![endif]-->
+<script th:src="@{/vendor/js/summernote-bs4.min.js}"></script>
+<script th:src="@{/vendor/js/dropzone.js}"></script>
+<script th:src="@{/vendor/OwlCarousel2-2.2.1/owl.carousel.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
+<script th:src="@{/vendor/js/typed.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+<!--end scripts-->
+
+<!-- 添加图片预览模态框 -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

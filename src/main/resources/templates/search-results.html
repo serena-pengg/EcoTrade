@@ -1,0 +1,910 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <!--meta tags-->
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Services Listing HTML5 CSS3 template">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript, services, listing">
+    <meta name="author" content="Ui-DesignLab">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--end meta tags-->
+
+    <title>Trading-Search</title>
+    <!--stylesheets-->
+    <link rel="icon" th:href="@{/img/logo2.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/vendor/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/perfect-scrollbar/css/perfect-scrollbar.min.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <!--end stylesheets-->
+
+    <!--google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cairo%7CNosifer%7CPoppins%7CQuicksand:700%7CRaleway%7CTangerine%7CHind+Vadodara" rel="stylesheet">
+    <!--end google fonts-->
+    
+    <style>
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .search-form {
+            flex: 1;
+        }
+        
+        .mega-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .mega-search input {
+            width: 100%;
+            padding-right: 40px;
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #607d8b;
+        }
+        
+        .search-btn:hover {
+            color: #202020;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 3;
+            cursor: help;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .eco-prime {
+            background-color: #00a854;
+            border: 1px solid #00924a;
+            box-shadow: 0 2px 4px rgba(0, 168, 84, 0.2);
+        }
+
+        .eco-good {
+            background-color: #65b027;
+            border: 1px solid #599919;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+        }
+
+        .product-badge::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: #05793f;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            width: max-content;
+            max-width: 220px;
+            text-align: center;
+            white-space: normal;
+            z-index: 4;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.2px;
+        }
+
+        .product-badge::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent rgba(255, 255, 255, 0.98) transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 4;
+            pointer-events: none;
+            filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .product-badge:hover::after,
+        .product-badge:hover::before {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 12px);
+        }
+
+        .product-badge:hover::before {
+            bottom: calc(100% + 6px);
+        }
+
+        .result-item {
+            position: relative;
+            padding-top: 12px;
+        }
+
+        .result-item-img {
+            position: relative;
+        }
+
+        .result-item-img > div {
+            position: relative;
+        }
+
+        .sort-sec a.active {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .site-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            gap: 8px;
+        }
+
+        .site-pagination a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .site-pagination a:hover {
+            background-color: #e9ecef;
+            color: #212529;
+            border-color: #dee2e6;
+        }
+
+        .site-pagination a.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .site-pagination a i {
+            margin: 0 4px;
+        }
+
+        .site-pagination a.page-link {
+            cursor: pointer;
+        }
+
+        .site-pagination a[data-page="prev"],
+        .site-pagination a[data-page="next"] {
+            padding: 0 16px;
+        }
+
+        .site-pagination a[data-page="prev"]:hover,
+        .site-pagination a[data-page="next"]:hover {
+            background-color: #e9ecef;
+        }
+
+        .site-pagination a[data-page="prev"] i,
+        .site-pagination a[data-page="next"] i {
+            font-size: 16px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .modal-dialog {
+            max-width: 90%;
+            margin: 1.75rem auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+        }
+
+        .modal-title {
+            color: #195d09;
+            font-weight: 600;
+        }
+
+        .close {
+            font-size: 24px;
+            color: #6c757d;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+     
+
+<!--navigation bars-->
+
+<nav class="site-top-nav">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/img/logo.png}" alt="">
+            <strong>EcoTrade Global</strong>
+        </a>
+    </div>
+    <ul class="site-menu">
+        <li>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+        </li>
+        <li>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+        </li>
+        <li>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+        </li>
+        <li>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+        </li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+    </ul>
+</nav>
+
+<!--end navigation bars-->
+
+<!--banner-->
+<div class="search-banner back-photo">
+    <h5>The Easiest Way to find <strong class="ui-text-info" style="color: #ffffff;" !important>Items</strong> on the Market</h5>
+    <div class="search-container">
+        <form th:action="@{/search}" method="get" class="search-form">
+            <div class="mega-search">
+                <input class="form-control" type="text" name="query" placeholder="Search Item Here...">
+                <button type="submit" class="search-btn">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--end banner-->
+
+<!--search results-->
+<div class="results-wrapper">
+    <div class="filter-section">
+        <form th:action="@{/search}" method="get" id="filterForm">
+            <input type="hidden" name="query" th:value="${query}">
+            <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="sort" th:value="${sort}">
+            
+            <div class="filter-group">
+                <strong>By Category:</strong>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="All" class="radio"
+                           th:checked="${selectedCategory == null || selectedCategory == 'All' || selectedCategory == ''}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>All</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Beauty" class="radio"
+                           th:checked="${selectedCategory == 'Beauty'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Beauty</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Accessories" class="radio"
+                           th:checked="${selectedCategory == 'Accessories'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Accessories</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Fashion" class="radio"
+                           th:checked="${selectedCategory == 'Fashion'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Fashion</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Electronics" class="radio"
+                           th:checked="${selectedCategory == 'Electronics'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Electronics</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Food & Alcohol" class="radio"
+                           th:checked="${selectedCategory == 'Food & Alcohol'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Food & Alcohol</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="category" value="Essentials" class="radio"
+                           th:checked="${selectedCategory == 'Essentials'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Essentials</i>
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <strong>By Eco Score:</strong>
+                <label class="label--radio">
+                    <input type="radio" name="ecoScore" value="all" class="radio" th:checked="${selectedEcoScore == null || selectedEcoScore == 'all'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>All</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="ecoScore" value="excellent" class="radio" th:checked="${selectedEcoScore == 'excellent'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Excellent (4.0-5.0)</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="ecoScore" value="good" class="radio" th:checked="${selectedEcoScore == 'good'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Good (3.0-3.9)</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="ecoScore" value="fair" class="radio" th:checked="${selectedEcoScore == 'fair'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Fair (2.0-2.9)</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="ecoScore" value="poor" class="radio" th:checked="${selectedEcoScore == 'poor'}">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Poor (0-1.9)</i>
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <strong>By Price:</strong>
+                <label class="label--radio">
+                    <input type="radio" name="priceRange" value="all" class="radio"
+                           th:checked="${selectedPriceRange == null || selectedPriceRange == 'all'}"
+                           th:value="'all'">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>All</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="priceRange" value="0-500" class="radio"
+                           th:checked="${selectedPriceRange == '0-500'}"
+                           th:value="'0-500'">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>¥0 - ¥500</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="priceRange" value="500-1000" class="radio"
+                           th:checked="${selectedPriceRange == '500-1000'}"
+                           th:value="'500-1000'">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>¥500 - ¥1000</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="priceRange" value="1000-2000" class="radio"
+                           th:checked="${selectedPriceRange == '1000-2000'}"
+                           th:value="'1000-2000'">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>¥1000 - ¥2000</i>
+                </label>
+                <label class="label--radio">
+                    <input type="radio" name="priceRange" value="2000+" class="radio"
+                           th:checked="${selectedPriceRange == '2000+'}"
+                           th:value="'2000+'">
+                    <span class="outer"><span class="inner"></span></span>
+                    <i>Above ¥2000</i>
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="results-section">
+        <div class="sort-sec">
+            <div>
+                <strong>Sort By:</strong>
+                <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='date')}"
+                   th:classappend="${sort == 'date' ? 'active' : ''}">Date Listed</a>|
+                <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-asc')}"
+                   th:classappend="${sort == 'price-asc' ? 'active' : ''}">Price Ascending</a>|
+                <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-desc')}"
+                   th:classappend="${sort == 'price-desc' ? 'active' : ''}">Price Descending</a>
+            </div>
+            <a th:href="@{/search}"><span>Refresh</span><i class="fa fa-refresh"></i></a>
+        </div>
+        
+        <!-- Search Results Items -->
+        <div class="result-item" th:each="item : ${searchResults}">
+            <div class="product-badge eco-prime" th:if="${item.ecoScore >= 4}" 
+                 data-tooltip="This product has a low carbon footprint and supports sustainable living.">
+                ♻️ Eco+
+            </div>
+            <div class="product-badge eco-good" th:if="${item.ecoScore >= 3 and item.ecoScore < 4}" 
+                 data-tooltip="Sustainability isn't about perfection — it's about better choices.">
+                🌱 Green★
+            </div>
+            <div class="result-item-img">
+                <div>
+                    <img th:src="@{${item.imageUrl}}" alt="">
+                </div>
+            </div>
+            <div class="result-item-info">
+                <a th:href="@{/item/{id}(id=${item.id})}"><strong th:text="${item.name}">Your Item title here</strong></a>
+                <p th:text="${item.description}">
+                    Rham beef ribs jowl kevin. Doner sirloin boudin filet mignon capicola.
+                    Rham beef ribs jowl kevin. Doner sirloin boudin filet .
+                </p>
+                <span>Listed: <em class="ui-text-info" th:text="${#temporals.format(item.createdAt, 'dd MMM, yyyy')}">04 Jan, 2017</em></span>
+                
+                <!-- Eco Score Display -->
+                <div class="eco-scores" style="margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                    <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <span style="width: 120px; color: #666;">Recyclability:</span>
+                        <div class="stars" style="display: flex;">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                                  th:classappend="${i <= item.recycleScore ? 'fa fa-star' : 'fa fa-star-o'}"
+                                  style="color: #28a745; margin-right: 2px;"></span>
+                        </div>
+                        <span style="margin-left: 5px;" th:text="${item.recycleScore}">0</span>
+                    </div>
+                    
+                    <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <span style="width: 120px; color: #666;">Durability:</span>
+                        <div class="stars" style="display: flex;">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}" 
+                                  th:classappend="${i <= item.durabilityScore ? 'fa fa-star' : 'fa fa-star-o'}"
+                                  style="color: #28a745; margin-right: 2px;"></span>
+                        </div>
+                        <span style="margin-left: 5px;" th:text="${item.durabilityScore}">0</span>
+                    </div>
+                    
+                    <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <span style="width: 120px; color: #666;">Carbon Footprint:</span>
+                        <span th:text="${item.carbonFootprint + ' kg CO₂'}">0 kg CO₂</span>
+                    </div>
+                    
+                    <div class="eco-score-item" style="display: flex; align-items: center; margin-top: 5px; padding-top: 5px; border-top: 1px solid #ddd;">
+                        <span style="width: 120px; color: #666; font-weight: bold;">Eco Score:</span>
+                        <div class="progress" style="flex-grow: 1; height: 20px; margin: 0 10px;">
+                            <div class="progress-bar" 
+                                 th:style="'width: ' + ${item.ecoScore != null ? item.ecoScore * 20 : 0} + '%; background-color: #28a745;'"
+                                 role="progressbar" 
+                                 th:aria-valuenow="${item.ecoScore != null ? item.ecoScore * 20 : 0}"
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                        <span style="font-weight: bold;" th:text="${item.ecoScore != null ? #numbers.formatDecimal(item.ecoScore, 1, 2) : '0.00'}">0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="result-item-price">
+                <span>Sale At:</span>
+                <h3 style="color: #657a7e"; th:text="${'¥' + #numbers.formatDecimal(item.price, 0, 2)}">¥126.00</h3>
+                <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="add-to-cart">Add to Cart <i class="fa fa-cart-plus"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="site-pagination" th:if="${totalPages > 1}">
+            <a href="#" class="page-link" data-page="prev" th:if="${currentPage > 1}">
+                <i class="fa fa-angle-left"></i><em>上一页</em>
+            </a>
+            <a href="#" class="page-link" th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+               th:data-page="${page}"
+               th:classappend="${page == currentPage ? 'active' : ''}">
+                <span th:text="${page + 1}">1</span>
+            </a>
+            <a href="#" class="page-link" data-page="next" th:if="${currentPage < totalPages}">
+                <em>下一页</em><i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<!--end search results-->
+
+<!--page loader-->
+<div class="page-loader">
+    <div class="loader"><img th:src="@{/img/logo.png}" alt=""></div>
+</div>
+<!--end page loader-->
+
+<!--chat box-->
+<a href="#" class="chat-box-btn" id="chat-box-btn">
+    <i class="fa fa-comment icon-sw"></i>
+</a>
+
+<div class="chat-box">
+    <div class="chat-top">
+        <section>
+            <h6 class="org-name">EcoTrade Global</h6>
+            <div class="repliers">
+                <div class="r-img">
+                    <img th:src="@{/img/user2.jpg}" alt="">
+                    <strong class="name">Vincent</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="chat-flow" id="chat-flow">
+        <p class="outbound">
+            Hello, Anyone there?
+        </p>
+        <p class="inbound">
+            Hi, Vincent here. How may I be of service.
+        </p>
+    </div>
+    <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
+        <div class="input-group">
+            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+            <div class="input-group-append">
+                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatFlow = document.getElementById('chat-flow');
+
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            // 添加用户消息到聊天框
+            const userMessage = document.createElement('p');
+            userMessage.className = 'outbound';
+            userMessage.textContent = message;
+            chatFlow.appendChild(userMessage);
+
+            // 发送消息到服务器
+            fetch('/api/chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("Oops, we haven't got JSON!");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.response) {
+                    const aiMessage = document.createElement('p');
+                    aiMessage.className = 'inbound';
+                    aiMessage.textContent = data.response;
+                    chatFlow.appendChild(aiMessage);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+                chatFlow.scrollTop = chatFlow.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'inbound';
+                errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
+                chatFlow.appendChild(errorMessage);
+            });
+
+            // 清空输入框
+            messageInput.value = '';
+        }
+    }
+
+    // 点击发送按钮
+    sendButton.addEventListener('click', sendMessage);
+
+    // 按回车键发送
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+});
+</script>
+
+<!--end chat box-->
+
+<!--footer section-->
+<footer class="footer">
+    <div class="footer-item">
+        <strong>Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+    </div>
+    <div class="footer-item">
+        <strong>Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+    </div>
+    <div class="footer-item">
+        <strong>Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
+        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+    </div>
+    <div class="footer-item">
+        <strong>Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+    </div>
+</footer>
+<div class="bottom-strip">
+    <div class="cards-accepted">
+        <em>Cards Accepted:</em>
+        <img th:src="@{/img/card-logos.png}" alt="">
+    </div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
+</div>
+<!--end footer section-->
+
+<!--scripts-->
+<script th:src="@{/vendor/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/vendor/js/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/js/alertify.js}"></script>
+<script th:src="@{/vendor/js/jquery.knob.min.js}"></script>
+<!--[if IE]><script type="text/javascript" th:src="@{/vendor/js/excanvas.js}"></script><![endif]-->
+<script th:src="@{/vendor/js/summernote-bs4.min.js}"></script>
+<script th:src="@{/vendor/OwlCarousel2-2.2.1/owl.carousel.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
+<script th:src="@{/vendor/js/typed.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+<!--end scripts-->
+
+<script>
+    // 页面加载完成后初始化所有筛选选项
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取URL中的所有参数
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // 初始化分类选择
+        const category = urlParams.get('category');
+        if (category) {
+            const radio = document.querySelector(`input[name="category"][value="${category}"]`);
+            if (radio) {
+                radio.checked = true;
+            }
+        } else {
+            const allRadio = document.querySelector('input[name="category"][value="All"]');
+            if (allRadio) {
+                allRadio.checked = true;
+            }
+        }
+
+        // 初始化价格范围选择
+        const priceRange = urlParams.get('priceRange');
+        if (priceRange) {
+            const priceRadio = document.querySelector(`input[name="priceRange"][value="${priceRange}"]`);
+            if (priceRadio) {
+                priceRadio.checked = true;
+            }
+        } else {
+            const allPriceRadio = document.querySelector('input[name="priceRange"][value="all"]');
+            if (allPriceRadio) {
+                allPriceRadio.checked = true;
+            }
+        }
+
+        // 初始化生态分数选择
+        const ecoScore = urlParams.get('ecoScore');
+        if (ecoScore) {
+            const ecoRadio = document.querySelector(`input[name="ecoScore"][value="${ecoScore}"]`);
+            if (ecoRadio) {
+                ecoRadio.checked = true;
+            }
+        } else {
+            const allEcoRadio = document.querySelector('input[name="ecoScore"][value="all"]');
+            if (allEcoRadio) {
+                allEcoRadio.checked = true;
+            }
+        }
+
+        // 初始化排序链接的激活状态
+        const sort = urlParams.get('sort');
+        if (sort) {
+            document.querySelectorAll('.sort-sec a').forEach(link => {
+                const linkSort = link.getAttribute('href').split('sort=')[1];
+                if (linkSort === sort) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 处理分页链接点击
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // 获取当前URL参数
+                const currentUrl = new URL(window.location.href);
+                const currentParams = new URLSearchParams(currentUrl.search);
+
+                // 获取要跳转的页码
+                let targetPage;
+                if (this.dataset.page === 'prev') {
+                    targetPage = parseInt(currentParams.get('page') || '0') - 1;
+                } else if (this.dataset.page === 'next') {
+                    targetPage = parseInt(currentParams.get('page') || '0') + 1;
+                } else {
+                    targetPage = parseInt(this.dataset.page);
+                }
+
+                // 更新页码参数
+                currentParams.set('page', targetPage.toString());
+
+                // 构建新的URL
+                currentUrl.search = currentParams.toString();
+
+                // 更新URL并重新加载页面
+                window.location.href = currentUrl.toString();
+            });
+        });
+    });
+
+    // 修改表单提交处理
+    document.querySelectorAll('#filterForm input[type="radio"]').forEach(input => {
+        input.addEventListener('change', function() {
+            // 获取当前URL参数
+            const currentUrl = new URL(window.location.href);
+            const currentParams = new URLSearchParams(currentUrl.search);
+
+            // 获取所有表单数据
+            const formData = new FormData(document.getElementById('filterForm'));
+
+            // 更新参数
+            currentParams.set('category', formData.get('category') || 'All');
+            currentParams.set('priceRange', formData.get('priceRange') || 'all');
+            currentParams.set('ecoScore', formData.get('ecoScore') || 'all');
+            currentParams.set('sort', formData.get('sort') || 'date');
+            currentParams.set('page', '0'); // 重置页码到第一页
+
+            // 构建新的URL
+            currentUrl.search = currentParams.toString();
+
+            // 更新URL并重新加载页面
+            window.location.href = currentUrl.toString();
+        });
+    });
+
+    // 处理排序链接点击
+    document.querySelectorAll('.sort-sec a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // 获取当前URL参数
+            const currentUrl = new URL(window.location.href);
+            const currentParams = new URLSearchParams(currentUrl.search);
+
+            // 更新排序参数
+            const sortValue = this.getAttribute('href').split('sort=')[1];
+            if (sortValue) {
+                currentParams.set('sort', sortValue);
+                currentParams.set('page', '0'); // 重置页码到第一页
+            }
+
+            // 构建新的URL
+            currentUrl.search = currentParams.toString();
+
+            // 更新URL并重新加载页面
+            window.location.href = currentUrl.toString();
+        });
+    });
+
+    // 添加商品名称点击事件处理
+    const productLinks = document.querySelectorAll('.result-item-info a');
+
+    productLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productCard = this.closest('.result-item');
+            const productImage = productCard.querySelector('.result-item-img img');
+            const productName = this.textContent;
+
+            if (productImage) {
+                const imageUrl = productImage.src;
+                const previewImage = document.getElementById('previewImage');
+                const modalTitle = document.getElementById('imagePreviewModalLabel');
+
+                previewImage.src = imageUrl;
+                modalTitle.textContent = productName;
+
+                // 显示模态框
+                $('#imagePreviewModal').modal('show');
+            }
+        });
+    });
+</script>
+
+<!-- 添加图片预览模态框 -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

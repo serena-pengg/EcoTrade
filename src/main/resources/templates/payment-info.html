@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+
+    <!--meta tags-->
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Services Listing HTML5 CSS3 template">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript, services, listing">
+    <meta name="author" content="Ui-DesignLab">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--end meta tags-->
+
+    <title>GreenFree-Info</title>
+    <!--stylesheets-->
+    <link rel="icon" th:href="@{/img/logo2.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/vendor/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/perfect-scrollbar/css/perfect-scrollbar.min.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <!--end stylesheets-->
+
+    <!--google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cairo%7CNosifer%7CPoppins%7CQuicksand:700%7CRaleway%7CTangerine%7CHind+Vadodara" rel="stylesheet">
+    <!--end google fonts-->
+</head>
+<body>
+
+     
+
+
+<!--navigation bars-->
+
+<nav class="site-top-nav">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/img/logo.png}" alt="">
+            <strong>EcoTrade Global</strong>
+        </a>
+    </div>
+    <ul class="site-menu">
+        <li>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+        </li>
+        <li>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+        </li>
+        <li>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+        </li>
+        <li>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+        </li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+    </ul>
+</nav>
+
+<!--end navigation bars-->
+
+<div id="side-nav" class="side-nav">
+    <div class="side-nav-menu perfect-scroll">
+        <div class="text-logo">
+            <a th:href="@{/home}"><h3>Second-hand Trading Platform</h3></a>
+        </div>
+        <div class="site-user">
+            <div class="site-user-img">
+                <img th:src="@{/img/avatar2.jpg}" alt="">
+                <span class="online"></span>
+            </div>
+            <a href="#" class="user-name"><strong>Emma Viola</strong></a>
+        </div>
+        <ul class="menu">
+            <li><a th:href="@{/home}" class="current">Home</a></li>
+            <li><a th:href="@{/items}">Explore</a></li>
+            <li><a th:href="@{/pricing}">Pricing</a></li>
+            <li><a th:href="@{/blog}">Blog</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a th:href="@{/about}">About</a></li>
+        </ul>
+        <div class="logout"><a th:href="@{/login}">Log Out</a></div>
+    </div>
+</div>
+<!--end navigation bars-->
+
+<!--payment info-->
+<div class="payment-info-wrapper">
+    <div class="payment">
+        <h6><strong>Delivery Information</strong></h6>
+        <div class="payment-info-box">
+            <div class="p-top">
+                <strong>Shipping Details</strong>
+                <span><i class="fa fa-truck"></i> <em>Secure delivery</em></span>
+            </div>
+            
+            <!-- 已保存的地址列表 -->
+            <div th:if="${savedAddresses != null && !savedAddresses.empty}" class="saved-addresses mb-4">
+                <h6 class="mb-3" style="color: #333; font-weight: 600;">
+                    <i class="fa fa-map-marker" style="margin-right: 8px; color: #666;"></i>
+                    Saved Addresses
+                </h6>
+                <div class="address-list">
+                    <div th:each="address : ${savedAddresses}" 
+                         class="address-item mb-3 p-3 border rounded" 
+                         th:classappend="${address.isDefault ? 'border-primary' : ''}"
+                         style="background-color: #fff; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="mb-1">
+                                    <i class="fa fa-user" style="color: #666; margin-right: 8px;"></i>
+                                    <strong th:text="${address.fullName}" style="color: #333;">Full Name</strong>
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fa fa-phone" style="color: #666; margin-right: 8px;"></i>
+                                    <span th:text="${address.phoneNumber}">Phone Number</span>
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fa fa-home" style="color: #666; margin-right: 8px;"></i>
+                                    <span th:text="${address.address}">Delivery Address</span>
+                                </p>
+                                <span th:if="${address.isDefault}" 
+                                      class="badge" 
+                                      style="background-color: #0a1b2e; color: white; padding: 5px 10px; border-radius: 15px;">
+                                    <i class="fa fa-star" style="margin-right: 4px;"></i>
+                                    Default Address
+                                </span>
+                            </div>
+                            <button class="btn btn-sm use-address-btn" 
+                                    th:data-fullname="${address.fullName}"
+                                    th:data-phone="${address.phoneNumber}"
+                                    th:data-address="${address.address}"
+                                    style="background-color: #0c2d4f; color: white; border: none; padding: 8px 15px; border-radius: 20px;">
+                                <i class="fa fa-check" style="margin-right: 5px;"></i>
+                                Use This Address
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${savedAddresses == null || savedAddresses.empty}" 
+                 class="text-center p-4" 
+                 style="background-color: #fff; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <i class="fa fa-map-marker" style="font-size: 2rem; color: #666; margin-bottom: 1rem;"></i>
+                <p class="text-muted">No saved addresses found.</p>
+                <p class="text-muted" style="font-size: 0.9rem;">Please add an address to continue.</p>
+            </div>
+
+            <form th:action="@{/order/checkout}" method="post">
+                <div class="form-group">
+                    <label for="fullName">Full Name <i class="fa fa-star ui-text-danger"></i></label>
+                    <input type="text" id="fullName" name="fullName" class="form-control" 
+                           th:value="${defaultAddress?.fullName}" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number <i class="fa fa-star ui-text-danger"></i></label>
+                    <input type="tel" class="form-control" name="phoneNumber" id="phone" 
+                           th:value="${defaultAddress?.phoneNumber}" placeholder="Your contact number" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address <i class="fa fa-star ui-text-danger"></i></label>
+                    <input type="text" class="form-control" name="address" id="address" 
+                           th:value="${defaultAddress?.address}" placeholder="Province, city and street address" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryNotes">Delivery Notes</label>
+                    <textarea class="form-control" name="deliveryNotes" id="deliveryNotes" rows="3" placeholder="Any special instructions for delivery"></textarea>
+                </div>
+                <div class="save-address">
+                    <label class="label--checkbox">
+                        <input type="checkbox" class="checkbox" name="saveAddress" value="true" checked>
+                        <strong>Save this address for future use</strong>
+                    </label>
+                </div>
+                <div class="payment-bottom">
+                    <a th:href="@{/cart}"><i class="fa fa-angle-left"></i> Shopping Cart</a>
+                    <button type="submit" class="ui-btn ui-btn-info-outline">Proceed to Payment <i class="fa fa-credit-card"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="order-summary">
+        <h6><strong>Order Summary</strong></h6>
+        <div class="order-item" th:each="item : ${cartItems}">
+            <div>
+                <strong th:text="${item.product.name}">Product Name</strong>
+                <span th:text="${item.quantity} + 'x'">1x</span>
+            </div>
+            <div>
+                <span th:text="${item.product.description}">Description</span>
+                <strong th:text="${'¥' + #numbers.formatDecimal(item.total, 0, 2)}">¥0.00</strong>
+            </div>
+        </div>
+        <div class="order-item">
+            <div>
+                <span>Sub total</span>
+                <strong th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
+            </div>
+            <div class="ocean-protection-fee" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background-color: #e8f5e9; border-radius: 8px; margin: 10px 0;">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa fa-leaf" style="color: #2e7d32; font-size: 1.2em; margin-right: 10px;"></i>
+                    <span style="color: #2e7d32; font-weight: 500;">Ocean Protection Fee</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <span style="color: #2e7d32; margin-right: 5px;">¥</span>
+                    <strong style="color: #2e7d32; font-size: 1.1em;" th:text="${#numbers.formatDecimal(tax, 0, 2)}">0.00</strong>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <span>Total</span>
+                <h4><strong class="ui-text-info" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end payment info-->
+
+<!--page loader-->
+<div class="page-loader">
+    <div class="loader"><img th:src="@{/img/logo.png}" alt=""></div>
+</div>
+<!--end page loader-->
+
+<!--chat box-->
+<a href="#" class="chat-box-btn" id="chat-box-btn">
+    <i class="fa fa-comment icon-sw"></i>
+</a>
+
+<div class="chat-box">
+    <div class="chat-top">
+        <section>
+            <h6 class="org-name">EcoTrade Global</h6>
+            <div class="repliers">
+                <div class="r-img">
+                    <img th:src="@{/img/user2.jpg}" alt="">
+                    <strong class="name">Vincent</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="chat-flow" id="chat-flow">
+        <p class="outbound">
+            Hello, Anyone there?
+        </p>
+        <p class="inbound">
+            Hi, Vincent here. How may I be of service.
+        </p>
+    </div>
+    <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
+        <div class="input-group">
+            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+            <div class="input-group-append">
+                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 处理使用已保存地址的按钮点击事件
+    const useAddressButtons = document.querySelectorAll('.use-address-btn');
+    useAddressButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const fullName = this.dataset.fullname;
+            const phone = this.dataset.phone;
+            const address = this.dataset.address;
+            
+            document.getElementById('fullName').value = fullName;
+            document.getElementById('phone').value = phone;
+            document.getElementById('address').value = address;
+        });
+    });
+
+    // 自动填充默认地址
+    function fillDefaultAddress() {
+        const defaultAddressItem = document.querySelector('.address-item.border-primary');
+        if (defaultAddressItem) {
+            const useButton = defaultAddressItem.querySelector('.use-address-btn');
+            if (useButton) {
+                useButton.click();
+            }
+        }
+    }
+
+    // 页面加载时自动填充默认地址
+    fillDefaultAddress();
+
+    // 聊天功能代码...
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatFlow = document.getElementById('chat-flow');
+
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            // 添加用户消息到聊天框
+            const userMessage = document.createElement('p');
+            userMessage.className = 'outbound';
+            userMessage.textContent = message;
+            chatFlow.appendChild(userMessage);
+
+            // 发送消息到服务器
+            fetch('/api/chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new TypeError("Oops, we haven't got JSON!");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.response) {
+                    const aiMessage = document.createElement('p');
+                    aiMessage.className = 'inbound';
+                    aiMessage.textContent = data.response;
+                    chatFlow.appendChild(aiMessage);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+                chatFlow.scrollTop = chatFlow.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'inbound';
+                errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
+                chatFlow.appendChild(errorMessage);
+            });
+
+            // 清空输入框
+            messageInput.value = '';
+        }
+    }
+
+    // 点击发送按钮
+    sendButton.addEventListener('click', sendMessage);
+
+    // 按回车键发送
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+});
+</script>
+
+<!--end chat box-->
+
+<!--footer section-->
+<footer class="footer">
+    <div class="footer-item">
+        <strong>Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+    </div>
+    <div class="footer-item">
+        <strong>Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+    </div>
+    <div class="footer-item">
+        <strong>Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
+        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
+        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+    </div>
+    <div class="footer-item">
+        <strong>Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+    </div>
+</footer>
+<div class="bottom-strip">
+    <div class="cards-accepted">
+        <em>Cards Accepted:</em>
+        <img th:src="@{/img/card-logos.png}" alt="">
+    </div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
+</div>
+<!--end footer section-->
+
+<!--scripts-->
+<script th:src="@{/vendor/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/vendor/js/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/js/alertify.js}"></script>
+<script th:src="@{/vendor/js/jquery.knob.min.js}"></script>
+<!--[if IE]><script type="text/javascript" th:src="@{/vendor/js/excanvas.js}"></script><![endif]-->
+<script th:src="@{/vendor/js/summernote-bs4.min.js}"></script>
+<script th:src="@{/vendor/js/dropzone.js}"></script>
+<script th:src="@{/vendor/OwlCarousel2-2.2.1/owl.carousel.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
+<script th:src="@{/vendor/js/typed.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+<!--end scripts-->
+
+</body>
+</html>

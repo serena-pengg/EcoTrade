@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <!--meta tags-->
+  <meta charset="UTF-8">
+  <meta name="description" content="Services Listing HTML5 CSS3 template">
+  <meta name="keywords" content="HTML,CSS,XML,JavaScript, services, listing">
+  <meta name="author" content="Ui-DesignLab">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--end meta tags-->
+  <title>GreenFree-Login</title>
+  <!--stylesheets-->
+  <link rel="icon" th:href="@{/img/logo2.png}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/vendor/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/css/animate.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/font-awesome-4.7.0/css/font-awesome.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/perfect-scrollbar/css/perfect-scrollbar.min.css}">
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <!--end stylesheets-->
+  <!--google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Cairo%7CNosifer%7CPoppins%7CQuicksand:700%7CRaleway%7CTangerine%7CHind+Vadodara" rel="stylesheet">
+  <!--end google fonts-->
+</head>
+<body>
+<!--navigation bars-->
+
+<nav class="site-top-nav">
+  <div class="logo">
+      <a th:href="@{/home}">
+          <img th:src="@{/img/logo.png}" alt="">
+          <strong>EcoTrade Global</strong>
+      </a>
+  </div>
+  <ul class="site-menu">
+      <li>
+          <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+      </li>
+      <li>
+          <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+      </li>
+      <li>
+          <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+      </li>
+      <li>
+          <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+      </li>
+      <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+  </ul>
+</nav>
+
+<!--end navigation bars-->
+
+<!--login/register form-->
+<div class="forms-wrapper">
+  <div class="forms-box">
+    <div class="side-content">
+      <div class="hoist animated fadeInLeft">
+        <div class="hoist-c">
+          <i class="fa fa-users ui-text-warn"></i>
+          <strong>Ready Market</strong>
+          <span>Ready  market for your items</span>
+        </div>
+        <div class="hoist-c">
+          <i class="fa fa-shopping-cart ui-text-danger"></i>
+          <strong>Instant Checkout</strong>
+          <span>Hassle-Free Payment Everytime</span>
+        </div>
+        <div class="hoist-c">
+          <i class="fa fa-percent ui-text-info"></i>
+          <strong>Exclusive Offers</strong>
+          <span>For Special offers and value deals</span>
+        </div>
+      </div>
+    </div>
+    <div class="auth-forms">
+      <div class="switch-nav">
+        <a data-form="login-form" href="#" class="current">Login</a>
+        <a data-form="register-form" href="#">Register</a>
+      </div>
+      <div class="forms-c">
+        <form th:action="@{/login}" method="post" class="login-form animated">
+          <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+          </div>
+          <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${success}"></span>
+          </div>
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="username" class="form-control" placeholder="someone@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Your Password</label>
+            <div class="site-password">
+              <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+              <i class="reveal-password fa fa-eye" title="Show Password"></i>
+            </div>
+            <div class="forgot-password"><a href="#">Forgot Password?</a></div>
+          </div>
+          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow">Login</button>
+        </form>
+        <form th:action="@{/register}" method="post" class="register-form animated">
+          <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+          </div>
+          <div class="form-group">
+            <label for="email1">Email</label>
+            <input type="email" id="email1" name="email" class="form-control" placeholder="someone@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
+          </div>
+          <div class="form-group">
+            <label for="password1">Password</label>
+            <div class="site-password">
+              <input type="password" id="password1" name="password" class="form-control" placeholder="Enter your password" required>
+              <i class="reveal-password fa fa-eye" title="Show Password"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <div class="site-password">
+              <input type="password" id="password2" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+              <i class="reveal-password fa fa-eye" title="Show Password"></i>
+            </div>
+          </div>
+          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end login/register form-->
+<!--page loader-->
+<div class="page-loader">
+  <div class="loader"><img th:src="@{/img/logo.png}" alt=""></div>
+</div>
+<!--end page loader-->
+
+<!--chat box-->
+<a href="#" class="chat-box-btn" id="chat-box-btn">
+  <i class="fa fa-comment icon-sw"></i>
+</a>
+
+<div class="chat-box">
+  <div class="chat-top">
+      <section>
+          <h6 class="org-name">EcoTrade Global</h6>
+          <div class="repliers">
+              <div class="r-img">
+                  <img th:src="@{/img/user2.jpg}" alt="">
+                  <strong class="name">Vincent</strong>
+              </div>
+          </div>
+      </section>
+  </div>
+  <div class="chat-flow" id="chat-flow">
+      <p class="outbound">
+          Hello, Anyone there?
+      </p>
+      <p class="inbound">
+          Hi, Vincent here. How may I be of service.
+      </p>
+  </div>
+  <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
+      <div class="input-group">
+          <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+          <div class="input-group-append">
+              <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const messageInput = document.getElementById('messageInput');
+  const sendButton = document.getElementById('sendButton');
+  const chatFlow = document.getElementById('chat-flow');
+
+  function sendMessage() {
+      const message = messageInput.value.trim();
+      if (message) {
+          // 添加用户消息到聊天框
+          const userMessage = document.createElement('p');
+          userMessage.className = 'outbound';
+          userMessage.textContent = message;
+          chatFlow.appendChild(userMessage);
+
+          // 发送消息到服务器
+          fetch('/api/chat/send', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+              body: JSON.stringify({ message: message })
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const contentType = response.headers.get("content-type");
+              if (!contentType || !contentType.includes("application/json")) {
+                  throw new TypeError("Oops, we haven't got JSON!");
+              }
+              return response.json();
+          })
+          .then(data => {
+              if (data && data.response) {
+                  const aiMessage = document.createElement('p');
+                  aiMessage.className = 'inbound';
+                  aiMessage.textContent = data.response;
+                  chatFlow.appendChild(aiMessage);
+              } else {
+                  throw new Error('Invalid response format');
+              }
+              chatFlow.scrollTop = chatFlow.scrollHeight;
+          })
+          .catch(error => {
+              console.error('Error details:', error);
+              const errorMessage = document.createElement('p');
+              errorMessage.className = 'inbound';
+              errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
+              chatFlow.appendChild(errorMessage);
+          });
+
+          // 清空输入框
+          messageInput.value = '';
+      }
+  }
+
+  // 点击发送按钮
+  sendButton.addEventListener('click', sendMessage);
+
+  // 按回车键发送
+  messageInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+          sendMessage();
+      }
+  });
+});
+</script>
+
+<!--end chat box-->
+
+<!--footer section-->
+<footer class="footer">
+  <div class="footer-item">
+    <strong>Get In Touch</strong>
+    <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+  </div>
+  <div class="footer-item">
+    <strong>Questions?</strong>
+    <a href="#"><i class="fa fa-angle-right"></i> Help</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+  </div>
+  <div class="footer-item">
+    <strong>Follow EcoTrade Global</strong>
+    <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
+    <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
+    <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+  </div>
+  <div class="footer-item">
+    <strong>Important Links</strong>
+    <a th:href="@{/static}"><i class="fa fa-angle-right"></i> Home</a>
+    <a th:href="@{/products}"><i class="fa fa-angle-right"></i> Products</a>
+    <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
+    <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+  </div>
+</footer>
+<div class="bottom-strip">
+  <div class="cards-accepted">
+    <em>Cards Accepted:</em>
+    <img th:src="@{/img/card-logos.png}" alt="">
+  </div>
+  <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+  <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
+</div>
+end footer section
+<!--scripts-->
+<script th:src="@{/vendor/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/vendor/js/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/js/alertify.js}"></script>
+<script th:src="@{/vendor/js/jquery.knob.min.js}"></script>
+<!--[if IE]><script type="text/javascript" th:src="@{/vendor/js/excanvas.js}"></script><![endif]-->
+<script th:src="@{/vendor/js/summernote-bs4.min.js}"></script>
+<script th:src="@{/vendor/js/dropzone.js}"></script>
+<script th:src="@{/vendor/OwlCarousel2-2.2.1/owl.carousel.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
+<script th:src="@{/vendor/js/typed.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+<!--end scripts-->
+
+</body>
+</html>
