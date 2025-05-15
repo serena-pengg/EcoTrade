@@ -6,37 +6,33 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "rewards")
+public class Reward {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
     @Column(nullable = false)
-    private String password;
+    private String name;
 
-    private String username;
-    
-    private String avatar;
-    
-    @Column(name = "phone_number")
-    private String phoneNumber;
-    
-    @Column(name = "address")
-    private String address;
-    
-    @Column(name = "bio", length = 500)
-    private String bio;
-    
-    @Column(name = "eco_points")
-    private Integer ecoPoints = 0;
-    
+    @Column(length = 1000)
+    private String description;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "points_required", nullable = false)
+    private Integer pointsRequired;
+
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
