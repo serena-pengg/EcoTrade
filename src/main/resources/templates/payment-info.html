@@ -25,6 +25,10 @@
     <!--google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Cairo%7CNosifer%7CPoppins%7CQuicksand:700%7CRaleway%7CTangerine%7CHind+Vadodara" rel="stylesheet">
     <!--end google fonts-->
+
+    <!-- CSRF Token -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 
@@ -42,18 +46,32 @@
     </div>
     <ul class="site-menu">
         <li>
-            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+            <a th:href="@{/home}" data-i18n="nav.home"><i class="fa fa-home"></i> Home</a>
         </li>
         <li>
-            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+            <a th:href="@{/search-results}" data-i18n="nav.explore"><i class="fa fa-search"></i> Explore</a>
         </li>
         <li>
-            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a th:href="@{/cart}" data-i18n="nav.cart"><i class="fa fa-shopping-cart"></i> Cart</a>
         </li>
         <li>
-            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a th:href="@{/contact}" data-i18n="nav.contact"><i class="fa fa-envelope"></i> Contact Us</a>
         </li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li><a th:href="@{/profile}" data-i18n="nav.profile"><i class="fa fa-user"></i> Profile</a></li>
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
     </ul>
 </nav>
@@ -87,138 +105,154 @@
 <!--end navigation bars-->
 
 <!--payment info-->
-<div class="payment-info-wrapper">
-    <div class="payment">
-        <h6><strong>Delivery Information</strong></h6>
-        <div class="payment-info-box">
-            <div class="p-top">
-                <strong>Shipping Details</strong>
-                <span><i class="fa fa-truck"></i> <em>Secure delivery</em></span>
-            </div>
-            
-            <!-- 已保存的地址列表 -->
-            <div th:if="${savedAddresses != null && !savedAddresses.empty}" class="saved-addresses mb-4">
-                <h6 class="mb-3" style="color: #333; font-weight: 600;">
-                    <i class="fa fa-map-marker" style="margin-right: 8px; color: #666;"></i>
-                    Saved Addresses
-                </h6>
-                <div class="address-list">
-                    <div th:each="address : ${savedAddresses}" 
-                         class="address-item mb-3 p-3 border rounded" 
-                         th:classappend="${address.isDefault ? 'border-primary' : ''}"
-                         style="background-color: #fff; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p class="mb-1">
-                                    <i class="fa fa-user" style="color: #666; margin-right: 8px;"></i>
-                                    <strong th:text="${address.fullName}" style="color: #333;">Full Name</strong>
-                                </p>
-                                <p class="mb-1">
-                                    <i class="fa fa-phone" style="color: #666; margin-right: 8px;"></i>
-                                    <span th:text="${address.phoneNumber}">Phone Number</span>
-                                </p>
-                                <p class="mb-1">
-                                    <i class="fa fa-home" style="color: #666; margin-right: 8px;"></i>
-                                    <span th:text="${address.address}">Delivery Address</span>
-                                </p>
-                                <span th:if="${address.isDefault}" 
-                                      class="badge" 
-                                      style="background-color: #0a1b2e; color: white; padding: 5px 10px; border-radius: 15px;">
-                                    <i class="fa fa-star" style="margin-right: 4px;"></i>
-                                    Default Address
-                                </span>
+<div class="container mt-4">
+    <h2 data-i18n="payment.deliveryInfo">Delivery Information</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title" data-i18n="payment.shippingDetails">Shipping Details</h5>
+                    <p class="text-muted" data-i18n="payment.secureDelivery">Secure delivery</p>
+                    
+                    <!-- 已保存的地址列表 -->
+                    <div th:if="${savedAddresses != null && !savedAddresses.empty}" class="saved-addresses mb-4">
+                        <h6 class="mb-3" style="color: #333; font-weight: 600;">
+                            <i class="fa fa-map-marker" style="margin-right: 8px; color: #666;"></i>
+                            <span data-i18n="payment.savedAddresses">Saved Addresses</span>
+                        </h6>
+                        <div class="address-list">
+                            <div th:each="address : ${savedAddresses}" 
+                                 class="address-item mb-3 p-3 border rounded" 
+                                 th:classappend="${address.isDefault ? 'border-primary' : ''}"
+                                 style="background-color: #fff; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <p class="mb-1">
+                                            <i class="fa fa-user" style="color: #666; margin-right: 8px;"></i>
+                                            <strong th:text="${address.fullName}" style="color: #333;">Full Name</strong>
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="fa fa-phone" style="color: #666; margin-right: 8px;"></i>
+                                            <span th:text="${address.phoneNumber}">Phone Number</span>
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="fa fa-home" style="color: #666; margin-right: 8px;"></i>
+                                            <span th:text="${address.address}">Delivery Address</span>
+                                        </p>
+                                        <span th:if="${address.isDefault}" 
+                                              class="badge" 
+                                              style="background-color: #0a1b2e; color: white; padding: 5px 10px; border-radius: 15px;">
+                                            <i class="fa fa-star" style="margin-right: 4px;"></i>
+                                            <span data-i18n="payment.defaultAddress">Default Address</span>
+                                        </span>
+                                    </div>
+                                    <button class="btn btn-sm use-address-btn" 
+                                            th:data-fullname="${address.fullName}"
+                                            th:data-phone="${address.phoneNumber}"
+                                            th:data-address="${address.address}"
+                                            style="background-color: #0c2d4f; color: white; border: none; padding: 8px 15px; border-radius: 20px;">
+                                        <i class="fa fa-check" style="margin-right: 5px;"></i>
+                                        <span data-i18n="payment.useThisAddress">Use This Address</span>
+                                    </button>
+                                </div>
                             </div>
-                            <button class="btn btn-sm use-address-btn" 
-                                    th:data-fullname="${address.fullName}"
-                                    th:data-phone="${address.phoneNumber}"
-                                    th:data-address="${address.address}"
-                                    style="background-color: #0c2d4f; color: white; border: none; padding: 8px 15px; border-radius: 20px;">
-                                <i class="fa fa-check" style="margin-right: 5px;"></i>
-                                Use This Address
-                            </button>
+                        </div>
+                    </div>
+                    <div th:if="${savedAddresses == null || savedAddresses.empty}" 
+                         class="text-center p-4" 
+                         style="background-color: #fff; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <i class="fa fa-map-marker" style="font-size: 2rem; color: #666; margin-bottom: 1rem;"></i>
+                        <p class="text-muted" data-i18n="payment.noSavedAddresses">No saved addresses found.</p>
+                        <p class="text-muted" style="font-size: 0.9rem;" data-i18n="payment.addAddressPrompt">Please add an address to continue.</p>
+                    </div>
+
+                    <form th:action="@{/order/checkout}" method="post">
+                        <div class="form-group">
+                            <label for="fullName" data-i18n="payment.fullName">Full Name</label> <i class="fa fa-star ui-text-danger"></i>
+                            <input type="text" id="fullName" name="fullName" class="form-control" 
+                                   th:value="${defaultAddress?.fullName}" data-i18n-placeholder="payment.fullNamePlaceholder" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" data-i18n="payment.phoneNumber">Phone Number</label> <i class="fa fa-star ui-text-danger"></i>
+                            <input type="tel" class="form-control" name="phoneNumber" id="phone" 
+                                   th:value="${defaultAddress?.phoneNumber}" data-i18n-placeholder="payment.phonePlaceholder" placeholder="Your contact number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" data-i18n="payment.deliveryAddress">Delivery Address</label> <i class="fa fa-star ui-text-danger"></i>
+                            <input type="text" class="form-control" name="address" id="address" 
+                                   th:value="${defaultAddress?.address}" data-i18n-placeholder="payment.addressPlaceholder" placeholder="Province, city and street address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliveryNotes" data-i18n="payment.deliveryNotes">Delivery Notes</label>
+                            <textarea class="form-control" name="deliveryNotes" id="deliveryNotes" rows="3" data-i18n-placeholder="payment.notesPlaceholder" placeholder="Any special instructions for delivery"></textarea>
+                        </div>
+                        <div class="save-address">
+                            <label class="label--checkbox">
+                                <input type="checkbox" class="checkbox" name="saveAddress" value="true" checked>
+                                <strong data-i18n="payment.saveAddress">Save this address for future use</strong>
+                            </label>
+                        </div>
+                        <div class="payment-bottom">
+                            <a th:href="@{/cart}" data-i18n="payment.backToCart"><i class="fa fa-angle-left"></i> Shopping Cart</a>
+                            <button type="submit" class="ui-btn ui-btn-info-outline" data-i18n="payment.proceedToPayment">Proceed to Payment <i class="fa fa-credit-card"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" data-i18n="payment.orderSummary">Order Summary</h5>
+                    <div class="order-item" th:each="item : ${cartItems}">
+                        <div>
+                            <strong th:text="${item.product.name}">Product Name</strong>
+                            <span th:text="${item.quantity} + 'x'">1x</span>
+                        </div>
+                        <div>
+                            <span th:text="${item.product.description}">Description</span>
+                            <strong th:text="${'¥' + #numbers.formatDecimal(item.total, 0, 2)}">¥0.00</strong>
+                        </div>
+                    </div>
+                    <div class="order-item">
+                        <div>
+                            <span data-i18n="payment.subtotal">Sub total</span>
+                            <strong id="subtotal" th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="donateCheckbox" style="margin-right: 10px;" checked>
+                                <i class="fa fa-leaf" style="color: #2e7d32; font-size: 1.2em; margin-right: 10px;"></i>
+                                <span style="color: #2e7d32; font-weight: 500;" data-i18n="payment.oceanProtectionFee">Ocean Protection Fee</span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span style="color: #2e7d32; margin-right: 5px;">¥</span>
+                                <input type="number" id="donationAmount" 
+                                       style="width: 80px; border: 1px solid #2e7d32; border-radius: 4px; padding: 2px 5px; color: #2e7d32; font-weight: bold;"
+                                       value="1.00" min="0" step="1.00" onchange="updateDonationAmount(this.value)">
+                            </div>
+                        </div>
+                        <div style="font-size: 0.9em; color: #666; margin-bottom: 15px; padding-left: 25px; background-color: #f8f9fa; border-left: 3px solid #2e7d32; padding: 10px 15px; border-radius: 0 4px 4px 0; line-height: 1.5;">
+                            <i class="fa fa-info-circle" style="color: #2e7d32; margin-right: 8px;"></i>
+                            <span data-i18n="payment.donationInfo">Your donation will help protect marine ecosystems and support ocean conservation efforts. Every contribution makes a difference!</span>
+                        </div>
+                        <hr>
+                        <div>
+                            <span data-i18n="payment.total">Total</span>
+                            <h4><strong class="ui-text-info" id="total" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div th:if="${savedAddresses == null || savedAddresses.empty}" 
-                 class="text-center p-4" 
-                 style="background-color: #fff; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <i class="fa fa-map-marker" style="font-size: 2rem; color: #666; margin-bottom: 1rem;"></i>
-                <p class="text-muted">No saved addresses found.</p>
-                <p class="text-muted" style="font-size: 0.9rem;">Please add an address to continue.</p>
-            </div>
-
-            <form th:action="@{/order/checkout}" method="post">
-                <div class="form-group">
-                    <label for="fullName">Full Name <i class="fa fa-star ui-text-danger"></i></label>
-                    <input type="text" id="fullName" name="fullName" class="form-control" 
-                           th:value="${defaultAddress?.fullName}" placeholder="Your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number <i class="fa fa-star ui-text-danger"></i></label>
-                    <input type="tel" class="form-control" name="phoneNumber" id="phone" 
-                           th:value="${defaultAddress?.phoneNumber}" placeholder="Your contact number" required>
-                </div>
-                <div class="form-group">
-                    <label for="address">Delivery Address <i class="fa fa-star ui-text-danger"></i></label>
-                    <input type="text" class="form-control" name="address" id="address" 
-                           th:value="${defaultAddress?.address}" placeholder="Province, city and street address" required>
-                </div>
-                <div class="form-group">
-                    <label for="deliveryNotes">Delivery Notes</label>
-                    <textarea class="form-control" name="deliveryNotes" id="deliveryNotes" rows="3" placeholder="Any special instructions for delivery"></textarea>
-                </div>
-                <div class="save-address">
-                    <label class="label--checkbox">
-                        <input type="checkbox" class="checkbox" name="saveAddress" value="true" checked>
-                        <strong>Save this address for future use</strong>
-                    </label>
-                </div>
-                <div class="payment-bottom">
-                    <a th:href="@{/cart}"><i class="fa fa-angle-left"></i> Shopping Cart</a>
-                    <button type="submit" class="ui-btn ui-btn-info-outline">Proceed to Payment <i class="fa fa-credit-card"></i></button>
-                </div>
-            </form>
         </div>
     </div>
-    <div class="order-summary">
-        <h6><strong>Order Summary</strong></h6>
-        <div class="order-item" th:each="item : ${cartItems}">
-            <div>
-                <strong th:text="${item.product.name}">Product Name</strong>
-                <span th:text="${item.quantity} + 'x'">1x</span>
-            </div>
-            <div>
-                <span th:text="${item.product.description}">Description</span>
-                <strong th:text="${'¥' + #numbers.formatDecimal(item.total, 0, 2)}">¥0.00</strong>
-            </div>
-        </div>
-        <div class="order-item">
-            <div>
-                <span>Sub total</span>
-                <strong id="subtotal" th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center;">
-                    <input type="checkbox" id="donateCheckbox" style="margin-right: 10px;" checked>
-                    <i class="fa fa-leaf" style="color: #2e7d32; font-size: 1.2em; margin-right: 10px;"></i>
-                    <span style="color: #2e7d32; font-weight: 500;">Ocean Protection Fee</span>
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <span style="color: #2e7d32; margin-right: 5px;">¥</span>
-                    <input type="number" id="donationAmount" 
-                           style="width: 80px; border: 1px solid #2e7d32; border-radius: 4px; padding: 2px 5px; color: #2e7d32; font-weight: bold;"
-                           value="1.00" min="0" step="1.00" onchange="updateDonationAmount(this.value)">
-                </div>
-            </div>
-            <div style="font-size: 0.9em; color: #666; margin-bottom: 15px; padding-left: 25px; background-color: #f8f9fa; border-left: 3px solid #2e7d32; padding: 10px 15px; border-radius: 0 4px 4px 0; line-height: 1.5;">
-                <i class="fa fa-info-circle" style="color: #2e7d32; margin-right: 8px;"></i>
-                <span>Your donation will help protect marine ecosystems and support ocean conservation efforts. Every contribution makes a difference!</span>
-            </div>
-            <hr>
-            <div>
-                <span>Total</span>
-                <h4><strong class="ui-text-info" id="total" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between">
+                <a href="/cart" class="btn btn-outline-secondary" data-i18n="payment.backToCart">Shopping Cart</a>
+                <button class="btn btn-primary" data-i18n="payment.proceedToPayment">Proceed to Payment</button>
             </div>
         </div>
     </div>
@@ -375,21 +409,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         updateTotal();
     });
+
+    // 初始化语言
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    switchLanguage(savedLanguage);
 });
 
 function updateTotal() {
-    // 获取其他金额
     const subtotalText = document.getElementById('subtotal').textContent;
-    
-    // 移除货币符号并转换为数字
     const subtotal = parseFloat(subtotalText.replace('¥', '')) || 0;
     const donation = document.getElementById('donateCheckbox').checked ? 
                     parseFloat(document.getElementById('donationAmount').value) : 0;
-    
-    // 计算总金额
     const total = subtotal + donation;
-    
-    // 更新显示
     document.getElementById('total').textContent = '¥' + total.toFixed(2);
 }
 
@@ -421,12 +452,12 @@ function updateDonationAmount(value) {
         <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
     </div>
     <div class="footer-item">
-        <strong>Follow Us</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
-        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+        <strong data-i18n="footer.followUs">Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
         <strong>Important Links</strong>
@@ -459,6 +490,7 @@ function updateDonationAmount(value) {
 <script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
 <script th:src="@{/vendor/js/typed.js}"></script>
 <script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/i18n.js}"></script>
 <!--end scripts-->
 
 </body>

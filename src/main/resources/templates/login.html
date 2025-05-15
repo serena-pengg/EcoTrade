@@ -33,19 +33,33 @@
   </div>
   <ul class="site-menu">
       <li>
-          <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+          <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
       </li>
       <li>
-          <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+          <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
       </li>
       <li>
-          <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+          <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
       </li>
       <li>
-          <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+          <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
       </li>
-      <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
-        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+      <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+      <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+      <li class="language-switcher">
+          <div class="dropdown">
+              <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-globe"></i> <span class="current-language">English</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                  <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                  <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                  <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                  <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                  <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+              </div>
+          </div>
+      </li>
   </ul>
 </nav>
 
@@ -58,25 +72,25 @@
       <div class="hoist animated fadeInLeft">
         <div class="hoist-c">
           <i class="fa fa-users ui-text-warn"></i>
-          <strong>Ready Market</strong>
-          <span>Ready  market for your items</span>
+          <strong data-i18n="login.readyMarket">Ready Market</strong>
+          <span data-i18n="login.readyMarketDesc">Ready market for your items</span>
         </div>
         <div class="hoist-c">
           <i class="fa fa-shopping-cart ui-text-danger"></i>
-          <strong>Instant Checkout</strong>
-          <span>Hassle-Free Payment Everytime</span>
+          <strong data-i18n="login.instantCheckout">Instant Checkout</strong>
+          <span data-i18n="login.instantCheckoutDesc">Hassle-Free Payment Everytime</span>
         </div>
         <div class="hoist-c">
           <i class="fa fa-percent ui-text-info"></i>
-          <strong>Exclusive Offers</strong>
-          <span>For Special offers and value deals</span>
+          <strong data-i18n="login.exclusiveOffers">Exclusive Offers</strong>
+          <span data-i18n="login.exclusiveOffersDesc">For Special offers and value deals</span>
         </div>
       </div>
     </div>
     <div class="auth-forms">
       <div class="switch-nav">
-        <a data-form="login-form" href="#" class="current">Login</a>
-        <a data-form="register-form" href="#">Register</a>
+        <a data-form="login-form" href="#" class="current" data-i18n="login.login">Login</a>
+        <a data-form="register-form" href="#" data-i18n="login.register">Register</a>
       </div>
       <div class="forms-c">
         <form th:action="@{/login}" method="post" class="login-form animated">
@@ -87,46 +101,46 @@
             <span th:text="${success}"></span>
           </div>
           <div class="form-group">
-            <label for="email">Your Email</label>
+            <label for="email" data-i18n="login.email">Your Email</label>
             <input type="email" id="email" name="username" class="form-control" placeholder="someone@example.com" required>
           </div>
           <div class="form-group">
-            <label for="password">Your Password</label>
+            <label for="password" data-i18n="login.password">Your Password</label>
             <div class="site-password">
               <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
               <i class="reveal-password fa fa-eye" title="Show Password"></i>
             </div>
-            <div class="forgot-password"><a href="#">Forgot Password?</a></div>
+            <div class="forgot-password"><a href="#" data-i18n="login.forgotPassword">Forgot Password?</a></div>
           </div>
-          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow">Login</button>
+          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow" data-i18n="login.loginButton">Login</button>
         </form>
         <form th:action="@{/register}" method="post" class="register-form animated">
           <div th:if="${error}" class="alert alert-danger" role="alert">
             <span th:text="${error}"></span>
           </div>
           <div class="form-group">
-            <label for="email1">Email</label>
+            <label for="email1" data-i18n="login.email">Email</label>
             <input type="email" id="email1" name="email" class="form-control" placeholder="someone@example.com" required>
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username" data-i18n="login.username">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
           </div>
           <div class="form-group">
-            <label for="password1">Password</label>
+            <label for="password1" data-i18n="login.password">Password</label>
             <div class="site-password">
               <input type="password" id="password1" name="password" class="form-control" placeholder="Enter your password" required>
               <i class="reveal-password fa fa-eye" title="Show Password"></i>
             </div>
           </div>
           <div class="form-group">
-            <label for="password2">Confirm Password</label>
+            <label for="password2" data-i18n="login.confirmPassword">Confirm Password</label>
             <div class="site-password">
               <input type="password" id="password2" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
               <i class="reveal-password fa fa-eye" title="Show Password"></i>
             </div>
           </div>
-          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow">Register</button>
+          <button type="submit" class="form-control ui-btn ui-btn-info btn-shadow" data-i18n="login.registerButton">Register</button>
         </form>
       </div>
     </div>
@@ -300,6 +314,7 @@ end footer section
 <script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
 <script th:src="@{/vendor/js/typed.js}"></script>
 <script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/i18n.js}"></script>
 <!--end scripts-->
 
 </body>

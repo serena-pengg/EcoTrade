@@ -487,6 +487,69 @@
         .close:hover {
             opacity: 1;
         }
+
+        /* Language Switcher Styles */
+        .language-switcher {
+            margin-left: 15px;
+        }
+
+        .language-switcher .dropdown-toggle {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-switcher .dropdown-toggle:hover {
+            background: #e9ecef;
+        }
+
+        .language-switcher .dropdown-toggle i {
+            color: #666;
+        }
+
+        .language-switcher .dropdown-menu {
+            min-width: 150px;
+            padding: 8px 0;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .language-switcher .dropdown-item {
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s;
+        }
+
+        .language-switcher .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+        .current-language {
+            font-weight: 500;
+        }
+
+        /* Responsive styles for language switcher */
+        @media (max-width: 768px) {
+            .language-switcher {
+                margin: 10px 0;
+            }
+            
+            .language-switcher .dropdown-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -503,19 +566,34 @@
     </div>
     <ul class="site-menu">
         <li>
-            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
         </li>
         <li>
-            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
         </li>
         <li>
-            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
         </li>
         <li>
-            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
         </li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
-        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+        <!-- 添加语言切换下拉菜单 -->
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
 
@@ -523,11 +601,11 @@
 
 <!--banner-->
 <div class="search-banner" style="background-image: url('../img/hainan_banner.jpg'); background-size: cover; background-repeat: no-repeat;">
-    <h5 style="font-size: 1.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">Discover <strong class="ui-text-info" style="color: #FFD700; font-size: 1.2em; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); display: inline-block; padding: 0 5px;" !important>Tropical Treasures</strong> from Hainan Paradise</h5>
+    <h5 data-i18n="search.banner.title">Discover Tropical Treasures from Hainan Paradise</h5>
     <div class="search-container">
         <form th:action="@{/search}" method="get" class="search-form">
             <div class="mega-search">
-                <input class="form-control" type="text" name="query" placeholder="Search Item Here...">
+                <input class="form-control" type="text" name="query" data-i18n-placeholder="search.placeholder" placeholder="Search Item Here...">
                 <button type="submit" class="search-btn">
                     <i class="fa fa-search"></i>
                 </button>
@@ -546,110 +624,110 @@
             <input type="hidden" name="sort" th:value="${sort}">
             
             <div class="filter-group">
-                <strong>By Category:</strong>
+                <strong data-i18n="filter.category.title">By Category:</strong>
                 <label class="label--radio">
                     <input type="radio" name="category" value="All" class="radio"
                            th:checked="${selectedCategory == null || selectedCategory == 'All' || selectedCategory == ''}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.category.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Crafts" class="radio"
                            th:checked="${selectedCategory == 'Crafts'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Crafts</i>
+                    <i data-i18n="filter.category.crafts">Crafts</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Clothing" class="radio"
                            th:checked="${selectedCategory == 'Clothing'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Clothing</i>
+                    <i data-i18n="filter.category.clothing">Clothing</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Rosewood" class="radio"
                            th:checked="${selectedCategory == 'Rosewood'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Rosewood</i>
+                    <i data-i18n="filter.category.rosewood">Rosewood</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Food" class="radio"
                            th:checked="${selectedCategory == 'Food'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Food</i>
+                    <i data-i18n="filter.category.food">Food</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Tea Beverage" class="radio"
                            th:checked="${selectedCategory == 'Tea Beverage'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Tea Beverage</i>
+                    <i data-i18n="filter.category.teaBeverage">Tea Beverage</i>
                 </label>
             </div>
 
             <div class="filter-group">
-                <strong>By Eco Score:</strong>
+                <strong data-i18n="filter.ecoScore.title">By Eco Score:</strong>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="all" class="radio" th:checked="${selectedEcoScore == null || selectedEcoScore == 'all'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.ecoScore.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="excellent" class="radio" th:checked="${selectedEcoScore == 'excellent'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Excellent (4.0-5.0)</i>
+                    <i data-i18n="filter.ecoScore.excellent">Excellent (4.0-5.0)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="good" class="radio" th:checked="${selectedEcoScore == 'good'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Good (3.0-3.9)</i>
+                    <i data-i18n="filter.ecoScore.good">Good (3.0-3.9)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="fair" class="radio" th:checked="${selectedEcoScore == 'fair'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Fair (2.0-2.9)</i>
+                    <i data-i18n="filter.ecoScore.fair">Fair (2.0-2.9)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="poor" class="radio" th:checked="${selectedEcoScore == 'poor'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Poor (0-1.9)</i>
+                    <i data-i18n="filter.ecoScore.poor">Poor (0-1.9)</i>
                 </label>
             </div>
 
             <div class="filter-group">
-                <strong>By Price:</strong>
+                <strong data-i18n="filter.price.title">By Price:</strong>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="all" class="radio"
                            th:checked="${selectedPriceRange == null || selectedPriceRange == 'all'}"
                            th:value="'all'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.price.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="0-500" class="radio"
                            th:checked="${selectedPriceRange == '0-500'}"
                            th:value="'0-500'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥0 - ¥500</i>
+                    <i data-i18n="filter.price.range1">¥0 - ¥500</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="500-1000" class="radio"
                            th:checked="${selectedPriceRange == '500-1000'}"
                            th:value="'500-1000'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥500 - ¥1000</i>
+                    <i data-i18n="filter.price.range2">¥500 - ¥1000</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="1000-2000" class="radio"
                            th:checked="${selectedPriceRange == '1000-2000'}"
                            th:value="'1000-2000'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥1000 - ¥2000</i>
+                    <i data-i18n="filter.price.range3">¥1000 - ¥2000</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="2000+" class="radio"
                            th:checked="${selectedPriceRange == '2000+'}"
                            th:value="'2000+'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Above ¥2000</i>
+                    <i data-i18n="filter.price.range4">Above ¥2000</i>
                 </label>
             </div>
         </form>
@@ -657,7 +735,7 @@
     <div class="results-section">
         <div class="sort-sec">
             <div>
-                <strong>Sort By:</strong>
+                <strong data-i18n="sort.title">Sort By:</strong>
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='date')}"
                    th:classappend="${sort == 'date' ? 'active' : ''}">Date Listed</a>|
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-asc')}"
@@ -665,7 +743,7 @@
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-desc')}"
                    th:classappend="${sort == 'price-desc' ? 'active' : ''}">Price Descending</a>
             </div>
-            <a th:href="@{/search}"><span>Refresh</span><i class="fa fa-refresh"></i></a>
+            <a th:href="@{/search}"><span data-i18n="sort.refresh">Refresh</span><i class="fa fa-refresh"></i></a>
         </div>
         
         <!-- Search Results Items -->
@@ -686,15 +764,14 @@
             <div class="result-item-info">
                 <a th:href="@{/item/{id}(id=${item.id})}"><strong th:text="${item.name}">Your Item title here</strong></a>
                 <p th:text="${item.description}">
-                    Rham beef ribs jowl kevin. Doner sirloin boudin filet mignon capicola.
-                    Rham beef ribs jowl kevin. Doner sirloin boudin filet .
+                    <span data-i18n="product.description">Product description here</span>
                 </p>
-                <span>Listed: <em class="ui-text-info" th:text="${#temporals.format(item.createdAt, 'dd MMM, yyyy')}">04 Jan, 2017</em></span>
+                <span><span data-i18n="product.listed">Listed:</span> <em class="ui-text-info" th:text="${#temporals.format(item.createdAt, 'dd MMM, yyyy')}">04 Jan, 2017</em></span>
                 
                 <!-- Eco Score Display -->
                 <div class="eco-scores" style="margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
                     <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
-                        <span style="width: 120px; color: #666;">Recyclability:</span>
+                        <span style="width: 120px; color: #666;" data-i18n="eco.recyclability">Recyclability:</span>
                         <div class="stars" style="display: flex;">
                             <span th:each="i : ${#numbers.sequence(1, 5)}" 
                                   th:classappend="${i <= item.recycleScore ? 'fa fa-star' : 'fa fa-star-o'}"
@@ -704,7 +781,7 @@
                     </div>
                     
                     <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
-                        <span style="width: 120px; color: #666;">Durability:</span>
+                        <span style="width: 120px; color: #666;" data-i18n="eco.durability">Durability:</span>
                         <div class="stars" style="display: flex;">
                             <span th:each="i : ${#numbers.sequence(1, 5)}" 
                                   th:classappend="${i <= item.durabilityScore ? 'fa fa-star' : 'fa fa-star-o'}"
@@ -714,12 +791,12 @@
                     </div>
                     
                     <div class="eco-score-item" style="display: flex; align-items: center; margin-bottom: 5px;">
-                        <span style="width: 120px; color: #666;">Carbon Footprint:</span>
+                        <span style="width: 120px; color: #666;" data-i18n="eco.carbonFootprint">Carbon Footprint:</span>
                         <span th:text="${item.carbonFootprint + ' kg CO₂'}">0 kg CO₂</span>
                     </div>
                     
                     <div class="eco-score-item" style="display: flex; align-items: center; margin-top: 5px; padding-top: 5px; border-top: 1px solid #ddd;">
-                        <span style="width: 120px; color: #666; font-weight: bold;">Eco Score:</span>
+                        <span style="width: 120px; color: #666; font-weight: bold;" data-i18n="eco.ecoScore">Eco Score:</span>
                         <div class="progress" style="flex-grow: 1; height: 20px; margin: 0 10px;">
                             <div class="progress-bar" 
                                  th:style="'width: ' + ${item.ecoScore != null ? item.ecoScore * 20 : 0} + '%; background-color: #28a745;'"
@@ -734,10 +811,10 @@
                 </div>
             </div>
             <div class="result-item-price">
-                <span>Sale At:</span>
+                <span data-i18n="product.saleAt">Sale At:</span>
                 <h3 style="color: #657a7e"; th:text="${'¥' + #numbers.formatDecimal(item.price, 0, 2)}">¥126.00</h3>
                 <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="add-to-cart">Add to Cart <i class="fa fa-cart-plus"></i></button>
+                    <button type="submit" class="add-to-cart"><span data-i18n="product.addToCart">Add to Cart</span> <i class="fa fa-cart-plus"></i></button>
                 </form>
             </div>
         </div>
@@ -745,7 +822,7 @@
         <!-- Pagination -->
         <div class="site-pagination" th:if="${totalPages > 1}">
             <a th:if="${currentPage > 0}" th:href="@{/HainanProduct(page=${currentPage - 1})}" class="page-link">
-                <i class="fa fa-angle-left"></i><em>上一页</em>
+                <i class="fa fa-angle-left"></i><em data-i18n="pagination.prev">Previous</em>
             </a>
             <a th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                th:href="@{/HainanProduct(page=${pageNum})}"
@@ -753,7 +830,7 @@
                 <span th:text="${pageNum + 1}">1</span>
             </a>
             <a th:if="${currentPage < totalPages - 1}" th:href="@{/HainanProduct(page=${currentPage + 1})}" class="page-link">
-                <em>下一页</em><i class="fa fa-angle-right"></i>
+                <em data-i18n="pagination.next">Next</em><i class="fa fa-angle-right"></i>
             </a>
         </div>
     </div>
@@ -876,41 +953,41 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--footer section-->
 <footer class="footer">
     <div class="footer-item">
-        <strong>Get In Touch</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+        <strong data-i18n="footer.followUs">Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
-        <strong>Questions?</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+        <strong data-i18n="footer.importantLinks">Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.help">Help</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contact">Contact</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.liveSupport">Live Support</span></a>
     </div>
     <div class="footer-item">
-        <strong>Follow Us</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
-        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+        <strong data-i18n="footer.followUs">Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
-        <strong>Important Links</strong>
-        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
-        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
-        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
-        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+        <strong data-i18n="footer.importantLinks">Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.home">Home</span></a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.products">Products</span></a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.services">Services</span></a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.aboutUs">About Us</span></a>
     </div>
 </footer>
 <div class="bottom-strip">
     <div class="cards-accepted">
-        <em>Cards Accepted:</em>
+        <em data-i18n="footer.cardsAccepted">Cards Accepted:</em>
         <img th:src="@{/img/card-logos.png}" alt="">
     </div>
-    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span data-i18n="footer.copyright">EcoTrade Global. All Rights Reserved</span></div>
     <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
 </div>
 <!--end footer section-->
@@ -1079,6 +1156,339 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
+
+<script>
+// 更新翻译对象，添加更多翻译内容
+const translations = {
+    en: {
+        'nav.home': 'Home',
+        'nav.explore': 'Explore',
+        'nav.cart': 'Cart',
+        'nav.contact': 'Contact Us',
+        'nav.profile': 'Profile',
+        'nav.getStarted': 'Get Started',
+        'search.banner.title': 'Discover Tropical Treasures from Hainan Paradise',
+        'search.placeholder': 'Search Item Here...',
+        'filter.category.title': 'By Category:',
+        'filter.category.all': 'All',
+        'filter.category.crafts': 'Crafts',
+        'filter.category.clothing': 'Clothing',
+        'filter.category.rosewood': 'Rosewood',
+        'filter.category.food': 'Food',
+        'filter.category.teaBeverage': 'Tea Beverage',
+        'filter.ecoScore.title': 'By Eco Score:',
+        'filter.ecoScore.all': 'All',
+        'filter.ecoScore.excellent': 'Excellent (4.0-5.0)',
+        'filter.ecoScore.good': 'Good (3.0-3.9)',
+        'filter.ecoScore.fair': 'Fair (2.0-2.9)',
+        'filter.ecoScore.poor': 'Poor (0-1.9)',
+        'filter.price.title': 'By Price:',
+        'filter.price.all': 'All',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': 'Above ¥2000',
+        'sort.title': 'Sort By:',
+        'sort.date': 'Date Listed',
+        'sort.priceAsc': 'Price Ascending',
+        'sort.priceDesc': 'Price Descending',
+        'sort.refresh': 'Refresh',
+        'footer.followUs': 'Follow Us',
+        'footer.facebook': 'Facebook',
+        'footer.twitter': 'Twitter',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': 'Important Links',
+        'footer.products': 'Products',
+        'footer.services': 'Services',
+        'footer.aboutUs': 'About Us',
+        'footer.cardsAccepted': 'Cards Accepted:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved',
+        'product.saleAt': 'Sale At:',
+        'product.addToCart': 'Add to Cart',
+        'product.listed': 'Listed:',
+        'eco.recyclability': 'Recyclability:',
+        'eco.durability': 'Durability:',
+        'eco.carbonFootprint': 'Carbon Footprint:',
+        'eco.ecoScore': 'Eco Score:',
+        'pagination.prev': 'Previous',
+        'pagination.next': 'Next',
+        'product.description': 'Product description here'
+    },
+    zh: {
+        'nav.home': '首页',
+        'nav.explore': '探索',
+        'nav.cart': '购物车',
+        'nav.contact': '联系我们',
+        'nav.profile': '个人中心',
+        'nav.getStarted': '开始使用',
+        'search.banner.title': '探索海南天堂的热带珍宝',
+        'search.placeholder': '在此搜索商品...',
+        'filter.category.title': '按类别:',
+        'filter.category.all': '全部',
+        'filter.category.crafts': '工艺品',
+        'filter.category.clothing': '服装',
+        'filter.category.rosewood': '红木',
+        'filter.category.food': '食品',
+        'filter.category.teaBeverage': '茶饮',
+        'filter.ecoScore.title': '按生态评分:',
+        'filter.ecoScore.all': '全部',
+        'filter.ecoScore.excellent': '优秀 (4.0-5.0)',
+        'filter.ecoScore.good': '良好 (3.0-3.9)',
+        'filter.ecoScore.fair': '一般 (2.0-2.9)',
+        'filter.ecoScore.poor': '较差 (0-1.9)',
+        'filter.price.title': '按价格:',
+        'filter.price.all': '全部',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000以上',
+        'sort.title': '排序方式:',
+        'sort.date': '上架时间',
+        'sort.priceAsc': '价格从低到高',
+        'sort.priceDesc': '价格从高到低',
+        'sort.refresh': '刷新',
+        'footer.followUs': '关注我们',
+        'footer.facebook': '脸书',
+        'footer.twitter': '推特',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': '优兔',
+        'footer.linkedin': '领英',
+        'footer.importantLinks': '重要链接',
+        'footer.products': '产品',
+        'footer.services': '服务',
+        'footer.aboutUs': '关于我们',
+        'footer.cardsAccepted': '支持的支付方式:',
+        'footer.copyright': 'EcoTrade Global. 保留所有权利',
+        'product.saleAt': '售价：',
+        'product.addToCart': '加入购物车',
+        'product.listed': '上架时间：',
+        'eco.recyclability': '可回收性：',
+        'eco.durability': '耐用性：',
+        'eco.carbonFootprint': '碳足迹：',
+        'eco.ecoScore': '生态评分：',
+        'pagination.prev': '上一页',
+        'pagination.next': '下一页',
+        'product.description': '商品描述'
+    },
+    ja: {
+        'nav.home': 'ホーム',
+        'nav.explore': '探索',
+        'nav.cart': 'カート',
+        'nav.contact': 'お問い合わせ',
+        'nav.profile': 'プロフィール',
+        'nav.getStarted': '始める',
+        'search.banner.title': '海南パラダイスの熱帯の宝物を発見',
+        'search.placeholder': '商品を検索...',
+        'filter.category.title': 'カテゴリー:',
+        'filter.category.all': 'すべて',
+        'filter.category.crafts': '工芸品',
+        'filter.category.clothing': '衣類',
+        'filter.category.rosewood': '紫檀',
+        'filter.category.food': '食品',
+        'filter.category.teaBeverage': '茶飲料',
+        'filter.ecoScore.title': 'エコスコア:',
+        'filter.ecoScore.all': 'すべて',
+        'filter.ecoScore.excellent': '優秀 (4.0-5.0)',
+        'filter.ecoScore.good': '良好 (3.0-3.9)',
+        'filter.ecoScore.fair': '普通 (2.0-2.9)',
+        'filter.ecoScore.poor': '低い (0-1.9)',
+        'filter.price.title': '価格:',
+        'filter.price.all': 'すべて',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000以上',
+        'sort.title': '並び替え:',
+        'sort.date': '出品日',
+        'sort.priceAsc': '価格の安い順',
+        'sort.priceDesc': '価格の高い順',
+        'sort.refresh': '更新',
+        'footer.followUs': 'フォローする',
+        'footer.facebook': 'フェイスブック',
+        'footer.twitter': 'ツイッター',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': '重要なリンク',
+        'footer.products': '製品',
+        'footer.services': 'サービス',
+        'footer.aboutUs': '会社概要',
+        'footer.cardsAccepted': '対応カード:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved',
+        'product.saleAt': '販売価格:',
+        'product.addToCart': 'カートに追加',
+        'product.listed': '掲載日:',
+        'eco.recyclability': 'リサイクル性:',
+        'eco.durability': '耐久性:',
+        'eco.carbonFootprint': 'カーボンフットプリント:',
+        'eco.ecoScore': 'エコスコア:',
+        'pagination.prev': '前へ',
+        'pagination.next': '次へ',
+        'product.description': '商品説明'
+    },
+    ko: {
+        'nav.home': '홈',
+        'nav.explore': '탐색',
+        'nav.cart': '장바구니',
+        'nav.contact': '문의하기',
+        'nav.profile': '프로필',
+        'nav.getStarted': '시작하기',
+        'search.banner.title': '하이난 파라다이스의 열대 보물을 발견하세요',
+        'search.placeholder': '상품 검색...',
+        'filter.category.title': '카테고리:',
+        'filter.category.all': '전체',
+        'filter.category.crafts': '공예품',
+        'filter.category.clothing': '의류',
+        'filter.category.rosewood': '홍목',
+        'filter.category.food': '식품',
+        'filter.category.teaBeverage': '차 음료',
+        'filter.ecoScore.title': '에코 점수:',
+        'filter.ecoScore.all': '전체',
+        'filter.ecoScore.excellent': '우수 (4.0-5.0)',
+        'filter.ecoScore.good': '양호 (3.0-3.9)',
+        'filter.ecoScore.fair': '보통 (2.0-2.9)',
+        'filter.ecoScore.poor': '낮음 (0-1.9)',
+        'filter.price.title': '가격:',
+        'filter.price.all': '전체',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000 이상',
+        'sort.title': '정렬:',
+        'sort.date': '등록일',
+        'sort.priceAsc': '가격 낮은순',
+        'sort.priceDesc': '가격 높은순',
+        'sort.refresh': '새로고침',
+        'footer.followUs': '팔로우',
+        'footer.facebook': '페이스북',
+        'footer.twitter': '트위터',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': '유튜브',
+        'footer.linkedin': '링크드인',
+        'footer.importantLinks': '중요 링크',
+        'footer.products': '제품',
+        'footer.services': '서비스',
+        'footer.aboutUs': '회사 소개',
+        'footer.cardsAccepted': '결제 수단:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved',
+        'product.saleAt': '판매가:',
+        'product.addToCart': '장바구니에 담기',
+        'product.listed': '등록일:',
+        'eco.recyclability': '재활용성:',
+        'eco.durability': '내구성:',
+        'eco.carbonFootprint': '탄소 발자국:',
+        'eco.ecoScore': '에코 점수:',
+        'pagination.prev': '이전',
+        'pagination.next': '다음',
+        'product.description': '상품 설명'
+    },
+    fr: {
+        'nav.home': 'Accueil',
+        'nav.explore': 'Explorer',
+        'nav.cart': 'Panier',
+        'nav.contact': 'Contact',
+        'nav.profile': 'Profil',
+        'nav.getStarted': 'Commencer',
+        'search.banner.title': 'Découvrez les Trésors Tropicaux du Paradis de Hainan',
+        'search.placeholder': 'Rechercher un article...',
+        'filter.category.title': 'Par catégorie:',
+        'filter.category.all': 'Tout',
+        'filter.category.crafts': 'Artisanat',
+        'filter.category.clothing': 'Vêtements',
+        'filter.category.rosewood': 'Bois de Rose',
+        'filter.category.food': 'Alimentation',
+        'filter.category.teaBeverage': 'Thé et Boissons',
+        'filter.ecoScore.title': 'Par score écologique:',
+        'filter.ecoScore.all': 'Tout',
+        'filter.ecoScore.excellent': 'Excellent (4.0-5.0)',
+        'filter.ecoScore.good': 'Bon (3.0-3.9)',
+        'filter.ecoScore.fair': 'Moyen (2.0-2.9)',
+        'filter.ecoScore.poor': 'Faible (0-1.9)',
+        'filter.price.title': 'Par prix:',
+        'filter.price.all': 'Tout',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': 'Plus de ¥2000',
+        'sort.title': 'Trier par:',
+        'sort.date': 'Date de mise en ligne',
+        'sort.priceAsc': 'Prix croissant',
+        'sort.priceDesc': 'Prix décroissant',
+        'sort.refresh': 'Actualiser',
+        'footer.followUs': 'Suivez-nous',
+        'footer.facebook': 'Facebook',
+        'footer.twitter': 'Twitter',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': 'Liens importants',
+        'footer.products': 'Produits',
+        'footer.services': 'Services',
+        'footer.aboutUs': 'À propos',
+        'footer.cardsAccepted': 'Cartes acceptées:',
+        'footer.copyright': 'EcoTrade Global. Tous droits réservés',
+        'product.saleAt': 'En vente à :',
+        'product.addToCart': 'Ajouter au panier',
+        'product.listed': 'Listé :',
+        'eco.recyclability': 'Recyclabilité :',
+        'eco.durability': 'Durabilité :',
+        'eco.carbonFootprint': 'Empreinte carbone :',
+        'eco.ecoScore': 'Score écologique :',
+        'pagination.prev': 'Précédent',
+        'pagination.next': 'Suivant',
+        'product.description': 'Description du produit'
+    }
+};
+
+// 切换语言函数
+function switchLanguage(lang) {
+    // 保存语言选择到 localStorage
+    localStorage.setItem('selectedLanguage', lang);
+    
+    // 更新所有带有 data-i18n 属性的元素
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+    
+    // 更新所有带有 data-i18n-placeholder 属性的元素
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            element.placeholder = translations[lang][key];
+        }
+    });
+
+    // 更新当前显示的语言
+    const languageNames = {
+        'en': 'English',
+        'zh': '中文',
+        'ja': '日本語',
+        'ko': '한국어',
+        'fr': 'Français'
+    };
+    document.querySelector('.current-language').textContent = languageNames[lang];
+}
+
+// 页面加载时应用保存的语言设置
+document.addEventListener('DOMContentLoaded', function() {
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    switchLanguage(savedLanguage);
+});
+
+// 为语言切换按钮添加点击事件
+document.querySelectorAll('.language-switcher .dropdown-item').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lang = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+        switchLanguage(lang);
+    });
+});
+</script>
 
 </body>
 </html>
