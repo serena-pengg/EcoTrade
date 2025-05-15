@@ -2,12 +2,13 @@ package com.example.Secondhand.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "hainan_products")
+public class HainanProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,14 +16,11 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String category;
+    @Column(length = 1000)
+    private String description;
 
     @Column(nullable = false)
     private Double price;
-
-    @Column(length = 1000)
-    private String description;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -32,6 +30,9 @@ public class Product {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "recycle_score")
     private Float recycleScore;
@@ -67,32 +68,23 @@ public class Product {
 
     private void calculateEcoScore() {
         if (recycleScore != null && durabilityScore != null && carbonFootprint != null) {
-            // 权重设置
-            float recycleWeight = 0.4f;    // 可回收性权重
-            float durabilityWeight = 0.3f;  // 使用寿命权重
-            float carbonWeight = 0.3f;      // 碳足迹权重
+            float recycleWeight = 0.4f;
+            float durabilityWeight = 0.3f;
+            float carbonWeight = 0.3f;
 
-            // 确保评分在1-5范围内
             float normalizedRecycleScore = Math.min(Math.max(recycleScore, 1f), 5f);
             float normalizedDurabilityScore = Math.min(Math.max(durabilityScore, 1f), 5f);
-
-            // 碳足迹评分（1-5分）
             float normalizedCarbonScore = Math.min(Math.max(carbonFootprint, 1f), 5f);
 
-            // 计算综合环保评分
-            ecoScore = (normalizedRecycleScore * recycleWeight) + 
-                      (normalizedDurabilityScore * durabilityWeight) + 
+            ecoScore = (normalizedRecycleScore * recycleWeight) +
+                      (normalizedDurabilityScore * durabilityWeight) +
                       (normalizedCarbonScore * carbonWeight);
-            
-            // 确保 eco score 在1-5范围内
             ecoScore = Math.min(Math.max(ecoScore, 1f), 5f);
         } else {
-            // 如果缺少任何评分，将 eco score 设置为 null
             ecoScore = null;
         }
     }
 
-    // 重写 setter 方法以确保每次设置评分时都重新计算 eco score
     public void setRecycleScore(Float recycleScore) {
         this.recycleScore = recycleScore;
         calculateEcoScore();

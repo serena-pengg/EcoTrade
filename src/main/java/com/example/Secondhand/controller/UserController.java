@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Set;
@@ -168,7 +169,9 @@ public class UserController {
         // Get user's orders
         List<Order> userOrders = orderService.getOrdersByUserId(currentUser.getId());
         
-        model.addAttribute("user", currentUser);
+        userService.recalculateEcoPoints(currentUser);
+        User refreshedUser = userService.getUserById(currentUser.getId());
+        model.addAttribute("user", refreshedUser);
         model.addAttribute("orders", userOrders);
         
         return "profile";
@@ -235,5 +238,12 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/admin/refresh-eco-points")
+    @ResponseBody
+    public String refreshEcoPoints() {
+        userService.recalculateAllUsersEcoPoints();
+        return "Eco points refreshed!";
     }
 } 
