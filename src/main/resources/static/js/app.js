@@ -85,7 +85,8 @@ $(document).ready(function () {
 
 
     //chat box js
-    var chatsContainer = $('.chat-flow');
+    var chatsContainer = document.querySelector('.chat-flow');
+    var $chatsContainer = $('.chat-flow');
     $('.chat-box-btn').on('click', function (e) {
        $('.chat-box').toggleClass('show-chat');
        $('.chat-top section').toggleClass('slide-s');
@@ -93,31 +94,197 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    // 语音朗读功能
+    let speechSynthesis = window.speechSynthesis;
+    let voices = [];
+
+    // 全局变量
+    let currentUtterance = null;
+    let currentButton = null;
+    let isPaused = false;
+    let isEnded = true;
+
+    // 初始化语音列表
+    function initVoices() {
+        voices = speechSynthesis.getVoices();
+        console.log('Available voices:', voices);
+
+        // 如果没有找到中文语音，尝试使用默认语音
+        if (!voices.some(voice => voice.lang.includes('zh'))) {
+            console.log('No Chinese voice found, using default voice');
+        }
+    }
+
+    // 等待语音列表加载
+    if (speechSynthesis) {
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = initVoices;
+        }
+        initVoices();
+    }
+
+    function getChineseVoice() {
+        const voices = speechSynthesis.getVoices();
+        let zhVoice = voices.find(v => v.lang === 'zh-CN');
+        if (!zhVoice) {
+            zhVoice = voices.find(v => v.lang && v.lang.indexOf('zh') !== -1);
+        }
+        return zhVoice || voices[0] || null;
+    }
+
+    function addMessage(text, type) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = type + '-wrapper';
+
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.textContent = text;
+
+        if (type === 'inbound') {
+            messageWrapper.appendChild(messageContent);
+            const speakButton = document.createElement('button');
+            speakButton.className = 'speak-button';
+            speakButton.innerHTML = '<i class="fa fa-volume-up"></i>';
+            speakButton.title = '播放语音';
+            speakButton.dataset.state = 'idle'; // idle, playing, paused, ended
+
+            speakButton.onclick = function() {
+                if (speakButton.dataset.state === 'idle' || speakButton.dataset.state === 'ended') {
+                    playSpeech(text, speakButton);
+                } else if (speakButton.dataset.state === 'playing') {
+                    pauseSpeech(speakButton);
+                } else if (speakButton.dataset.state === 'paused') {
+                    resumeSpeech(speakButton);
+                }
+            };
+
+            speakButton.setState = function(state) {
+                speakButton.dataset.state = state;
+                if (state === 'playing') {
+                    speakButton.classList.add('speaking');
+                    speakButton.innerHTML = '<span class="wave"></span><i class="fa fa-pause"></i>';
+                } else if (state === 'paused') {
+                    speakButton.classList.remove('speaking');
+                    speakButton.innerHTML = '<i class="fa fa-play"></i>';
+                } else if (state === 'ended') {
+                    speakButton.classList.remove('speaking');
+                    speakButton.innerHTML = '<i class="fa fa-redo"></i>';
+                } else {
+                    speakButton.classList.remove('speaking');
+                    speakButton.innerHTML = '<i class="fa fa-volume-up"></i>';
+                }
+            };
+
+            messageWrapper.appendChild(speakButton);
+        } else {
+            messageWrapper.appendChild(messageContent);
+        }
+
+        chatsContainer.appendChild(messageWrapper);
+        chatsContainer.scrollTop = chatsContainer.scrollHeight;
+        $chatsContainer.perfectScrollbar('update');
+    }
+
+    function playSpeech(text, button) {
+        if (!speechSynthesis) return;
+        if (speechSynthesis.speaking || speechSynthesis.pending) {
+            speechSynthesis.cancel();
+        }
+        if (currentButton && currentButton !== button) {
+            currentButton.setState('idle');
+        }
+        currentButton = button;
+        isPaused = false;
+        isEnded = false;
+
+        // 文本过长分段
+        const maxLen = 100;
+        const segments = [];
+        for (let i = 0; i < text.length; i += maxLen) {
+            segments.push(text.slice(i, i + maxLen));
+        }
+
+        let segIndex = 0;
+        function speakNextSegment() {
+            if (segIndex >= segments.length) {
+                button.setState('ended');
+                isEnded = true;
+                currentUtterance = null;
+                return;
+            }
+            const utterance = new SpeechSynthesisUtterance(segments[segIndex]);
+            currentUtterance = utterance;
+            utterance.lang = 'zh-CN';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            const chineseVoice = getChineseVoice();
+            if (chineseVoice) {
+                utterance.voice = chineseVoice;
+            } else {
+                alert('您的浏览器未安装中文语音包，语音播放可能无法正常工作。');
+            }
+            utterance.onstart = function() {
+                button.setState('playing');
+            };
+            utterance.onend = function() {
+                segIndex++;
+                speakNextSegment();
+            };
+            utterance.onerror = function(e) {
+                button.setState('idle');
+                currentUtterance = null;
+                alert('语音播放失败，可能是浏览器未安装中文语音包或文本过长。');
+            };
+            speechSynthesis.speak(utterance);
+        }
+        speakNextSegment();
+    }
+
+    function pauseSpeech(button) {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+            speechSynthesis.pause();
+            button.setState('paused');
+            isPaused = true;
+        }
+    }
+
+    function resumeSpeech(button) {
+        if (speechSynthesis.paused) {
+            speechSynthesis.resume();
+            button.setState('playing');
+            isPaused = false;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden && speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+            if (currentButton) currentButton.setState('idle');
+        }
+    });
+
     $('.chat-form').on('submit', function (e) {
         var chatInput = $(this).find('.chat-message');
         if(chatInput.val() !== ''){
-            // Add user message
-            chatsContainer.append('<p class="outbound">' + chatInput.val() + '</p>');
+            // 添加用户消息
+            addMessage(chatInput.val(), 'outbound');
             
-            // Send message to AI and get response
+            // 发送消息到服务器
             $.ajax({
                 url: '/api/chat/send',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ message: chatInput.val() }),
                 success: function(response) {
-                    // Add AI response
-                    chatsContainer.append('<p class="inbound">' + response + '</p>');
-                    // Scroll to bottom
-                    chatsContainer.animate({
-                        scrollTop: chatsContainer[0].scrollHeight
-                    }, 500);
+                    // 添加AI回复
+                    addMessage(response, 'inbound');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                     console.error('Status:', status);
                     console.error('Response:', xhr.responseText);
-                    chatsContainer.append('<p class="inbound">Sorry, there was an error processing your message.</p>');
+                    addMessage('抱歉，发生了错误，请稍后重试。', 'inbound');
                 }
             });
             
@@ -125,7 +292,7 @@ $(document).ready(function () {
         }
         e.preventDefault();
     });
-    chatsContainer.perfectScrollbar();
+    $chatsContainer.perfectScrollbar();
 
     //side nav menu
     $('.perfect-scroll').perfectScrollbar();
@@ -294,6 +461,192 @@ $(document).ready(function () {
         loop: true,
         smartBackspace: true
     });
+
+    // 聊天窗口大小调整功能
+    function initChatBoxResize() {
+        const chatBox = document.querySelector('.chat-box');
+        if (!chatBox) return;
+
+        // 先移除旧的mousedown事件，防止重复绑定
+        chatBox.onmousedown = null;
+
+        let isResizing = false;
+        let startX, startY, startWidth, startHeight;
+
+        chatBox.addEventListener('mousedown', function(e) {
+            // 检查是否点击了调整大小的区域（左上角三角形）
+            const rect = chatBox.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (x <= 20 && y <= 20) {
+                isResizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = chatBox.offsetWidth;
+                startHeight = chatBox.offsetHeight;
+
+                // 添加事件监听器
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', handleMouseUp);
+
+                // 防止文本选择
+                e.preventDefault();
+            }
+        });
+
+        function handleMouseMove(e) {
+            if (!isResizing) return;
+
+            // 计算鼠标移动距离
+            const deltaX = startX - e.clientX;
+            const deltaY = startY - e.clientY;
+
+            // 计算新的宽度和高度，增加灵敏度
+            let newWidth = startWidth + deltaX;
+            let newHeight = startHeight + deltaY;
+
+            // 确保不小于最小尺寸
+            newWidth = Math.max(300, newWidth);
+            newHeight = Math.max(450, newHeight);
+
+            // 确保不大于最大尺寸
+            newWidth = Math.min(800, newWidth);
+            newHeight = Math.min(800, newHeight);
+
+            // 应用新的尺寸，使用transform来优化性能
+            chatBox.style.width = newWidth + 'px';
+            chatBox.style.height = newHeight + 'px';
+
+            // 更新滚动条
+            const chatsContainer = chatBox.querySelector('.chat-flow');
+            if (chatsContainer && chatsContainer.perfectScrollbar) {
+                chatsContainer.perfectScrollbar('update');
+            }
+        }
+
+        function handleMouseUp() {
+            isResizing = false;
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        }
+    }
+
+    // 在页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', initChatBoxResize);
+
+    // 在聊天窗口显示时也初始化
+    document.querySelector('.chat-box-btn').addEventListener('click', function() {
+        setTimeout(initChatBoxResize, 100); // 给一点时间让聊天窗口显示
+    });
+
+    // 语音识别功能
+    let recognition = null;
+    let isRecording = false;
+
+    // 初始化语音识别
+    function initSpeechRecognition() {
+        console.log('Initializing speech recognition...');
+
+        // 检查浏览器是否支持语音识别
+        if (!('webkitSpeechRecognition' in window)) {
+            console.warn('您的浏览器不支持语音识别功能');
+            const voiceButton = document.getElementById('voiceInputButton');
+            if (voiceButton) {
+                voiceButton.style.display = 'none';
+            }
+            return;
+        }
+
+        try {
+            recognition = new webkitSpeechRecognition();
+            console.log('Speech recognition object created successfully');
+
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'zh-CN';
+
+            recognition.onstart = function() {
+                console.log('Speech recognition started');
+                isRecording = true;
+                const voiceButton = document.getElementById('voiceInputButton');
+                if (voiceButton) {
+                    voiceButton.classList.add('recording');
+                    voiceButton.innerHTML = '<i class="fa fa-stop"></i>';
+                    voiceButton.title = '停止录音';
+                }
+            };
+
+            recognition.onend = function() {
+                console.log('Speech recognition ended');
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceInputButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                    voiceButton.innerHTML = '<i class="fa fa-microphone"></i>';
+                    voiceButton.title = '语音输入';
+                }
+            };
+
+            recognition.onresult = function(event) {
+                console.log('Speech recognition result received');
+                const transcript = event.results[0][0].transcript;
+                const messageInput = document.getElementById('messageInput');
+                if (messageInput) {
+                    messageInput.value = transcript;
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error('语音识别错误:', event.error);
+                alertify.error('语音识别失败，请重试');
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceInputButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                    voiceButton.innerHTML = '<i class="fa fa-microphone"></i>';
+                    voiceButton.title = '语音输入';
+                }
+            };
+
+            // 绑定语音输入按钮点击事件
+            const voiceButton = document.getElementById('voiceInputButton');
+            if (voiceButton) {
+                voiceButton.onclick = function(e) {
+                    e.preventDefault();
+                    console.log('Voice button clicked, isRecording:', isRecording);
+
+                    if (!recognition) {
+                        console.error('Speech recognition not initialized');
+                        return;
+                    }
+
+                    if (isRecording) {
+                        console.log('Stopping recognition...');
+                        recognition.stop();
+                    } else {
+                        try {
+                            console.log('Starting recognition...');
+                            recognition.start();
+                        } catch (error) {
+                            console.error('启动语音识别失败:', error);
+                            alertify.error('启动语音识别失败，请重试');
+                        }
+                    }
+                };
+            }
+        } catch (error) {
+            console.error('初始化语音识别失败:', error);
+            alertify.error('初始化语音识别失败，请刷新页面重试');
+        }
+    }
+
+    // 在页面加载完成后初始化语音识别
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSpeechRecognition);
+    } else {
+        initSpeechRecognition();
+    }
 
 });
 
