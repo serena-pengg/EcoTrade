@@ -46,6 +46,13 @@ public class ProductController {
         return "products";
     }
 
+    @GetMapping("/products/seller/{sellerId}")
+    public String getProductsBySeller(@PathVariable Long sellerId, Model model) {
+        List<Product> products = productService.getProductsBySeller(sellerId);
+        model.addAttribute("products", products);
+        return "products";
+    }
+
     @GetMapping("/product/{id}")
     public String getProductById(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);

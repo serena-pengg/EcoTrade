@@ -9,7 +9,7 @@
         <meta name="author" content="Ui-DesignLab">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--end meta tags-->
-        <title>GreenFree-Cart</title>
+        <title>Trading-Cart</title>
         <!--stylesheets-->
         <link rel="icon" th:href="@{/img/logo2.png}" type="image/x-icon">
         <link rel="stylesheet" th:href="@{/vendor/css/bootstrap.min.css}">
@@ -147,11 +147,6 @@
     <i class="fa fa-comment icon-sw"></i>
 </a>
 
-<!--chat box-->
-<a href="#" class="chat-box-btn" id="chat-box-btn">
-    <i class="fa fa-comment icon-sw"></i>
-</a>
-
 <div class="chat-box">
     <div class="chat-top">
         <section>
@@ -184,78 +179,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
-    const chatFlow = document.getElementById('chat-flow');
-
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message) {
-            // 添加用户消息到聊天框
-            const userMessage = document.createElement('p');
-            userMessage.className = 'outbound';
-            userMessage.textContent = message;
-            chatFlow.appendChild(userMessage);
-
-            // 发送消息到服务器
-            fetch('/api/chat/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ message: message })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new TypeError("Oops, we haven't got JSON!");
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data && data.response) {
-                    const aiMessage = document.createElement('p');
-                    aiMessage.className = 'inbound';
-                    aiMessage.textContent = data.response;
-                    chatFlow.appendChild(aiMessage);
-                } else {
-                    throw new Error('Invalid response format');
-                }
-                chatFlow.scrollTop = chatFlow.scrollHeight;
-            })
-            .catch(error => {
-                console.error('Error details:', error);
-                const errorMessage = document.createElement('p');
-                errorMessage.className = 'inbound';
-                errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
-                chatFlow.appendChild(errorMessage);
-            });
-
-            // 清空输入框
-            messageInput.value = '';
-        }
-    }
-
-    // 点击发送按钮
-    sendButton.addEventListener('click', sendMessage);
-
-    // 按回车键发送
-    messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-});
-</script>
-
-<!--end chat box-->
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
     // 移除所有与删除商品相关的JavaScript代码
     // 让表单自然提交
 
@@ -280,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!--end chat box-->
 
 <!--footer section-->
 <footer class="footer">

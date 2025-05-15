@@ -196,29 +196,22 @@
         <div class="order-item">
             <div>
                 <span>Sub total</span>
-                <strong id="subtotal" th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
+                <strong th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <div class="ocean-protection-fee" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background-color: #e8f5e9; border-radius: 8px; margin: 10px 0;">
                 <div style="display: flex; align-items: center;">
-                    <input type="checkbox" id="donateCheckbox" style="margin-right: 10px;" checked>
                     <i class="fa fa-leaf" style="color: #2e7d32; font-size: 1.2em; margin-right: 10px;"></i>
                     <span style="color: #2e7d32; font-weight: 500;">Ocean Protection Fee</span>
                 </div>
                 <div style="display: flex; align-items: center;">
                     <span style="color: #2e7d32; margin-right: 5px;">¥</span>
-                    <input type="number" id="donationAmount" 
-                           style="width: 80px; border: 1px solid #2e7d32; border-radius: 4px; padding: 2px 5px; color: #2e7d32; font-weight: bold;"
-                           value="1.00" min="0" step="1.00" onchange="updateDonationAmount(this.value)">
+                    <strong style="color: #2e7d32; font-size: 1.1em;" th:text="${#numbers.formatDecimal(tax, 0, 2)}">0.00</strong>
                 </div>
-            </div>
-            <div style="font-size: 0.9em; color: #666; margin-bottom: 15px; padding-left: 25px; background-color: #f8f9fa; border-left: 3px solid #2e7d32; padding: 10px 15px; border-radius: 0 4px 4px 0; line-height: 1.5;">
-                <i class="fa fa-info-circle" style="color: #2e7d32; margin-right: 8px;"></i>
-                <span>Your donation will help protect marine ecosystems and support ocean conservation efforts. Every contribution makes a difference!</span>
             </div>
             <hr>
             <div>
                 <span>Total</span>
-                <h4><strong class="ui-text-info" id="total" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
+                <h4><strong class="ui-text-info" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
             </div>
         </div>
     </div>
@@ -362,44 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
-
-    const checkbox = document.getElementById('donateCheckbox');
-    const amountInput = document.getElementById('donationAmount');
-    
-    checkbox.addEventListener('change', function() {
-        amountInput.disabled = !this.checked;
-        if (!this.checked) {
-            amountInput.value = '0.00';
-        } else {
-            amountInput.value = '1.00';
-        }
-        updateTotal();
-    });
 });
-
-function updateTotal() {
-    // 获取其他金额
-    const subtotalText = document.getElementById('subtotal').textContent;
-    
-    // 移除货币符号并转换为数字
-    const subtotal = parseFloat(subtotalText.replace('¥', '')) || 0;
-    const donation = document.getElementById('donateCheckbox').checked ? 
-                    parseFloat(document.getElementById('donationAmount').value) : 0;
-    
-    // 计算总金额
-    const total = subtotal + donation;
-    
-    // 更新显示
-    document.getElementById('total').textContent = '¥' + total.toFixed(2);
-}
-
-function updateDonationAmount(value) {
-    if (value < 0) {
-        value = 0;
-    }
-    document.getElementById('donationAmount').value = parseFloat(value).toFixed(2);
-    updateTotal();
-}
 </script>
 
 <!--end chat box-->

@@ -85,42 +85,6 @@
                     <p><strong>Last Updated:</strong> <span th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd')}">2024-01-01</span></p>
                 </div>
 
-                <!-- Eco Points Section -->
-                <div class="eco-points-section mt-4" style="background-color: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 style="color: #333; font-weight: 600;">
-                            <i class="fa fa-leaf" style="margin-right: 8px; color: #28a745;"></i>
-                            Eco Points
-                        </h4>
-                        <span class="badge" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 20px; font-size: 1.1rem;">
-                            <i class="fa fa-star" style="margin-right: 5px;"></i>
-                            <span th:text="${user.ecoPoints != null ? user.ecoPoints : '0'}" style="color: #ffffff;">0</span> Points
-                        </span>
-                    </div>
-                    <div class="eco-points-info">
-                        <p class="mb-2" style="color: #666;">
-                            <i class="fa fa-info-circle" style="margin-right: 8px; color: #ffffff;"></i>
-                            Your eco points reflect your commitment to sustainable shopping. Earn points by purchasing eco-friendly products!
-                        </p>
-                        <div class="progress" style="height: 10px; margin-top: 1rem;">
-                            <div class="progress-bar bg-success" role="progressbar" 
-                                 th:style="'width: ' + ${user.ecoPoints != null ? (user.ecoPoints.floatValue() / 1000 * 100) : '0'} + '%'"
-                                 th:aria-valuenow="${user.ecoPoints != null ? user.ecoPoints : '0'}" 
-                                 aria-valuemin="0" aria-valuemax="1000">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <small class="text-muted">
-                                Next level: <span th:text="${1000 - (user.ecoPoints != null ? user.ecoPoints : 0)}">1000</span> points to go
-                            </small>
-                            <a th:href="@{/rewards}" class="btn btn-success" style="border-radius: 20px; padding: 8px 20px;">
-                                <i class="fa fa-gift" style="margin-right: 5px;"></i>
-                                Redeem Rewards
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 添加保存的地址信息 -->
                 <div class="saved-addresses mt-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">

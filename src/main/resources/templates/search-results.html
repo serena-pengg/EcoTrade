@@ -276,6 +276,253 @@
         .close:hover {
             opacity: 1;
         }
+
+        .platform-prices {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .platform-price-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-price-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #195d09;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .platform-price-item:hover::before {
+            opacity: 1;
+        }
+
+        .platform-price-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .platform-price-item.our-price {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+        }
+
+        .platform-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 140px;
+        }
+
+        .platform-logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .platform-logo span {
+            font-weight: 600;
+            font-size: 16px;
+            color: #195d09;
+        }
+
+        .our-price .platform-logo span {
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .price-value {
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+            padding: 0 5px;
+            text-align: right;
+            min-width: 120px;
+            color: #195d09;
+        }
+
+        .our-price .price-value {
+            color: white;
+        }
+
+        .price-tag {
+            font-size: 14px;
+            opacity: 0.9;
+            padding: 6px 12px;
+            border-radius: 12px;
+            background: rgba(25, 93, 9, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 90px;
+            color: #195d09;
+            font-weight: 500;
+        }
+
+        .our-price .price-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .savings-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(40,167,69,0.1);
+        }
+
+        .savings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+            animation: pulse 2s infinite;
+            font-size: 20px;
+        }
+
+        .savings-badge i {
+            font-size: 26px;
+            animation: bounce 1s infinite;
+            color: white;
+        }
+
+        .savings-badge span {
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .savings-text {
+            color: #28a745;
+            font-weight: 600;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+            background: rgba(40,167,69,0.05);
+            padding: 14px 24px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .price-trend {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-top: 30px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .price-trend h4 {
+            color: #195d09;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-toggle .btn {
+            padding: 6px 16px;
+            font-size: 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle .btn.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .view-toggle .btn:not(.active):hover {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(40,167,69,0.3);
+                transform: scale(1.02);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .platform-price-item {
+                grid-template-columns: 1fr auto;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .price-tag {
+                grid-column: 1 / -1;
+                justify-self: end;
+            }
+            
+            .platform-logo {
+                min-width: 120px;
+            }
+            
+            .price-value {
+                font-size: 20px;
+                min-width: 100px;
+            }
+            
+            .savings-badge {
+                padding: 14px 28px;
+                font-size: 18px;
+            }
+            
+            .savings-text {
+                font-size: 15px;
+                padding: 12px 20px;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -314,21 +561,14 @@
 <div class="search-banner back-photo">
     <h5>The Easiest Way to find <strong class="ui-text-info" style="color: #ffffff;" !important>Items</strong> on the Market</h5>
     <div class="search-container">
-        <form th:action="@{/search}" method="get" class="search-form" >
+        <form th:action="@{/search}" method="get" class="search-form">
             <div class="mega-search">
-                <input class="form-control" type="text" name="query" placeholder="Search Item Here..." style="flex: 1;">
+                <input class="form-control" type="text" name="query" placeholder="Search Item Here...">
                 <button type="submit" class="search-btn">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
         </form>
-        <a class="btn btn-info"
-           th:href="@{/HainanProduct}"
-           style="background: linear-gradient(90deg, #4d0b04 0%, #9c0505 100%); color: #fff; font-weight: bold; font-size: 1.08rem; border: none; border-radius: 24px; box-shadow: 0 2px 8px rgba(67,160,71,0.12); padding: 0.6em 1.6em 0.6em 1.2em; margin-left: auto; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; transition: background 0.2s, box-shadow 0.2s;">
-            <span style="font-size: 1.3em;">🌴</span>
-            海南甄选
-            <span style="font-size: 1.1em; margin-left: 2px;">Hainan Products</span>
-        </a>
     </div>
 </div>
 <!--end banner-->
@@ -905,12 +1145,286 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
-                <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="price-comparison">
+                            <h4 class="text-center mb-4">价格对比</h4>
+                            <div class="platform-prices">
+                                <div class="platform-price-item our-price">
+                                    <div class="platform-logo">
+                                        <img th:src="@{/img/logo.png}" alt="EcoTrade" class="platform-logo-img">
+                                        <span>EcoTrade Global</span>
+                                    </div>
+                                    <div class="price-value" id="ourPrice"></div>
+                                    <div class="price-tag">免税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-shopping-bag"></i>
+                                        <span>淘宝</span>
+                                    </div>
+                                    <div class="price-value" id="taobaoPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>京东</span>
+                                    </div>
+                                    <div class="price-value" id="jdPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-globe"></i>
+                                        <span>亚马逊</span>
+                                    </div>
+                                    <div class="price-value" id="amazonPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                            </div>
+                            <div class="savings-info mt-4">
+                                <div class="savings-badge">
+                                    <i class="fa fa-tags"></i>
+                                    <span id="savingsAmount"></span>
+                                </div>
+                                <p class="savings-text" id="savingsText"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="price-trend">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">价格走势</h4>
+                                <div class="view-toggle">
+                                    <button class="btn btn-outline-success active" data-view="daily">日视图</button>
+                                    <button class="btn btn-outline-success" data-view="monthly">月视图</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="priceTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化全局变量
+    let priceTrendChart = null;
+    let currentView = 'daily';
+
+    function generatePriceData(basePrice, view) {
+        const currentDate = new Date();
+        const dates = [];
+        const prices = [];
+        
+        if (view === 'daily') {
+            // 生成过去30天的数据
+            for (let i = 30; i >= 0; i--) {
+                const date = new Date(currentDate);
+                date.setDate(date.getDate() - i);
+                dates.push(date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' }));
+                
+                const fluctuation = (Math.random() - 0.5) * 0.1;
+                const price = basePrice * (1 + fluctuation);
+                prices.push(price.toFixed(2));
+            }
+        } else {
+            // 生成过去12个月的数据
+            for (let i = 12; i >= 0; i--) {
+                const date = new Date(currentDate);
+                date.setMonth(date.getMonth() - i);
+                dates.push(date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'numeric' }));
+                
+                const fluctuation = (Math.random() - 0.5) * 0.15;
+                const price = basePrice * (1 + fluctuation);
+                prices.push(price.toFixed(2));
+            }
+        }
+        
+        return { dates, prices };
+    }
+
+    function updateChart(basePrice, view) {
+        const ctx = document.getElementById('priceTrendChart').getContext('2d');
+        
+        // 如果已存在图表实例，先销毁它
+        if (priceTrendChart instanceof Chart) {
+            priceTrendChart.destroy();
+        }
+        
+        const { dates, prices } = generatePriceData(basePrice, view);
+        
+        // 创建新的图表实例
+        priceTrendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: '价格走势',
+                    data: prices,
+                    borderColor: '#28a745',
+                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#28a745'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '¥' + context.raw;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return '¥' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 绑定商品名称点击事件
+    const productLinks = document.querySelectorAll('.result-item-info a');
+
+    productLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productCard = this.closest('.result-item');
+            const productImage = productCard.querySelector('.result-item-img img');
+            const productName = this.textContent;
+            const ourPrice = productCard.querySelector('.result-item-price h3').textContent;
+
+            if (productImage) {
+                const imageUrl = productImage.src;
+                const previewImage = document.getElementById('previewImage');
+                const modalTitle = document.getElementById('imagePreviewModalLabel');
+                const ourPriceElement = document.getElementById('ourPrice');
+                const taobaoPriceElement = document.getElementById('taobaoPrice');
+                const jdPriceElement = document.getElementById('jdPrice');
+                const amazonPriceElement = document.getElementById('amazonPrice');
+                const savingsAmountElement = document.getElementById('savingsAmount');
+                const savingsTextElement = document.getElementById('savingsText');
+
+                previewImage.src = imageUrl;
+                modalTitle.textContent = productName;
+                ourPriceElement.textContent = ourPrice;
+
+                // 模拟其他平台价格（实际项目中应该从后端获取）
+                const ourPriceValue = parseFloat(ourPrice.replace('¥', ''));
+                const taobaoPrice = (ourPriceValue * 1.2).toFixed(2);
+                const jdPrice = (ourPriceValue * 1.15).toFixed(2);
+                const amazonPrice = (ourPriceValue * 1.25).toFixed(2);
+
+                taobaoPriceElement.textContent = `¥${taobaoPrice}`;
+                jdPriceElement.textContent = `¥${jdPrice}`;
+                amazonPriceElement.textContent = `¥${amazonPrice}`;
+
+                // 计算每个平台的节省金额和百分比
+                const savings = {
+                    taobao: {
+                        amount: (taobaoPrice - ourPriceValue).toFixed(2),
+                        percentage: ((taobaoPrice - ourPriceValue) / taobaoPrice * 100).toFixed(1)
+                    },
+                    jd: {
+                        amount: (jdPrice - ourPriceValue).toFixed(2),
+                        percentage: ((jdPrice - ourPriceValue) / jdPrice * 100).toFixed(1)
+                    },
+                    amazon: {
+                        amount: (amazonPrice - ourPriceValue).toFixed(2),
+                        percentage: ((amazonPrice - ourPriceValue) / amazonPrice * 100).toFixed(1)
+                    }
+                };
+
+                // 找出最大节省金额的平台
+                const maxSavings = Math.max(
+                    parseFloat(savings.taobao.amount),
+                    parseFloat(savings.jd.amount),
+                    parseFloat(savings.amazon.amount)
+                );
+
+                // 找出对应的平台名称和百分比
+                let maxPlatform = '';
+                let maxPercentage = '';
+                
+                if (maxSavings === parseFloat(savings.taobao.amount)) {
+                    maxPlatform = '淘宝';
+                    maxPercentage = savings.taobao.percentage;
+                } else if (maxSavings === parseFloat(savings.jd.amount)) {
+                    maxPlatform = '京东';
+                    maxPercentage = savings.jd.percentage;
+                } else {
+                    maxPlatform = '亚马逊';
+                    maxPercentage = savings.amazon.percentage;
+                }
+
+                // 更新节省金额和文本
+                savingsAmountElement.textContent = `节省 ¥${maxSavings}`;
+                savingsTextElement.textContent = `相比${maxPlatform}最高可节省 ${maxPercentage}%`;
+
+                // 生成价格数据并更新图表
+                updateChart(ourPriceValue, currentView);
+
+                // 显示模态框
+                $('#imagePreviewModal').modal('show');
+            }
+        });
+    });
+
+    // 绑定视图切换按钮事件
+    document.querySelectorAll('.view-toggle .btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const view = this.dataset.view;
+            if (view !== currentView) {
+                // 更新按钮状态
+                document.querySelectorAll('.view-toggle .btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // 更新当前视图
+                currentView = view;
+                
+                // 如果模态框是打开的，更新图表
+                if ($('#imagePreviewModal').hasClass('show')) {
+                    const ourPrice = document.getElementById('ourPrice').textContent;
+                    const ourPriceValue = parseFloat(ourPrice.replace('¥', ''));
+                    updateChart(ourPriceValue, view);
+                }
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>
