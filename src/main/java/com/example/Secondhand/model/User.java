@@ -31,9 +31,6 @@ public class User {
     @Column(name = "bio", length = 500)
     private String bio;
     
-    @Column(name = "eco_points")
-    private Integer ecoPoints = 0;
-    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     

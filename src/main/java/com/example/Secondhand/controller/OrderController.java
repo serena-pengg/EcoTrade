@@ -63,9 +63,6 @@ public class OrderController {
         }
 
         orderService.createOrder(currentUser, fullName, phoneNumber, address, deliveryNotes);
-        userService.recalculateEcoPoints(currentUser);
-        User refreshedUser = userService.getUserById(currentUser.getId());
-        currentUser = refreshedUser;
         cartService.clearCart(currentUser);
         
         return "redirect:/order/success";

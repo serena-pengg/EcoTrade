@@ -322,23 +322,24 @@
     position: relative;
     height: 220px;
     overflow: hidden;
-        background-color: #f8f9fa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
 }
 
-    .product-main-image {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        object-fit: contain;
+.product-main-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     transition: transform 0.3s ease;
-        cursor: pointer;
+    cursor: pointer;
 }
 
-    .product-card:hover .product-main-image {
+.product-card:hover .product-main-image {
     transform: scale(1.05);
 }
 
@@ -674,6 +675,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 15px;
     }
 
     .product-main-image {
@@ -697,7 +699,11 @@
     #previewImage {
         max-width: 100%;
         max-height: 70vh;
+        width: auto;
+        height: auto;
         object-fit: contain;
+        display: block;
+        margin: 0 auto;
     }
 
     .modal-dialog {
@@ -731,11 +737,484 @@
     .close:hover {
         opacity: 1;
     }
+
+    .modal-body .row {
+        align-items: center;
+    }
+
+    .modal-body .col-md-6 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-body .col-md-6:first-child {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .modal-body .col-md-6:first-child {
+            margin-bottom: 0;
+        }
+    }
+
+/* 聊天框样式优化 */
+.chat-box {
+    position: fixed;
+    bottom: 80px;  /* 调整位置，给按钮留出空间 */
+    right: 20px;
+    width: 380px;
+    height: 580px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    display: none;
+    z-index: 999;  /* 确保z-index低于按钮 */
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-box.active {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+.chat-top {
+    background: linear-gradient(135deg, #195d09 0%, #134408 100%);
+    color: #fff;
+    padding: 20px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.chat-top h6 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.repliers {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.r-img {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.r-img img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.r-img strong {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.chat-flow {
+    padding: 20px;
+    background: #f8f9fa;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-input {
+    padding: 15px 20px;
+    background: white;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.chat-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-message {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    padding: 10px 20px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    min-height: 44px;
+    max-height: 120px;
+    resize: none;
+}
+
+.chat-message:focus {
+    border-color: #195d09;
+    box-shadow: 0 0 0 3px rgba(25,93,9,0.1);
+}
+
+#voiceInputButton {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #195d09;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    vertical-align: middle;
+    transform: none !important;
+}
+
+#voiceInputButton:hover {
+    background: #f0f0f0;
+    transform: none !important;
+}
+
+#voiceInputButton.recording {
+    color: #dc3545;
+    transform: none !important;
+}
+
+#voiceInputButton.recording::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.2);
+    animation: pulse 1.5s infinite;
+    z-index: -1;
+}
+
+#voiceInputButton i {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+
+.send-message {
+    background: #195d09;
+    color: rgba(255, 255, 255, 0.95);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.send-message:hover {
+    background: #134408;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(25,93,9,0.2);
+}
+
+.send-message:hover i,
+.send-message:hover span {
+    color: #ffffff;
+    transform: scale(1.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.send-message i,
+.send-message span {
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.send-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.send-message:hover::before {
+    transform: translateX(0);
+}
+
+@media (max-width: 480px) {
+    .chat-box {
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+    }
+    
+    .chat-message {
+        padding: 8px 16px;
+        min-height: 40px;
+    }
+    
+    .send-message {
+        padding: 8px 20px;
+    }
+    
+    .send-message i,
+    .send-message span {
+        font-size: 13px;
+    }
+    
+    .r-img img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.message-wrapper {
+    display: flex;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.outbound-wrapper {
+    justify-content: flex-end;
+}
+
+.inbound-wrapper {
+    justify-content: flex-start;
+}
+
+.outbound-wrapper .message-content {
+    background: #ffffff;
+    color: #333333;
+    border-radius: 18px 18px 4px 18px;
+    font-size: 12px;
+}
+
+.inbound-wrapper .message-content {
+    background: rgba(0, 138, 249, 0.6);
+    color: #ffffff;
+    border-radius: 18px 18px 18px 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.speak-button {
+    position: absolute;
+    right: -36px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #195d09;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(25, 93, 9, 0.2);
+    z-index: 2;
+}
+
+.speak-button:hover {
+    background: #134408;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(25, 93, 9, 0.3);
+}
+
+.speak-button.speaking {
+    background: #dc3545;
+    color: #ffffff;
+    animation: none;
+}
+
+.speak-button i {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 2px 8px rgba(25, 93, 9, 0.2);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 12px rgba(25, 93, 9, 0.3);
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 2px 8px rgba(25, 93, 9, 0.2);
+    }
+}
+
+.message-content {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    font-size: 13px;
+    line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-right: 32px;
+}
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 封装点击事件绑定函数
+        // 初始化全局变量
+        let priceTrendChart = null;
+        let currentView = 'daily';
+
+        function generatePriceData(basePrice, view) {
+            const currentDate = new Date();
+            const dates = [];
+            const prices = [];
+            
+            if (view === 'daily') {
+                // 生成过去30天的数据
+                for (let i = 30; i >= 0; i--) {
+                    const date = new Date(currentDate);
+                    date.setDate(date.getDate() - i);
+                    dates.push(date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' }));
+                    
+                    const fluctuation = (Math.random() - 0.5) * 0.1;
+                    const price = basePrice * (1 + fluctuation);
+                    prices.push(price.toFixed(2));
+                }
+            } else {
+                // 生成过去12个月的数据
+                for (let i = 12; i >= 0; i--) {
+                    const date = new Date(currentDate);
+                    date.setMonth(date.getMonth() - i);
+                    dates.push(date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'numeric' }));
+                    
+                    const fluctuation = (Math.random() - 0.5) * 0.15;
+                    const price = basePrice * (1 + fluctuation);
+                    prices.push(price.toFixed(2));
+                }
+            }
+            
+            return { dates, prices };
+        }
+
+        function updateChart(basePrice, view) {
+            const ctx = document.getElementById('priceTrendChart').getContext('2d');
+            
+            // 如果已存在图表实例，先销毁它
+            if (priceTrendChart instanceof Chart) {
+                priceTrendChart.destroy();
+            }
+            
+            const { dates, prices } = generatePriceData(basePrice, view);
+            
+            // 创建新的图表实例
+            priceTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '价格走势',
+                        data: prices,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#28a745'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '¥' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return '¥' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         function bindProductNameClickEvents() {
             const productNameLinks = document.querySelectorAll('.product-name-link');
 
@@ -744,72 +1223,112 @@
                     e.preventDefault();
                     const productCard = this.closest('.product-card');
                     const productImage = productCard.querySelector('.product-main-image');
-                    const productName = this.textContent; // 获取商品名称
+                    const productName = this.textContent;
+                    const ourPrice = productCard.querySelector('.price').textContent;
 
                     if (productImage) {
                         const imageUrl = productImage.src;
                         const previewImage = document.getElementById('previewImage');
                         const modalTitle = document.getElementById('imagePreviewModalLabel');
+                        const ourPriceElement = document.getElementById('ourPrice');
+                        const taobaoPriceElement = document.getElementById('taobaoPrice');
+                        const jdPriceElement = document.getElementById('jdPrice');
+                        const amazonPriceElement = document.getElementById('amazonPrice');
+                        const savingsAmountElement = document.getElementById('savingsAmount');
+                        const savingsTextElement = document.getElementById('savingsText');
 
                         previewImage.src = imageUrl;
-                        modalTitle.textContent = productName; // 设置模态框标题为商品名称
+                        modalTitle.textContent = productName;
+                        ourPriceElement.textContent = ourPrice;
 
-                        // 显示模态框
+                        // 模拟其他平台价格（实际项目中应该从后端获取）
+                        const ourPriceValue = parseFloat(ourPrice.replace('¥', ''));
+                        const taobaoPrice = (ourPriceValue * 1.2).toFixed(2);
+                        const jdPrice = (ourPriceValue * 1.15).toFixed(2);
+                        const amazonPrice = (ourPriceValue * 1.25).toFixed(2);
+
+                        taobaoPriceElement.textContent = `¥${taobaoPrice}`;
+                        jdPriceElement.textContent = `¥${jdPrice}`;
+                        amazonPriceElement.textContent = `¥${amazonPrice}`;
+
+                        // 计算每个平台的节省金额和百分比
+                        const savings = {
+                            taobao: {
+                                amount: (taobaoPrice - ourPriceValue).toFixed(2),
+                                percentage: ((taobaoPrice - ourPriceValue) / taobaoPrice * 100).toFixed(1)
+                            },
+                            jd: {
+                                amount: (jdPrice - ourPriceValue).toFixed(2),
+                                percentage: ((jdPrice - ourPriceValue) / jdPrice * 100).toFixed(1)
+                            },
+                            amazon: {
+                                amount: (amazonPrice - ourPriceValue).toFixed(2),
+                                percentage: ((amazonPrice - ourPriceValue) / amazonPrice * 100).toFixed(1)
+                            }
+                        };
+
+                        // 找出最大节省金额的平台
+                        const maxSavings = Math.max(
+                            parseFloat(savings.taobao.amount),
+                            parseFloat(savings.jd.amount),
+                            parseFloat(savings.amazon.amount)
+                        );
+
+                        // 找出对应的平台名称和百分比
+                        let maxPlatform = '';
+                        let maxPercentage = '';
+                        
+                        if (maxSavings === parseFloat(savings.taobao.amount)) {
+                            maxPlatform = '淘宝';
+                            maxPercentage = savings.taobao.percentage;
+                        } else if (maxSavings === parseFloat(savings.jd.amount)) {
+                            maxPlatform = '京东';
+                            maxPercentage = savings.jd.percentage;
+                        } else {
+                            maxPlatform = '亚马逊';
+                            maxPercentage = savings.amazon.percentage;
+                        }
+
+                        // 更新节省金额和文本
+                        savingsAmountElement.textContent = `节省 ¥${maxSavings}`;
+                        savingsTextElement.textContent = `相比${maxPlatform}最高可节省 ${maxPercentage}%`;
+
+                        // 生成价格数据并更新图表
+                        updateChart(ourPriceValue, currentView);
+
+                        // 使用 jQuery 显示模态框
                         $('#imagePreviewModal').modal('show');
                     }
                 });
             });
         }
 
+        // 绑定视图切换按钮事件
+        document.querySelectorAll('.view-toggle .btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.dataset.view;
+                if (view !== currentView) {
+                    // 更新按钮状态
+                    document.querySelectorAll('.view-toggle .btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // 更新当前视图
+                    currentView = view;
+                    
+                    // 如果模态框是打开的，更新图表
+                    if ($('#imagePreviewModal').hasClass('show')) {
+                        const ourPrice = document.getElementById('ourPrice').textContent;
+                        const ourPriceValue = parseFloat(ourPrice.replace('¥', ''));
+                        updateChart(ourPriceValue, view);
+                    }
+                }
+            });
+        });
+
         // 初始绑定点击事件
         bindProductNameClickEvents();
-
-        // 添加排序功能
-        const sortButtons = document.querySelectorAll('.sort-btn');
-        const productGrid = document.querySelector('.recommended-grid');
-        let products = Array.from(productGrid.children);
-
-        sortButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                // 移除所有按钮的active类
-                sortButtons.forEach(btn => btn.classList.remove('active'));
-                // 添加当前按钮的active类
-                this.classList.add('active');
-
-                const sortType = this.dataset.sort;
-
-                // 根据排序类型重新排序产品
-                products.sort((a, b) => {
-                    switch(sortType) {
-                        case 'eco-score':
-                            const scoreA = parseFloat(a.querySelector('.eco-score-value').textContent);
-                            const scoreB = parseFloat(b.querySelector('.eco-score-value').textContent);
-                            return scoreB - scoreA;
-                        case 'price-asc':
-                            const priceA = parseFloat(a.querySelector('.price').textContent.replace('¥', ''));
-                            const priceB = parseFloat(b.querySelector('.price').textContent.replace('¥', ''));
-                            return priceA - priceB;
-                        case 'date':
-                            const dateA = new Date(a.querySelector('.date').textContent.split('/').reverse().join('-'));
-                            const dateB = new Date(b.querySelector('.date').textContent.split('/').reverse().join('-'));
-                            return dateB - dateA;
-                        default:
-                            return 0;
-                    }
-                });
-
-                // 清空并重新添加排序后的产品
-                productGrid.innerHTML = '';
-                products.forEach(product => {
-                    productGrid.appendChild(product);
-                });
-
-                // 重新绑定点击事件
-                bindProductNameClickEvents();
-    });
-        });
     });
 </script>
 <!--end recommended items-->
@@ -840,31 +1359,194 @@
         </p>
     </div>
     <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
-        <div class="input-group">
-            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
-            <div class="input-group-append">
-                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
-            </div>
-        </div>
+        <form class="chat-form" style="display: flex; align-items: center; gap: 10px;">
+            <input type="text" class="form-control chat-message" placeholder="发送消息" id="messageInput">
+            <button type="button" class="ui-btn" id="voiceInputButton" title="语音输入">
+                <i class="fa fa-microphone"></i>
+            </button>
+            <button type="submit" class="ui-btn ui-btn-prim send-message">
+                <i class="fa fa-paper-plane"></i>
+                <span>发送</span>
+            </button>
+        </form>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const chatBox = document.querySelector('.chat-box');
+    const chatBoxBtn = document.getElementById('chat-box-btn');
     const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
+    const sendButton = document.querySelector('.send-message');
+    const voiceInputButton = document.getElementById('voiceInputButton');
     const chatFlow = document.getElementById('chat-flow');
 
+    // 聊天框显示/隐藏功能
+    chatBoxBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // 切换聊天框显示状态
+        if (chatBox.classList.contains('active')) {
+            chatBox.classList.remove('active');
+            chatBoxBtn.innerHTML = '<i class="fa fa-comment icon-sw"></i>';
+        } else {
+            chatBox.classList.add('active');
+            chatBoxBtn.innerHTML = '<i class="fa fa-times icon-sw"></i>';
+        }
+    });
+
+    // 发送按钮点击事件
+    sendButton.addEventListener('click', sendMessage);
+
+    // 回车发送消息
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // 初始化语音合成
+    let speechSynthesis = window.speechSynthesis;
+    let voices = [];
+    let recognition = null;
+    
+    // 初始化语音识别
+    function initSpeechRecognition() {
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'zh-CN';
+            
+            recognition.onstart = function() {
+                voiceInputButton.classList.add('recording');
+                voiceInputButton.innerHTML = '<i class="fa fa-stop"></i>';
+            };
+            
+            recognition.onend = function() {
+                voiceInputButton.classList.remove('recording');
+                voiceInputButton.innerHTML = '<i class="fa fa-microphone"></i>';
+            };
+            
+            recognition.onresult = function(event) {
+                const text = event.results[0][0].transcript;
+                messageInput.value = text;
+                sendMessage();
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('语音识别错误:', event.error);
+                voiceInputButton.classList.remove('recording');
+                voiceInputButton.innerHTML = '<i class="fa fa-microphone"></i>';
+                addMessage('抱歉，语音识别出现错误，请重试。', 'inbound');
+            };
+        } else {
+            voiceInputButton.style.display = 'none';
+            console.log('浏览器不支持语音识别');
+        }
+    }
+    
+    // 初始化语音合成
+    function initVoices() {
+        voices = speechSynthesis.getVoices();
+        console.log('可用语音:', voices);
+    }
+    
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = initVoices;
+    }
+    
+    // 语音播放函数
+    function speakText(text, button) {
+        if (!speechSynthesis) {
+            console.error('不支持语音合成');
+            return;
+        }
+        
+        speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-CN';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+        
+        const chineseVoice = voices.find(voice => voice.lang.includes('zh'));
+        if (chineseVoice) {
+            utterance.voice = chineseVoice;
+        }
+        
+        utterance.onstart = function() {
+            if (button) {
+                button.classList.add('speaking');
+                button.innerHTML = '<i class="fa fa-volume-up"></i>';
+            }
+        };
+        
+        utterance.onend = function() {
+            if (button) {
+                button.classList.remove('speaking');
+                button.innerHTML = '<i class="fa fa-volume-up"></i>';
+            }
+        };
+        
+        utterance.onerror = function(event) {
+            console.error('语音合成错误:', event);
+            if (button) {
+                button.classList.remove('speaking');
+                button.innerHTML = '<i class="fa fa-volume-up"></i>';
+            }
+        };
+        
+        speechSynthesis.speak(utterance);
+    }
+
+    // 添加消息到聊天框
+    function addMessage(text, type) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = type + '-wrapper message-wrapper';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.textContent = text;
+        
+        if (type === 'inbound') {
+            const speakButton = document.createElement('button');
+            speakButton.className = 'speak-button';
+            speakButton.innerHTML = '<i class="fa fa-volume-up"></i>';
+            speakButton.title = '播放语音';
+            speakButton.onclick = function() {
+                speakText(text, this);
+            };
+            messageContent.appendChild(speakButton);
+        }
+        
+        messageWrapper.appendChild(messageContent);
+        chatFlow.appendChild(messageWrapper);
+        
+        // 滚动到底部
+        chatFlow.scrollTop = chatFlow.scrollHeight;
+        
+        // 添加动画效果
+        messageWrapper.style.opacity = '0';
+        messageWrapper.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            messageWrapper.style.transition = 'all 0.3s ease';
+            messageWrapper.style.opacity = '1';
+            messageWrapper.style.transform = 'translateY(0)';
+        }, 10);
+    }
+
+    // 发送消息
     function sendMessage() {
         const message = messageInput.value.trim();
         if (message) {
-            // 添加用户消息到聊天框
-            const userMessage = document.createElement('p');
-            userMessage.className = 'outbound';
-            userMessage.textContent = message;
-            chatFlow.appendChild(userMessage);
+            addMessage(message, 'outbound');
+            messageInput.value = '';
 
-            // 发送消息到服务器
+            // 发送到服务器
             fetch('/api/chat/send', {
                 method: 'POST',
                 headers: {
@@ -877,45 +1559,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new TypeError("Oops, we haven't got JSON!");
-                }
                 return response.json();
             })
             .then(data => {
                 if (data && data.response) {
-                    const aiMessage = document.createElement('p');
-                    aiMessage.className = 'inbound';
-                    aiMessage.textContent = data.response;
-                    chatFlow.appendChild(aiMessage);
+                    addMessage(data.response, 'inbound');
                 } else {
-                    throw new Error('Invalid response format');
+                    throw new Error('无效的响应格式');
                 }
-                chatFlow.scrollTop = chatFlow.scrollHeight;
             })
             .catch(error => {
-                console.error('Error details:', error);
-                const errorMessage = document.createElement('p');
-                errorMessage.className = 'inbound';
-                errorMessage.textContent = 'Sorry, there was an error processing your message. Please try again.';
-                chatFlow.appendChild(errorMessage);
+                console.error('错误详情:', error);
+                addMessage('抱歉，处理消息时出现错误，请重试。', 'inbound');
             });
-
-            // 清空输入框
-            messageInput.value = '';
         }
     }
 
-    // 点击发送按钮
-    sendButton.addEventListener('click', sendMessage);
-
-    // 按回车键发送
-    messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
+    // 语音输入按钮点击事件
+    voiceInputButton.addEventListener('click', function() {
+        if (recognition) {
+            if (this.classList.contains('recording')) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
         }
     });
+
+    // 初始化语音识别
+    initSpeechRecognition();
 });
 </script>
 
@@ -982,6 +1654,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
 <script th:src="@{/vendor/js/typed.js}"></script>
 <script th:src="@{/js/app.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!--end scripts-->
 
 <!-- 添加图片预览模态框 -->
@@ -994,12 +1667,330 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
-                <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="previewImage" src="" alt="商品图片" class="img-fluid">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="price-comparison">
+                            <h4 class="text-center mb-4">价格对比</h4>
+                            <div class="platform-prices">
+                                <div class="platform-price-item our-price">
+                                    <div class="platform-logo">
+                                        <img th:src="@{/img/logo.png}" alt="EcoTrade" class="platform-logo-img">
+                                        <span>EcoTrade Global</span>
+                                    </div>
+                                    <div class="price-value" id="ourPrice"></div>
+                                    <div class="price-tag">免税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-shopping-bag"></i>
+                                        <span>淘宝</span>
+                                    </div>
+                                    <div class="price-value" id="taobaoPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>京东</span>
+                                    </div>
+                                    <div class="price-value" id="jdPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                                <div class="platform-price-item">
+                                    <div class="platform-logo">
+                                        <i class="fa fa-globe"></i>
+                                        <span>亚马逊</span>
+                                    </div>
+                                    <div class="price-value" id="amazonPrice"></div>
+                                    <div class="price-tag">含税价</div>
+                                </div>
+                            </div>
+                            <div class="savings-info mt-4">
+                                <div class="savings-badge">
+                                    <i class="fa fa-tags"></i>
+                                    <span id="savingsAmount"></span>
+                                </div>
+                                <p class="savings-text" id="savingsText"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="price-trend">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">价格走势</h4>
+                                <div class="view-toggle">
+                                    <button class="btn btn-outline-success active" data-view="daily">日视图</button>
+                                    <button class="btn btn-outline-success" data-view="monthly">月视图</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="priceTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+.platform-prices {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.platform-price-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.platform-price-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #195d09;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.platform-price-item:hover::before {
+    opacity: 1;
+}
+
+.platform-price-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.platform-price-item.our-price {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+}
+
+.platform-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 140px;
+}
+
+.platform-logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.platform-logo span {
+    font-weight: 600;
+    font-size: 16px;
+    color: #195d09;
+}
+
+.our-price .platform-logo span {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.price-value {
+    font-size: 22px;
+    font-weight: bold;
+    position: relative;
+    padding: 0 5px;
+    text-align: right;
+    min-width: 120px;
+    color: #195d09;
+}
+
+.our-price .price-value {
+    color: white;
+}
+
+.price-tag {
+    font-size: 14px;
+    opacity: 0.9;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: rgba(25, 93, 9, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 90px;
+    color: #195d09;
+    font-weight: 500;
+}
+
+.our-price .price-tag {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.savings-info {
+    text-align: center;
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid rgba(40,167,69,0.1);
+}
+
+.savings-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 25px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+    animation: pulse 2s infinite;
+    font-size: 20px;
+}
+
+.savings-badge i {
+    font-size: 26px;
+    animation: bounce 1s infinite;
+    color: white;
+}
+
+.savings-badge span {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.savings-text {
+    color: #28a745;
+    font-weight: 600;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    background: rgba(40,167,69,0.05);
+    padding: 14px 24px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(40,167,69,0.3);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(40,167,69,0.2);
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .platform-price-item {
+        grid-template-columns: 1fr auto;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .price-tag {
+        grid-column: 1 / -1;
+        justify-self: end;
+    }
+    
+    .platform-logo {
+        min-width: 120px;
+    }
+    
+    .price-value {
+        font-size: 20px;
+        min-width: 100px;
+    }
+    
+    .savings-badge {
+        padding: 14px 28px;
+        font-size: 18px;
+    }
+    
+    .savings-text {
+        font-size: 15px;
+        padding: 12px 20px;
+    }
+}
+
+.price-trend {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin-top: 30px;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.price-trend h4 {
+    color: #195d09;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px;
+    }
+}
+
+.view-toggle {
+    display: flex;
+    gap: 10px;
+}
+
+.view-toggle .btn {
+    padding: 6px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.view-toggle .btn.active {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.view-toggle .btn:not(.active):hover {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+</style>
+
 </body>
 </html>
+

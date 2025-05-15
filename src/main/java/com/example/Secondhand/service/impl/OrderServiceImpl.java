@@ -4,7 +4,6 @@ import com.example.Secondhand.model.*;
 import com.example.Secondhand.repository.OrderRepository;
 import com.example.Secondhand.service.OrderService;
 import com.example.Secondhand.service.CartService;
-import com.example.Secondhand.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +20,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CartService cartService;
-
-    @Autowired
-    private UserService userService;
 
     @Override
     public List<Order> getUserOrders(User user) {
@@ -52,10 +48,7 @@ public class OrderServiceImpl implements OrderService {
         double totalAmount = cartService.calculateTotal(user);
         order.setTotalAmount(totalAmount);
         
-        // 计算环保积分
-        int ecoPoints = 0;
-        
-        // 创建订单项并计算积分
+        // 创建订单项
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
@@ -63,23 +56,7 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(cartItem.getProduct().getPrice());
             order.getOrderItems().add(orderItem);
-            
-            // 计算环保积分
-            Product product = cartItem.getProduct();
-            if (product.getEcoScore() != null) {
-                // 根据商品的环保评分计算积分（1-5分，每分50点）
-                // 基础积分 = 环保评分 * 50
-                // 数量加成 = 购买数量 * 10
-                int basePoints = (int)(product.getEcoScore() * 50);
-                int quantityBonus = cartItem.getQuantity() * 10;
-                int itemEcoPoints = basePoints + quantityBonus;
-                ecoPoints += itemEcoPoints;
-            }
         }
-        
-        // 更新用户的积分
-        user.setEcoPoints(user.getEcoPoints() + ecoPoints);
-        userService.updateUser(user);
         
         return orderRepository.save(order);
     }

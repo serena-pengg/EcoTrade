@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import jakarta.annotation.PostConstruct;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -36,6 +34,10 @@ public class ProductService {
 
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategory(category);
+    }
+
+    public List<Product> getProductsBySeller(Long sellerId) {
+        return productRepository.findBySellerId(sellerId);
     }
 
     public Product getProductById(Long id) {
@@ -174,23 +176,5 @@ public class ProductService {
 
     public List<Product> getLatestProducts(int limit) {
         return productRepository.findLatestProducts(PageRequest.of(0, limit));
-    }
-
-    @Transactional
-    public void refreshAllEcoScores() {
-        List<Product> products = productRepository.findAll();
-        for (Product product : products) {
-            // 触发 ecoScore 重新计算
-            product.setRecycleScore(product.getRecycleScore());
-            product.setDurabilityScore(product.getDurabilityScore());
-            product.setCarbonFootprint(product.getCarbonFootprint());
-            // 保存到数据库
-            productRepository.save(product);
-        }
-    }
-
-    @PostConstruct
-    public void initEcoScores() {
-        refreshAllEcoScores();
     }
 } 

@@ -27,6 +27,12 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "seller_id")
+    private Long sellerId;
+
+    @Column(name = "seller_name")
+    private String sellerName;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -44,6 +50,12 @@ public class Product {
 
     @Column(name = "eco_score")
     private Float ecoScore;
+
+    @Column(name = "min_carbon_footprint")
+    private Float minCarbonFootprint;
+
+    @Column(name = "max_carbon_footprint")
+    private Float maxCarbonFootprint;
 
     private static final float EPSILON = 1e-6f;
 
@@ -76,8 +88,16 @@ public class Product {
             float normalizedRecycleScore = Math.min(Math.max(recycleScore, 1f), 5f);
             float normalizedDurabilityScore = Math.min(Math.max(durabilityScore, 1f), 5f);
 
-            // 碳足迹评分（1-5分）
-            float normalizedCarbonScore = Math.min(Math.max(carbonFootprint, 1f), 5f);
+            // 碳足迹标准归一化 + 反向转化
+            // carbon_score = 1 - (x - min(x)) / (max(x) - min(x) + ε)
+            float minCarbon = minCarbonFootprint != null ? minCarbonFootprint : 0f;
+            float maxCarbon = maxCarbonFootprint != null ? maxCarbonFootprint : 100f;
+            
+            float normalizedCarbonScore = 1f - (carbonFootprint - minCarbon) / (maxCarbon - minCarbon + EPSILON);
+            // 将 [0,1] 范围转换为 [1,5] 范围
+            normalizedCarbonScore = normalizedCarbonScore * 4f + 1f;
+            // 确保在1-5范围内
+            normalizedCarbonScore = Math.min(Math.max(normalizedCarbonScore, 1f), 5f);
 
             // 计算综合环保评分
             ecoScore = (normalizedRecycleScore * recycleWeight) + 

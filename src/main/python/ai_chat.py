@@ -27,7 +27,7 @@ client = Together(api_key="c668647397315ce4de760c71e39db88cbd4b30575ec7aafa40cc1
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'root',
+    'password': '123456',
     'db': 'secondhand',
     'charset': 'utf8mb4'
 }
