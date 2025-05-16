@@ -488,68 +488,7 @@
             opacity: 1;
         }
 
-        /* Language Switcher Styles */
-        .language-switcher {
-            margin-left: 15px;
-        }
-
-        .language-switcher .dropdown-toggle {
-            color: #333;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .language-switcher .dropdown-toggle:hover {
-            background: #e9ecef;
-        }
-
-        .language-switcher .dropdown-toggle i {
-            color: #666;
-        }
-
-        .language-switcher .dropdown-menu {
-            min-width: 150px;
-            padding: 8px 0;
-            margin: 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .language-switcher .dropdown-item {
-            padding: 8px 15px;
-            color: #333;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.2s;
-        }
-
-        .language-switcher .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #007bff;
-        }
-
-        .current-language {
-            font-weight: 500;
-        }
-
-        /* Responsive styles for language switcher */
-        @media (max-width: 768px) {
-            .language-switcher {
-                margin: 10px 0;
-            }
-            
-            .language-switcher .dropdown-toggle {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+        
     </style>
 </head>
 <body>
@@ -601,7 +540,7 @@
 
 <!--banner-->
 <div class="search-banner" style="background-image: url('../img/hainan_banner.jpg'); background-size: cover; background-repeat: no-repeat;">
-    <h5 data-i18n="search.banner.title">Discover Tropical Treasures from Hainan Paradise</h5>
+    <h5 data-i18n="search.banner.title" style="font-size: 1.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">Discover <strong class="ui-text-info" style="color: #FFD700; font-size: 1.2em; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); display: inline-block; padding: 0 5px;" !important>Tropical Treasures</strong> from Hainan Paradise</h5>
     <div class="search-container">
         <form th:action="@{/search}" method="get" class="search-form">
             <div class="mega-search">

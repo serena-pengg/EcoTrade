@@ -267,24 +267,28 @@ $(document).ready(function () {
     $('.chat-form').on('submit', function (e) {
         var chatInput = $(this).find('.chat-message');
         if(chatInput.val() !== ''){
-            // 添加用户消息
-            addMessage(chatInput.val(), 'outbound');
+            // Add user message
+            chatsContainer.append('<p class="outbound">' + chatInput.val() + '</p>');
             
-            // 发送消息到服务器
+            // Send message to AI and get response
             $.ajax({
                 url: '/api/chat/send',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ message: chatInput.val() }),
                 success: function(response) {
-                    // 添加AI回复
-                    addMessage(response, 'inbound');
+                    // Add AI response
+                    chatsContainer.append('<p class="inbound">' + response + '</p>');
+                    // Scroll to bottom
+                    chatsContainer.animate({
+                        scrollTop: chatsContainer[0].scrollHeight
+                    }, 500);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                     console.error('Status:', status);
                     console.error('Response:', xhr.responseText);
-                    addMessage('抱歉，发生了错误，请稍后重试。', 'inbound');
+                    chatsContainer.append('<p class="inbound">Sorry, there was an error processing your message.</p>');
                 }
             });
             
