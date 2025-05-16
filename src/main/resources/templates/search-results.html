@@ -524,6 +524,45 @@
                 height: 250px;
             }
         }
+
+        /* 添加语言切换器样式 */
+        .language-switcher {
+            margin-left: 15px;
+        }
+
+        .language-switcher .dropdown-toggle {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher .dropdown-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .language-switcher .dropdown-menu {
+            min-width: 120px;
+            padding: 8px 0;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-switcher .dropdown-item {
+            padding: 8px 20px;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .language-switcher .dropdown-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #28a745;
+        }
+
+        .current-language {
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
@@ -540,19 +579,34 @@
     </div>
     <ul class="site-menu">
         <li>
-            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
         </li>
         <li>
-            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
         </li>
         <li>
-            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
         </li>
         <li>
-            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
         </li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
-        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+        <!-- 添加语言切换下拉菜单 -->
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
 
@@ -560,11 +614,11 @@
 
 <!--banner-->
 <div class="search-banner back-photo">
-    <h5>The Easiest Way to find <strong class="ui-text-info" style="color: #ffffff;" !important>Items</strong> on the Market</h5>
+    <h5 data-i18n="search.banner.title">The Easiest Way to find <strong class="ui-text-info" style="color: #ffffff;" !important>Items</strong> on the Market</h5>
     <div class="search-container">
         <form th:action="@{/search}" method="get" class="search-form" >
             <div class="mega-search">
-                <input class="form-control" type="text" name="query" placeholder="Search Item Here..." style="flex: 1;">
+                <input class="form-control" type="text" name="query" data-i18n-placeholder="search.placeholder" placeholder="Search Item Here..." style="flex: 1;">
                 <button type="submit" class="search-btn">
                     <i class="fa fa-search"></i>
                 </button>
@@ -574,8 +628,8 @@
            th:href="@{/HainanProduct}"
            style="background: linear-gradient(90deg, #4d0b04 0%, #9c0505 100%); color: #fff; font-weight: bold; font-size: 1.08rem; border: none; border-radius: 24px; box-shadow: 0 2px 8px rgba(67,160,71,0.12); padding: 0.6em 1.6em 0.6em 1.2em; margin-left: auto; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; transition: background 0.2s, box-shadow 0.2s;">
             <span style="font-size: 1.3em;">🌴</span>
-            海南甄选
-            <span style="font-size: 1.1em; margin-left: 2px;">Hainan Products</span>
+            <span data-i18n="search.hainanSelect">海南甄选</span>
+            <span style="font-size: 1.1em; margin-left: 2px;" data-i18n="search.hainanProducts">Hainan Products</span>
         </a>
     </div>
 </div>
@@ -590,116 +644,116 @@
             <input type="hidden" name="sort" th:value="${sort}">
             
             <div class="filter-group">
-                <strong>By Category:</strong>
+                <strong data-i18n="filter.category.title">By Category:</strong>
                 <label class="label--radio">
                     <input type="radio" name="category" value="All" class="radio"
                            th:checked="${selectedCategory == null || selectedCategory == 'All' || selectedCategory == ''}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.category.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Beauty" class="radio"
                            th:checked="${selectedCategory == 'Beauty'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Beauty</i>
+                    <i data-i18n="filter.category.beauty">Beauty</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Accessories" class="radio"
                            th:checked="${selectedCategory == 'Accessories'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Accessories</i>
+                    <i data-i18n="filter.category.accessories">Accessories</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Fashion" class="radio"
                            th:checked="${selectedCategory == 'Fashion'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Fashion</i>
+                    <i data-i18n="filter.category.fashion">Fashion</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Electronics" class="radio"
                            th:checked="${selectedCategory == 'Electronics'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Electronics</i>
+                    <i data-i18n="filter.category.electronics">Electronics</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Food & Alcohol" class="radio"
                            th:checked="${selectedCategory == 'Food & Alcohol'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Food & Alcohol</i>
+                    <i data-i18n="filter.category.foodAlcohol">Food & Alcohol</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="category" value="Essentials" class="radio"
                            th:checked="${selectedCategory == 'Essentials'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Essentials</i>
+                    <i data-i18n="filter.category.essentials">Essentials</i>
                 </label>
             </div>
 
             <div class="filter-group">
-                <strong>By Eco Score:</strong>
+                <strong data-i18n="filter.ecoScore.title">By Eco Score:</strong>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="all" class="radio" th:checked="${selectedEcoScore == null || selectedEcoScore == 'all'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.ecoScore.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="excellent" class="radio" th:checked="${selectedEcoScore == 'excellent'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Excellent (4.0-5.0)</i>
+                    <i data-i18n="filter.ecoScore.excellent">Excellent (4.0-5.0)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="good" class="radio" th:checked="${selectedEcoScore == 'good'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Good (3.0-3.9)</i>
+                    <i data-i18n="filter.ecoScore.good">Good (3.0-3.9)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="fair" class="radio" th:checked="${selectedEcoScore == 'fair'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Fair (2.0-2.9)</i>
+                    <i data-i18n="filter.ecoScore.fair">Fair (2.0-2.9)</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="ecoScore" value="poor" class="radio" th:checked="${selectedEcoScore == 'poor'}">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Poor (0-1.9)</i>
+                    <i data-i18n="filter.ecoScore.poor">Poor (0-1.9)</i>
                 </label>
             </div>
 
             <div class="filter-group">
-                <strong>By Price:</strong>
+                <strong data-i18n="filter.price.title">By Price:</strong>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="all" class="radio"
                            th:checked="${selectedPriceRange == null || selectedPriceRange == 'all'}"
                            th:value="'all'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>All</i>
+                    <i data-i18n="filter.price.all">All</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="0-500" class="radio"
                            th:checked="${selectedPriceRange == '0-500'}"
                            th:value="'0-500'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥0 - ¥500</i>
+                    <i data-i18n="filter.price.range1">¥0 - ¥500</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="500-1000" class="radio"
                            th:checked="${selectedPriceRange == '500-1000'}"
                            th:value="'500-1000'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥500 - ¥1000</i>
+                    <i data-i18n="filter.price.range2">¥500 - ¥1000</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="1000-2000" class="radio"
                            th:checked="${selectedPriceRange == '1000-2000'}"
                            th:value="'1000-2000'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>¥1000 - ¥2000</i>
+                    <i data-i18n="filter.price.range3">¥1000 - ¥2000</i>
                 </label>
                 <label class="label--radio">
                     <input type="radio" name="priceRange" value="2000+" class="radio"
                            th:checked="${selectedPriceRange == '2000+'}"
                            th:value="'2000+'">
                     <span class="outer"><span class="inner"></span></span>
-                    <i>Above ¥2000</i>
+                    <i data-i18n="filter.price.range4">Above ¥2000</i>
                 </label>
             </div>
         </form>
@@ -707,15 +761,15 @@
     <div class="results-section">
         <div class="sort-sec">
             <div>
-                <strong>Sort By:</strong>
+                <strong data-i18n="sort.title">Sort By:</strong>
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='date')}"
-                   th:classappend="${sort == 'date' ? 'active' : ''}">Date Listed</a>|
+                   th:classappend="${sort == 'date' ? 'active' : ''}" data-i18n="sort.date">Date Listed</a>|
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-asc')}"
-                   th:classappend="${sort == 'price-asc' ? 'active' : ''}">Price Ascending</a>|
+                   th:classappend="${sort == 'price-asc' ? 'active' : ''}" data-i18n="sort.priceAsc">Price Ascending</a>|
                 <a th:href="@{/search(query=${query != null ? query : ''}, category=${selectedCategory != null ? selectedCategory : 'All'}, priceRange=${selectedPriceRange != null ? selectedPriceRange : 'all'}, ecoScore=${selectedEcoScore != null ? selectedEcoScore : 'all'}, sort='price-desc')}"
-                   th:classappend="${sort == 'price-desc' ? 'active' : ''}">Price Descending</a>
+                   th:classappend="${sort == 'price-desc' ? 'active' : ''}" data-i18n="sort.priceDesc">Price Descending</a>
             </div>
-            <a th:href="@{/search}"><span>Refresh</span><i class="fa fa-refresh"></i></a>
+            <a th:href="@{/search}"><span data-i18n="sort.refresh">Refresh</span><i class="fa fa-refresh"></i></a>
         </div>
         
         <!-- Search Results Items -->
@@ -926,41 +980,41 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--footer section-->
 <footer class="footer">
     <div class="footer-item">
-        <strong>Get In Touch</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+        <strong data-i18n="footer.getInTouch">Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.getSupport">Get Support</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.advertise">Advertise</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.communityForum">Community Forum</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.affiliateProgram">Affiliate Program</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contactUs">Contact Us</span></a>
     </div>
     <div class="footer-item">
-        <strong>Questions?</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+        <strong data-i18n="footer.questions">Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.help">Help</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contact">Contact</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.liveSupport">Live Support</span></a>
     </div>
     <div class="footer-item">
-        <strong>Follow Us</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
-        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+        <strong data-i18n="footer.followUs">Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
-        <strong>Important Links</strong>
-        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
-        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
-        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
-        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+        <strong data-i18n="footer.importantLinks">Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="nav.home">Home</span></a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.products">Products</span></a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.services">Services</span></a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.aboutUs">About Us</span></a>
     </div>
 </footer>
 <div class="bottom-strip">
     <div class="cards-accepted">
-        <em>Cards Accepted:</em>
+        <em data-i18n="footer.cardsAccepted">Cards Accepted:</em>
         <img th:src="@{/img/card-logos.png}" alt="">
     </div>
-    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span data-i18n="footer.copyright">EcoTrade Global. All Rights Reserved</span></div>
     <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
 </div>
 <!--end footer section-->
@@ -1430,6 +1484,304 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    });
+});
+</script>
+
+<script>
+// 更新翻译对象，添加更多翻译内容
+const translations = {
+    en: {
+        'search.banner.title': 'The Easiest Way to find Items on the Market',
+        'search.placeholder': 'Search Item Here...',
+        'search.hainanSelect': 'Hainan Selection',
+        'search.hainanProducts': 'Hainan Products',
+        'filter.category.title': 'By Category:',
+        'filter.category.all': 'All',
+        'filter.category.beauty': 'Beauty',
+        'filter.category.accessories': 'Accessories',
+        'filter.category.fashion': 'Fashion',
+        'filter.category.electronics': 'Electronics',
+        'filter.category.foodAlcohol': 'Food & Alcohol',
+        'filter.category.essentials': 'Essentials',
+        'filter.ecoScore.title': 'By Eco Score:',
+        'filter.ecoScore.all': 'All',
+        'filter.ecoScore.excellent': 'Excellent (4.0-5.0)',
+        'filter.ecoScore.good': 'Good (3.0-3.9)',
+        'filter.ecoScore.fair': 'Fair (2.0-2.9)',
+        'filter.ecoScore.poor': 'Poor (0-1.9)',
+        'filter.price.title': 'By Price:',
+        'filter.price.all': 'All',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': 'Above ¥2000',
+        'sort.title': 'Sort By:',
+        'sort.date': 'Date Listed',
+        'sort.priceAsc': 'Price Ascending',
+        'sort.priceDesc': 'Price Descending',
+        'sort.refresh': 'Refresh',
+        'nav.home': 'Home',
+        'nav.explore': 'Explore',
+        'nav.cart': 'Cart',
+        'nav.contact': 'Contact Us',
+        'nav.profile': 'Profile',
+        'nav.getStarted': 'Get Started',
+        'footer.followUs': 'Follow Us',
+        'footer.facebook': 'Facebook',
+        'footer.twitter': 'Twitter',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': 'Important Links',
+        'footer.products': 'Products',
+        'footer.services': 'Services',
+        'footer.aboutUs': 'About Us',
+        'footer.cardsAccepted': 'Cards Accepted:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved'
+    },
+    zh: {
+        'search.banner.title': '寻找市场商品的最简单方式',
+        'search.placeholder': '在此搜索商品...',
+        'search.hainanSelect': '海南甄选',
+        'search.hainanProducts': '海南产品',
+        'filter.category.title': '按类别:',
+        'filter.category.all': '全部',
+        'filter.category.beauty': '美妆',
+        'filter.category.accessories': '配饰',
+        'filter.category.fashion': '时尚',
+        'filter.category.electronics': '电子',
+        'filter.category.foodAlcohol': '食品与酒类',
+        'filter.category.essentials': '必需品',
+        'filter.ecoScore.title': '按生态评分:',
+        'filter.ecoScore.all': '全部',
+        'filter.ecoScore.excellent': '优秀 (4.0-5.0)',
+        'filter.ecoScore.good': '良好 (3.0-3.9)',
+        'filter.ecoScore.fair': '一般 (2.0-2.9)',
+        'filter.ecoScore.poor': '较差 (0-1.9)',
+        'filter.price.title': '按价格:',
+        'filter.price.all': '全部',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000以上',
+        'sort.title': '排序方式:',
+        'sort.date': '上架时间',
+        'sort.priceAsc': '价格从低到高',
+        'sort.priceDesc': '价格从高到低',
+        'sort.refresh': '刷新',
+        'nav.home': '首页',
+        'nav.explore': '探索',
+        'nav.cart': '购物车',
+        'nav.contact': '联系我们',
+        'nav.profile': '个人中心',
+        'nav.getStarted': '开始使用',
+        'footer.followUs': '关注我们',
+        'footer.facebook': '脸书',
+        'footer.twitter': '推特',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': '优兔',
+        'footer.linkedin': '领英',
+        'footer.importantLinks': '重要链接',
+        'footer.products': '产品',
+        'footer.services': '服务',
+        'footer.aboutUs': '关于我们',
+        'footer.cardsAccepted': '支持的支付方式:',
+        'footer.copyright': 'EcoTrade Global. 保留所有权利'
+    },
+    ja: {
+        'search.banner.title': '市場で商品を見つける最も簡単な方法',
+        'search.placeholder': '商品を検索...',
+        'search.hainanSelect': '海南セレクション',
+        'search.hainanProducts': '海南製品',
+        'filter.category.title': 'カテゴリー:',
+        'filter.category.all': 'すべて',
+        'filter.category.beauty': '美容',
+        'filter.category.accessories': 'アクセサリー',
+        'filter.category.fashion': 'ファッション',
+        'filter.category.electronics': '電子機器',
+        'filter.category.foodAlcohol': '食品・アルコール',
+        'filter.category.essentials': '必需品',
+        'filter.ecoScore.title': 'エコスコア:',
+        'filter.ecoScore.all': 'すべて',
+        'filter.ecoScore.excellent': '優秀 (4.0-5.0)',
+        'filter.ecoScore.good': '良好 (3.0-3.9)',
+        'filter.ecoScore.fair': '普通 (2.0-2.9)',
+        'filter.ecoScore.poor': '低い (0-1.9)',
+        'filter.price.title': '価格:',
+        'filter.price.all': 'すべて',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000以上',
+        'sort.title': '並び替え:',
+        'sort.date': '出品日',
+        'sort.priceAsc': '価格の安い順',
+        'sort.priceDesc': '価格の高い順',
+        'sort.refresh': '更新',
+        'nav.home': 'ホーム',
+        'nav.explore': '探索',
+        'nav.cart': 'カート',
+        'nav.contact': 'お問い合わせ',
+        'nav.profile': 'プロフィール',
+        'nav.getStarted': '始める',
+        'footer.followUs': 'フォローする',
+        'footer.facebook': 'フェイスブック',
+        'footer.twitter': 'ツイッター',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': '重要なリンク',
+        'footer.products': '製品',
+        'footer.services': 'サービス',
+        'footer.aboutUs': '会社概要',
+        'footer.cardsAccepted': '対応カード:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved'
+    },
+    ko: {
+        'search.banner.title': '시장에서 상품을 찾는 가장 쉬운 방법',
+        'search.placeholder': '상품 검색...',
+        'search.hainanSelect': '하이난 셀렉션',
+        'search.hainanProducts': '하이난 제품',
+        'filter.category.title': '카테고리:',
+        'filter.category.all': '전체',
+        'filter.category.beauty': '뷰티',
+        'filter.category.accessories': '액세서리',
+        'filter.category.fashion': '패션',
+        'filter.category.electronics': '전자제품',
+        'filter.category.foodAlcohol': '식품 및 주류',
+        'filter.category.essentials': '필수품',
+        'filter.ecoScore.title': '에코 점수:',
+        'filter.ecoScore.all': '전체',
+        'filter.ecoScore.excellent': '우수 (4.0-5.0)',
+        'filter.ecoScore.good': '양호 (3.0-3.9)',
+        'filter.ecoScore.fair': '보통 (2.0-2.9)',
+        'filter.ecoScore.poor': '낮음 (0-1.9)',
+        'filter.price.title': '가격:',
+        'filter.price.all': '전체',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': '¥2000 이상',
+        'sort.title': '정렬:',
+        'sort.date': '등록일',
+        'sort.priceAsc': '가격 낮은순',
+        'sort.priceDesc': '가격 높은순',
+        'sort.refresh': '새로고침',
+        'nav.home': '홈',
+        'nav.explore': '탐색',
+        'nav.cart': '장바구니',
+        'nav.contact': '문의하기',
+        'nav.profile': '프로필',
+        'nav.getStarted': '시작하기',
+        'footer.followUs': '팔로우',
+        'footer.facebook': '페이스북',
+        'footer.twitter': '트위터',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': '유튜브',
+        'footer.linkedin': '링크드인',
+        'footer.importantLinks': '중요 링크',
+        'footer.products': '제품',
+        'footer.services': '서비스',
+        'footer.aboutUs': '회사 소개',
+        'footer.cardsAccepted': '결제 수단:',
+        'footer.copyright': 'EcoTrade Global. All Rights Reserved'
+    },
+    fr: {
+        'search.banner.title': 'La façon la plus simple de trouver des articles sur le marché',
+        'search.placeholder': 'Rechercher un article...',
+        'search.hainanSelect': 'Sélection Hainan',
+        'search.hainanProducts': 'Produits Hainan',
+        'filter.category.title': 'Par catégorie:',
+        'filter.category.all': 'Tout',
+        'filter.category.beauty': 'Beauté',
+        'filter.category.accessories': 'Accessoires',
+        'filter.category.fashion': 'Mode',
+        'filter.category.electronics': 'Électronique',
+        'filter.category.foodAlcohol': 'Alimentation & Alcool',
+        'filter.category.essentials': 'Essentiels',
+        'filter.ecoScore.title': 'Par score écologique:',
+        'filter.ecoScore.all': 'Tout',
+        'filter.ecoScore.excellent': 'Excellent (4.0-5.0)',
+        'filter.ecoScore.good': 'Bon (3.0-3.9)',
+        'filter.ecoScore.fair': 'Moyen (2.0-2.9)',
+        'filter.ecoScore.poor': 'Faible (0-1.9)',
+        'filter.price.title': 'Par prix:',
+        'filter.price.all': 'Tout',
+        'filter.price.range1': '¥0 - ¥500',
+        'filter.price.range2': '¥500 - ¥1000',
+        'filter.price.range3': '¥1000 - ¥2000',
+        'filter.price.range4': 'Plus de ¥2000',
+        'sort.title': 'Trier par:',
+        'sort.date': 'Date de mise en ligne',
+        'sort.priceAsc': 'Prix croissant',
+        'sort.priceDesc': 'Prix décroissant',
+        'sort.refresh': 'Actualiser',
+        'nav.home': 'Accueil',
+        'nav.explore': 'Explorer',
+        'nav.cart': 'Panier',
+        'nav.contact': 'Contact',
+        'nav.profile': 'Profil',
+        'nav.getStarted': 'Commencer',
+        'footer.followUs': 'Suivez-nous',
+        'footer.facebook': 'Facebook',
+        'footer.twitter': 'Twitter',
+        'footer.flickr': 'Flickr',
+        'footer.youtube': 'Youtube',
+        'footer.linkedin': 'LinkedIn',
+        'footer.importantLinks': 'Liens importants',
+        'footer.products': 'Produits',
+        'footer.services': 'Services',
+        'footer.aboutUs': 'À propos',
+        'footer.cardsAccepted': 'Cartes acceptées:',
+        'footer.copyright': 'EcoTrade Global. Tous droits réservés'
+    }
+};
+
+// 切换语言函数
+function switchLanguage(lang) {
+    // 保存语言选择到 localStorage
+    localStorage.setItem('selectedLanguage', lang);
+    
+    // 更新所有带有 data-i18n 属性的元素
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+    
+    // 更新所有带有 data-i18n-placeholder 属性的元素
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            element.placeholder = translations[lang][key];
+        }
+    });
+
+    // 更新当前显示的语言
+    const languageNames = {
+        'en': 'English',
+        'zh': '中文',
+        'ja': '日本語',
+        'ko': '한국어',
+        'fr': 'Français'
+    };
+    document.querySelector('.current-language').textContent = languageNames[lang];
+}
+
+// 页面加载时应用保存的语言设置
+document.addEventListener('DOMContentLoaded', function() {
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    switchLanguage(savedLanguage);
+});
+
+// 为语言切换按钮添加点击事件
+document.querySelectorAll('.language-switcher .dropdown-item').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lang = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+        switchLanguage(lang);
     });
 });
 </script>

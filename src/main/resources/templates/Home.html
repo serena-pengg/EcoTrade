@@ -46,19 +46,34 @@
     </div>
     <ul class="site-menu">
         <li>
-            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
         </li>
         <li>
-            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
         </li>
         <li>
-            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
         </li>
         <li>
-            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
         </li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
-        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+        <!-- 添加语言切换下拉菜单 -->
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
 
@@ -72,15 +87,15 @@
             <div class="product-item">
                 <div class="item-image"><img th:src="@{/img/watch.png}" alt=""></div>
                 <div class="item-info">
-                    <h3 style="font-size:50px !important;font-weight: bolder;"> Welcome to EcoTrade Global</h3>
-                    <strong style="font-size:45px !important;">Shop Tax-Free Across Borders.</strong>
-                    <p style="font-size:20px !important">
+                    <h3 style="font-size:50px !important;font-weight: bolder;" data-i18n="banner.welcome">Welcome to EcoTrade Global</h3>
+                    <strong style="font-size:45px !important;" data-i18n="banner.shopTaxFree">Shop Tax-Free Across Borders.</strong>
+                    <p style="font-size:20px !important" data-i18n="banner.enjoyExperience">
                         Enjoy a seamless cross-border shopping experience powered by Hainan Free Trade Port policies. 
                         Discover eco-friendly products at unbeatable prices — without the tax burden.<br>
                     </p>
                     <div class="call-action">
-                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Discover Now</a>
-                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Contact Us</a>
+                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold" data-i18n="banner.discoverNow">Discover Now</a>
+                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold" data-i18n="nav.contact">Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -89,14 +104,14 @@
             <div class="product-item">
                 <div class="item-image"><img th:src="@{/img/CHANEL.png}" alt=""></div>
                 <div class="item-info">
-                    <h2 style="font-size:50px !important;font-weight: bolder;">Shop Green, Live Clean</h2>
-                    <strong style="font-size:45px !important;">Join the Green Trade Revolution</strong>
-                    <p style="font-size:20px !important">
+                    <h2 style="font-size:50px !important;font-weight: bolder;" data-i18n="banner.shopGreen">Shop Green, Live Clean</h2>
+                    <strong style="font-size:45px !important;" data-i18n="banner.joinRevolution">Join the Green Trade Revolution</strong>
+                    <p style="font-size:20px !important" data-i18n="banner.recommendProducts">
                         We recommend high-rated eco products using AI and smart algorithms. Reduce your carbon footprint while enjoying global quality goods — it's better for you and the planet.
                     </p>
                     <div class="call-action">
-                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Discover Now</a>
-                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold">Contact Us</a>
+                        <a th:href="@{/search-results}" class="ui-btn ui-btn-info-outline" style="font-weight:bold" data-i18n="banner.discoverNow">Discover Now</a>
+                        <a th:href="@{/contact}" class="ui-btn ui-btn-info-outline" style="font-weight:bold" data-i18n="nav.contact">Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -108,44 +123,44 @@
 
 <!--general categories-->
 <div class="g-heading">
-    <strong class="ui-text-info">Items Variety</strong>
-    <h3>Get What You Want! Trade Easily, Save Wisely.</h3>
+    <strong class="ui-text-info" data-i18n="categories.title">Items Variety</strong>
+    <h3 data-i18n="categories.subtitle">Get What You Want! Trade Easily, Save Wisely.</h3>
 </div>
 <div class="general-categories">
     <div class="g-category">
         <img th:src="@{/img/items/B.png}" alt="">
         <a th:href="@{/search-results?category=Beauty}" class="g-category-info">
-            <strong>Beauty</strong>
+            <strong data-i18n="categories.beauty">Beauty</strong>
         </a>
     </div>
     <div class="g-category">
         <img th:src="@{/img/items/A.png}" alt="">
         <a th:href="@{/search-results?category=Accessories}" class="g-category-info">
-            <strong>Accessories</strong>
+            <strong data-i18n="categories.accessories">Accessories</strong>
         </a>
     </div>
     <div class="g-category">
         <img th:src="@{/img/items/C.png}" alt="">
         <a th:href="@{/search-results?category=Fashion}" class="g-category-info">
-            <strong>Fashion</strong>
+            <strong data-i18n="categories.fashion">Fashion</strong>
         </a>
     </div>
     <div class="g-category">
         <img th:src="@{/img/items/E.png}" alt="">
         <a th:href="@{/search-results?category=Electronics}" class="g-category-info">
-            <strong>Electronics</strong>
+            <strong data-i18n="categories.electronics">Electronics</strong>
         </a>
     </div>
     <div class="g-category">
         <img th:src="@{/img/items/F.png}" alt="">
         <a th:href="@{/search-results?category=Food & Alcohol}" class="g-category-info">
-            <strong>Food & Alcohol</strong>
+            <strong data-i18n="categories.foodAlcohol">Food & Alcohol</strong>
         </a>
     </div>
     <div class="g-category">
         <img th:src="@{/img/items/E2.png}" alt="">
         <a th:href="@{/search-results?category=Essentials}" class="g-category-info">
-            <strong>Essentials</strong>
+            <strong data-i18n="categories.essentials">Essentials</strong>
         </a>
     </div>
 </div>
@@ -155,20 +170,20 @@
 <div class="recommended-section">
     <div class="section-header">
         <div class="section-header-top">
-            <h2>Recommended For You</h2>
+            <h2 data-i18n="recommended.title">Recommended For You</h2>
             <div class="sort-options">
                 <a href="#" class="sort-btn" data-sort="eco-score">
-                    <i class="fa fa-leaf"></i> Highest Eco Score
+                    <i class="fa fa-leaf"></i> <span data-i18n="recommended.sortEcoScore">Highest Eco Score</span>
                 </a>
                 <a href="#" class="sort-btn" data-sort="price-asc">
-                    <i class="fa fa-rmb"></i> Lowest Price
+                    <i class="fa fa-rmb"></i> <span data-i18n="recommended.sortPrice">Lowest Price</span>
                 </a>
                 <a href="#" class="sort-btn" data-sort="date">
-                    <i class="fa fa-clock-o"></i> Latest
+                    <i class="fa fa-clock-o"></i> <span data-i18n="recommended.sortLatest">Latest</span>
                 </a>
             </div>
         </div>
-        <p class="section-subtitle">Discover Eco-Friendly Products That Match Your Interests!</p>
+        <p class="section-subtitle" data-i18n="recommended.subtitle">Discover Eco-Friendly Products That Match Your Interests!</p>
     </div>
     
     <div class="recommended-grid">
@@ -179,7 +194,7 @@
             </div>
             <div class="product-badge eco-good" th:if="${product.ecoScore >= 3 and product.ecoScore < 4}" 
                  data-tooltip="Sustainability isn't about perfection — it's about better choices.">
-                🌱 	Green★
+                🌱 Green★
             </div>
             <div class="product-image">
                 <img th:src="${product.imageUrl}" alt="" th:if="${product.imageUrl != null}"
@@ -189,7 +204,7 @@
                 <div class="product-overlay">
                     <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
                         <button type="submit" class="add-to-cart-btn">
-                            <i class="fa fa-shopping-cart"></i> Add to Cart
+                            <i class="fa fa-shopping-cart"></i> <span data-i18n="recommended.addToCart">Add to Cart</span>
                         </button>
                     </form>
                 </div>
@@ -204,7 +219,7 @@
                     <span class="date" th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy')}">12/09/2019</span>
                 </div>
                 <div class="eco-rating" th:if="${product.ecoScore != null}">
-                    <span class="eco-label">Eco Score</span>
+                    <span class="eco-label" data-i18n="recommended.ecoScore">Eco Score</span>
                     <div class="eco-stars">
                         <i th:each="i : ${#numbers.sequence(1, 5)}"
                            th:class="${product.ecoScore >= i ? 'fa fa-star' : 
@@ -1351,22 +1366,22 @@
         </section>
     </div>
     <div class="chat-flow" id="chat-flow">
-        <p class="outbound">
+        <p class="outbound" data-i18n="chat.hello">
             Hello, Anyone there?
         </p>
-        <p class="inbound">
+        <p class="inbound" data-i18n="chat.hi">
             Hi, Vincent here. How may I be of service.
         </p>
     </div>
     <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
         <form class="chat-form" style="display: flex; align-items: center; gap: 10px;">
-            <input type="text" class="form-control chat-message" placeholder="发送消息" id="messageInput">
-            <button type="button" class="ui-btn" id="voiceInputButton" title="语音输入">
+            <input type="text" class="form-control chat-message" data-i18n-placeholder="chat.placeholder" placeholder="Type a message" id="messageInput">
+            <button type="button" class="ui-btn" id="voiceInputButton" title="Voice Input" data-i18n="chat.voiceInput">
                 <i class="fa fa-microphone"></i>
             </button>
             <button type="submit" class="ui-btn ui-btn-prim send-message">
                 <i class="fa fa-paper-plane"></i>
-                <span>发送</span>
+                <span data-i18n="chat.sendMessage">Send</span>
             </button>
         </form>
     </div>
@@ -1596,41 +1611,41 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--footer section-->
 <footer class="footer">
     <div class="footer-item">
-        <strong>Get In Touch</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+        <strong data-i18n="footer.getInTouch">Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.getSupport">Get Support</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.advertise">Advertise</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.communityForum">Community Forum</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.affiliateProgram">Affiliate Program</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contactUs">Contact Us</span></a>
     </div>
     <div class="footer-item">
-        <strong>Questions?</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+        <strong data-i18n="footer.questions">Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.help">Help</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contact">Contact</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.liveSupport">Live Support</span></a>
     </div>
     <div class="footer-item">
-        <strong>Follow Us</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
-        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+        <strong data-i18n="footer.followUs">Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
-        <strong>Important Links</strong>
-        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
-        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
-        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
-        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+        <strong data-i18n="footer.importantLinks">Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="nav.home">Home</span></a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.products">Products</span></a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.services">Services</span></a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.aboutUs">About Us</span></a>
     </div>
 </footer>
 <div class="bottom-strip">
     <div class="cards-accepted">
-        <em>Cards Accepted:</em>
+        <em data-i18n="footer.cardsAccepted">Cards Accepted:</em>
         <img th:src="@{/img/card-logos.png}" alt="">
     </div>
-    <div class="copyright"><i class="fa fa-copyright"></i> <span>EcoTrade Global. All Rights Reserved</span></div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span data-i18n="footer.copyright">EcoTrade Global. All Rights Reserved</span></div>
     <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
 </div>
 <!--end footer section-->
@@ -1654,6 +1669,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script th:src="@{/vendor/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js}"></script>
 <script th:src="@{/vendor/js/typed.js}"></script>
 <script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/i18n.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!--end scripts-->
 

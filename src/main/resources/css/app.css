@@ -1,0 +1,176 @@
+/* 美化导航栏样式 */
+.site-top-nav {
+    background: linear-gradient(90deg, #195d09 0%, #28a745 100%);
+    box-shadow: 0 4px 24px rgba(25,93,9,0.10);
+    border-radius: 0 0 18px 18px;
+    padding: 0 40px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 100;
+}
+
+.site-top-nav .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(25,93,9,0.10);
+}
+
+.site-top-nav .logo img {
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(25,93,9,0.10);
+}
+
+.site-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-menu > li {
+    margin: 0 4px;
+    position: relative;
+}
+
+.site-menu > li > a,
+.site-menu > li > .dropdown > .btn {
+    color: #fff;
+    font-size: 1.12rem;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 22px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.site-menu > li > a:hover,
+.site-menu > li > .dropdown > .btn:hover,
+.site-menu > li > a.active {
+    background: rgba(255,255,255,0.18);
+    color: #FFD700;
+    box-shadow: 0 2px 8px rgba(25,93,9,0.10);
+    text-shadow: 0 2px 8px rgba(25,93,9,0.10);
+}
+
+.site-menu .ui-btn,
+.site-menu .ui-btn-info {
+    background: #fff !important;
+    color: #28a745 !important;
+    font-weight: bold;
+    border-radius: 22px;
+    padding: 10px 28px;
+    margin-left: 10px;
+    box-shadow: 0 2px 8px rgba(25,93,9,0.10);
+    transition: background 0.2s, color 0.2s;
+    border: none;
+}
+
+.site-menu .ui-btn:hover,
+.site-menu .ui-btn-info:hover {
+    background: #28a745 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(25,93,9,0.15);
+}
+
+.language-switcher .dropdown-toggle {
+    background: rgba(255,255,255,0.13);
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    padding: 10px 22px;
+    font-size: 1.08rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 600;
+}
+
+.language-switcher .dropdown-toggle:hover {
+    background: #fff;
+    color: #28a745;
+}
+
+.language-switcher .dropdown-menu {
+    min-width: 140px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(25,93,9,0.13);
+    border: none;
+    margin-top: 8px;
+    background: #fff;
+    padding: 8px 0;
+}
+
+.language-switcher .dropdown-item {
+    color: #195d09;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-size: 1.05rem;
+}
+
+.language-switcher .dropdown-item:hover {
+    background: #28a745;
+    color: #fff;
+}
+
+.current-language {
+    font-weight: bold;
+    margin-left: 4px;
+}
+
+@media (max-width: 900px) {
+    .site-top-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 10px;
+        min-height: 48px;
+    }
+    .site-menu {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+    .site-menu > li {
+        margin: 0 2px;
+    }
+    .site-top-nav .logo img {
+        height: 32px;
+    }
+}
+@media (max-width: 600px) {
+    .site-top-nav {
+        padding: 0 2vw;
+    }
+    .site-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .site-menu > li {
+        width: 100%;
+    }
+    .site-menu > li > a,
+    .site-menu > li > .dropdown > .btn {
+        width: 100%;
+        justify-content: flex-start;
+    }
+} 

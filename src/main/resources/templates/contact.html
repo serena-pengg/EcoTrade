@@ -40,19 +40,33 @@
     </div>
     <ul class="site-menu">
         <li>
-            <a th:href="@{/home}"><i class="fa fa-home"></i> Home</a>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
         </li>
         <li>
-            <a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
         </li>
         <li>
-            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
         </li>
         <li>
-            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
         </li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
-        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> Get Started</a></li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
 
@@ -62,36 +76,36 @@
 <div class="contact-wrapper" style="display: flex; flex-direction: column; align-items: center; padding: 3rem 0;">
     <div class="section-header" style="display: flex; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px solid #000000;">
         <i class="fa fa-envelope" style="font-size: 2.5rem; color: #000000; margin-right: 1rem;"></i>
-        <h2 style="margin: 0; color: #000000; font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Contact Us</h2>
+        <h2 style="margin: 0; color: #000000; font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;" data-i18n="contact.title">Contact Us</h2>
     </div>
     
     <!-- Success Message -->
     <div th:if="${success}" class="alert alert-success" role="alert" style="width: 100%; max-width: 600px; margin-bottom: 2rem;">
-        <span th:text="${success}"></span>
+        <span th:text="${success}" data-i18n="contact.success"></span>
     </div>
     
     <!-- Error Message -->
     <div th:if="${error}" class="alert alert-danger" role="alert" style="width: 100%; max-width: 600px; margin-bottom: 2rem;">
-        <span th:text="${error}"></span>
+        <span th:text="${error}" data-i18n="contact.error"></span>
     </div>
     
     <div class="form-section" style="width: 100%; max-width: 600px; margin: 0 auto; padding: 2rem; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
         <form th:action="@{/contact/submit}" method="post">
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email" data-i18n="contact.email">Email</label>
                 <input type="email" class="form-control" id="email" name="email" 
-                    th:value="${user != null ? user.email : ''}" required>
+                    th:value="${user != null ? user.email : ''}" required data-i18n-placeholder="contact.emailPlaceholder" placeholder="Your Email">
             </div>
             <div class="form-group">
-                <label for="sub"><strong>Subject</strong></label>
-                <input required type="text" id="sub" name="subject" placeholder="Your Subject Here" class="form-control">
+                <label for="sub"><strong data-i18n="contact.subject">Subject</strong></label>
+                <input required type="text" id="sub" name="subject" placeholder="Your Subject Here" class="form-control" data-i18n-placeholder="contact.subjectPlaceholder">
             </div>
             <div class="form-group">
-                <label for="msg"><strong>Message</strong></label>
-                <textarea required name="message" id="msg" rows="6" class="form-control" placeholder="Your Message here..."></textarea>
+                <label for="msg"><strong data-i18n="contact.message">Message</strong></label>
+                <textarea required name="message" id="msg" rows="6" class="form-control" placeholder="Your Message here..." data-i18n-placeholder="contact.messagePlaceholder"></textarea>
             </div>
             <div class="form-group">
-                <button type="submit" class="form-control ui-btn ui-btn-info">Send message</button>
+                <button type="submit" class="form-control ui-btn ui-btn-info" data-i18n="contact.send">Send message</button>
             </div>
         </form>
     </div>
@@ -112,7 +126,7 @@
 <div class="chat-box">
     <div class="chat-top">
         <section>
-            <h6 class="org-name">EcoTrade Global</h6>
+            <h6 class="org-name" data-i18n="nav.brand">EcoTrade Global</h6>
             <div class="repliers">
                 <div class="r-img">
                     <img th:src="@{/img/user2.jpg}" alt="">
@@ -122,18 +136,18 @@
         </section>
     </div>
     <div class="chat-flow" id="chat-flow">
-        <p class="outbound">
+        <p class="outbound" data-i18n="chat.hello">
             Hello, Anyone there?
         </p>
-        <p class="inbound">
+        <p class="inbound" data-i18n="chat.hi">
             Hi, Vincent here. How may I be of service.
         </p>
     </div>
     <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
         <div class="input-group">
-            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+            <input type="text" class="form-control chat-message" data-i18n-placeholder="chat.placeholder" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
             <div class="input-group-append">
-                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton" data-i18n="chat.sendMessage">Send</button>
             </div>
         </div>
     </div>
@@ -214,41 +228,41 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--footer section-->
 <footer class="footer">
     <div class="footer-item">
-        <strong>Get In Touch</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Get Support</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Advertise</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Community Forum</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Affiliate Program</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact Us</a>
+        <strong data-i18n="footer.getInTouch">Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.getSupport">Get Support</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.advertise">Advertise</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.communityForum">Community Forum</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.affiliateProgram">Affiliate Program</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contactUs">Contact Us</span></a>
     </div>
     <div class="footer-item">
-        <strong>Questions?</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Help</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Contact</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Live Support</a>
+        <strong data-i18n="footer.questions">Questions?</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.help">Help</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contact">Contact</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.liveSupport">Live Support</span></a>
     </div>
     <div class="footer-item">
-        <strong>Follow Us</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> Facebook</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Twitter</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Flickr</a>
-        <a href="#"><i class="fa fa-angle-right"></i> Youtube</a>
-        <a href="#"><i class="fa fa-angle-right"></i> LinkedIn</a>
+        <strong data-i18n="footer.followUs">Follow Us</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
     </div>
     <div class="footer-item">
-        <strong>Important Links</strong>
-        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> Home</a>
-        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> Products</a>
-        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> Services</a>
-        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> About Us</a>
+        <strong data-i18n="footer.importantLinks">Important Links</strong>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="nav.home">Home</span></a>
+        <a th:href="@{/items}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.products">Products</span></a>
+        <a th:href="@{/services}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.services">Services</span></a>
+        <a th:href="@{/about}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.aboutUs">About Us</span></a>
     </div>
 </footer>
 <div class="bottom-strip">
     <div class="cards-accepted">
-        <em>Cards Accepted:</em>
+        <em data-i18n="footer.cardsAccepted">Cards Accepted:</em>
         <img th:src="@{/img/card-logos.png}" alt="">
     </div>
-    <div class="copyright"><i class="fa fa-copyright"></i> <span>Second-hand Trading Platform. All Rights Reserved</span></div>
+    <div class="copyright"><i class="fa fa-copyright"></i> <span data-i18n="footer.copyright">EcoTrade Global. All Rights Reserved</span></div>
     <div class="country"><span>P.R.C.  </span><img th:src="@{/img/CHINAFlag.png}" alt=""></div>
 </div>
 <!--end footer section-->
@@ -274,6 +288,7 @@ To use this code on your website, get a free API key from Google.
 Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 -->
 <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBt5aXdacpz0IYnuomsPKcoZsh6_TZkJPo&callback=myMap"></script>
+<script th:src="@{/js/i18n.js}"></script>
 
 </body>
 </html>

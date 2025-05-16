@@ -278,11 +278,35 @@
         </a>
     </div>
     <ul class="site-menu">
-        <li><a th:href="@{/home}"><i class="fa fa-home"></i> Home</a></li>
-        <li><a th:href="@{/search-results}"><i class="fa fa-search"></i> Explore</a></li>
-        <li><a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-        <li><a th:href="@{/contact}"><i class="fa fa-envelope"></i> Contact Us</a></li>
-        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> Profile</a></li>
+        <li>
+            <a th:href="@{/home}"><i class="fa fa-home"></i> <span data-i18n="nav.home">Home</span></a>
+        </li>
+        <li>
+            <a th:href="@{/search-results}"><i class="fa fa-search"></i> <span data-i18n="nav.explore">Explore</span></a>
+        </li>
+        <li>
+            <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> <span data-i18n="nav.cart">Cart</span></a>
+        </li>
+        <li>
+            <a th:href="@{/contact}"><i class="fa fa-envelope"></i> <span data-i18n="nav.contact">Contact Us</span></a>
+        </li>
+        <li><a th:href="@{/profile}"><i class="fa fa-user"></i> <span data-i18n="nav.profile">Profile</span></a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="ui-btn ui-btn-info"><i class="fa fa-sign-in"></i> <span data-i18n="nav.getStarted">Get Started</span></a></li>
+        <!-- 添加语言切换下拉菜单 -->
+        <li class="language-switcher">
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe"></i> <span class="current-language">English</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('zh')">中文</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ja')">日本語</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('ko')">한국어</a>
+                    <a class="dropdown-item" href="#" onclick="switchLanguage('fr')">Français</a>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
 
@@ -293,11 +317,11 @@
             <div class="col-md-8">
                 <h1 class="display-4 mb-3 animated fadeInDown">
                     <i class="fa fa-leaf text-success mr-2"></i>
-                    Eco Points Rewards
+                    <span data-i18n="rewards.title">Eco Points Rewards</span>
                 </h1>
                 <p class="lead animated fadeInUp">
                     <i class="fa fa-gift text-warning mr-2"></i>
-                    Redeem your eco points for exclusive rewards and help make a difference!
+                    <span data-i18n="rewards.subtitle">Redeem your eco points for exclusive rewards and help make a difference!</span>
                 </p>
                 <div class="progress animated fadeInUp" style="height: 10px;">
                     <div class="progress-bar bg-success" role="progressbar" 
@@ -314,17 +338,17 @@
                         <div class="card-body">
                             <h3 class="text-success">
                                 <i class="fa fa-star mr-2"></i>
-                                Your Eco Points
+                                <span data-i18n="rewards.yourPoints">Your Eco Points</span>
                             </h3>
                             <h2 class="display-4 text-success mb-3" th:text="${user.ecoPoints}">0</h2>
                             <p class="text-muted">
                                 <i class="fa fa-info-circle mr-2"></i>
-                                Keep earning points by making eco-friendly purchases!
+                                <span data-i18n="rewards.keepEarning">Keep earning points by making eco-friendly purchases!</span>
                             </p>
                             <div class="mt-3">
                                 <a href="/profile" class="btn btn-outline-success">
                                     <i class="fa fa-user mr-2"></i>
-                                    View Profile
+                                    <span data-i18n="rewards.viewProfile">View Profile</span>
                                 </a>
                             </div>
                         </div>
@@ -342,24 +366,25 @@
         <div class="col-12">
             <h2 class="available-rewards-title mb-4">
                 <i class="fa fa-gift"></i>
-                Available Rewards
+                <span data-i18n="rewards.availableRewards">Available Rewards</span>
             </h2>
             <div class="row">
                 <div class="col-md-4 mb-4" th:each="reward,iter : ${rewards}">
                     <div class="reward-card h-100">
                         <div class="position-relative">
                             <img th:src="${reward.imageUrl}" class="reward-image" alt="Reward Image">
-                            <span class="stock-badge" th:text="${reward.stockQuantity} + ' left'">10 left</span>
+                            <span class="stock-badge"><span th:text="${reward.stockQuantity}"></span> <span data-i18n="rewards.left">left</span></span>
                         </div>
                         <div class="reward-content">
                             <h4 style="cursor:pointer; color:#28a745; text-decoration:underline;" th:text="${reward.name}"
                                 th:onclick="'showRewardModal(' + ${iter.index} + ')'"></h4>
                             <p class="reward-description text-muted" th:text="${reward.description}"></p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="points-badge" th:text="${reward.pointsRequired} + ' points'">100 points</span>
+                                <span class="points-badge"><span th:text="${reward.pointsRequired}"></span> <span data-i18n="rewards.points">points</span></span>
                                 <button class="redeem-btn" 
                                         th:disabled="${user.ecoPoints < reward.pointsRequired || reward.stockQuantity <= 0}"
-                                        th:onclick="'redeemReward(' + ${reward.id} + ')'">
+                                        th:onclick="'redeemReward(' + ${reward.id} + ')'"
+                                        data-i18n="rewards.redeem">
                                     Redeem
                                 </button>
                             </div>
@@ -373,10 +398,10 @@
     <div class="row mt-5">
         <div class="col-12">
             <div class="redemption-history">
-                <h3 class="mb-4">Redemption History</h3>
+                <h3 class="mb-4" data-i18n="rewards.redemptionHistory">Redemption History</h3>
                 <div th:if="${redemptions.empty}" class="text-center text-muted">
                     <i class="fa fa-history fa-3x mb-3"></i>
-                    <p>No redemption history yet.</p>
+                    <p data-i18n="rewards.noHistory">No redemption history yet.</p>
                 </div>
                 <div th:each="redemption : ${redemptions}" class="history-item">
                     <div class="d-flex justify-content-between align-items-center">
@@ -384,12 +409,12 @@
                             <h5 th:text="${redemption.reward.name}">Reward Name</h5>
                             <small class="text-muted" th:text="${#temporals.format(redemption.redemptionDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</small>
                         </div>
-                        <span class="points-badge" th:text="${redemption.pointsSpent} + ' points'">100 points</span>
+                        <span class="points-badge"><span th:text="${redemption.pointsSpent}"></span> <span data-i18n="rewards.points">points</span></span>
                     </div>
                     <div class="mt-2">
                         <span class="badge" th:classappend="${redemption.status == 'COMPLETED' ? 'badge-success' : 
                                                            redemption.status == 'PENDING' ? 'badge-warning' : 'badge-danger'}"
-                              th:text="${redemption.status}">Status</span>
+                              th:text="${redemption.status}" data-i18n="rewards.status">Status</span>
                     </div>
                 </div>
             </div>
@@ -402,22 +427,22 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirm Redemption</h5>
+                <h5 class="modal-title" data-i18n="rewards.confirmRedemption">Confirm Redemption</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to redeem this reward?</p>
+                <p data-i18n="rewards.confirmMessage">Are you sure you want to redeem this reward?</p>
                 <div class="reward-details">
                     <h6 th:text="${selectedReward?.name}">Reward Name</h6>
                     <p class="text-muted" th:text="${selectedReward?.description}">Reward description</p>
-                    <p><strong>Points Required:</strong> <span th:text="${selectedReward?.pointsRequired}">100</span></p>
+                    <p><strong data-i18n="rewards.pointsRequired">Points Required:</strong> <span th:text="${selectedReward?.pointsRequired}">100</span></p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="confirmRedemption">Confirm Redemption</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="rewards.cancel">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmRedemption" data-i18n="rewards.confirm">Confirm Redemption</button>
             </div>
         </div>
     </div>
@@ -428,7 +453,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="rewardModalTitle"></h5>
+                <h5 class="modal-title" id="rewardModalTitle" data-i18n="rewards.rewardDetailTitle">Reward Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -461,18 +486,14 @@
         </section>
     </div>
     <div class="chat-flow" id="chat-flow">
-        <p class="outbound">
-            Hello, Anyone there?
-        </p>
-        <p class="inbound">
-            Hi, Vincent here. How may I be of service.
-        </p>
+        <p class="outbound" data-i18n="chat.hello">Hello, Anyone there?</p>
+        <p class="inbound" data-i18n="chat.hi">Hi, Vincent here. How may I be of service.</p>
     </div>
     <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
         <div class="input-group">
-            <input type="text" class="form-control chat-message" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
+            <input type="text" class="form-control chat-message" data-i18n-placeholder="chat.placeholder" placeholder="Send a Message" style="font-size: 14px; height: 38px;" id="messageInput">
             <div class="input-group-append">
-                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton">Send</button>
+                <button class="btn btn-primary send-message" style="height: 38px; padding: 0 15px;" id="sendButton" data-i18n="chat.send">Send</button>
             </div>
         </div>
     </div>
@@ -555,19 +576,19 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <h5>About EcoTrade</h5>
-                <p>Making sustainable shopping easy and rewarding.</p>
+                <h5 data-i18n="footer.aboutEcoTrade">About EcoTrade</h5>
+                <p data-i18n="footer.aboutDescription">Making sustainable shopping easy and rewarding.</p>
             </div>
             <div class="col-md-4">
-                <h5>Quick Links</h5>
+                <h5 data-i18n="footer.quickLinks">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a th:href="@{/home}">Home</a></li>
-                    <li><a th:href="@{/profile}">Profile</a></li>
-                    <li><a th:href="@{/contact}">Contact Us</a></li>
+                    <li><a th:href="@{/home}" data-i18n="nav.home">Home</a></li>
+                    <li><a th:href="@{/profile}" data-i18n="nav.profile">Profile</a></li>
+                    <li><a th:href="@{/contact}" data-i18n="nav.contact">Contact Us</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h5>Connect With Us</h5>
+                <h5 data-i18n="footer.connectWithUs">Connect With Us</h5>
                 <div class="social-links">
                     <a href="#"><i class="fa fa-facebook"></i></a>
                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -584,6 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script th:src="@{/vendor/js/bootstrap.min.js}"></script>
 <script th:src="@{/vendor/js/alertify.js}"></script>
 <script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/i18n.js}"></script>
 
 <script>
 let selectedRewardId = null;
@@ -626,7 +648,12 @@ document.getElementById('confirmRedemption').addEventListener('click', function(
     }
 });
 
-function showNotification(message, type = 'success') {
+function showNotification(messageKey, type = 'success') {
+    const lang = localStorage.getItem('selectedLanguage') || 'en';
+    let message = messageKey;
+    if (window.translations && translations[lang] && translations[lang][messageKey]) {
+        message = translations[lang][messageKey];
+    }
     const notification = document.createElement('div');
     notification.className = `custom-notification ${type}`;
     notification.innerHTML = `
@@ -635,7 +662,6 @@ function showNotification(message, type = 'success') {
             <span class="notification-message">${message}</span>
         </div>
     `;
-
     document.body.appendChild(notification);
     setTimeout(() => notification.classList.add('show'), 10);
     setTimeout(() => {
