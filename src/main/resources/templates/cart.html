@@ -100,30 +100,31 @@
                 <tr th:each="item : ${cartItems}">
                     <td>
                         <div>
-                            <a th:href="@{/cart/remove/{id}(id=${item.product.id})}" class="remove-item ui-text-danger" style="text-decoration: none;">
+                            <a th:href="@{/cart/remove/{id}(id=${item.product != null ? item.product.id : item.hainanProduct.id})}" 
+                               class="remove-item ui-text-danger" style="text-decoration: none;">
                                 <i class="fa fa-times-circle"></i>
                             </a>
                             <div class="item-img">
-                                <img th:src="@{${item.product.imageUrl}}" alt="">
+                                <img th:src="@{${item.product != null ? item.product.imageUrl : item.hainanProduct.imageUrl}}" alt="">
                             </div>
                         </div>
                     </td>
                     <td>
-                        <strong th:text="${item.product.name}">Item name goes here</strong>
+                        <strong th:text="${item.product != null ? item.product.name : item.hainanProduct.name}">Item name goes here</strong>
                     </td>
                     <td>
                         <div class="price-control">
-                            <strong class="unit-price">¥ <span th:text="${item.product.price}">72.00</span></strong>
+                            <strong class="unit-price">¥ <span th:text="${item.product != null ? item.product.price : item.hainanProduct.price}">72.00</span></strong>
                             <span>x</span>
                             <div class="quantity-change">
-                                <form th:action="@{/cart/update/{id}(id=${item.product.id})}" method="post" style="display: inline;">
+                                <form th:action="@{/cart/update/{id}(id=${item.product != null ? item.product.id : item.hainanProduct.id})}" method="post" style="display: inline;">
                                     <input type="hidden" name="quantity" th:value="${item.quantity - 1}">
                                     <button type="submit" class="minus-item" th:disabled="${item.quantity <= 1}">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </form>
                                 <input class="quantity-input" title="" type="text" th:value="${item.quantity}" readonly>
-                                <form th:action="@{/cart/update/{id}(id=${item.product.id})}" method="post" style="display: inline;">
+                                <form th:action="@{/cart/update/{id}(id=${item.product != null ? item.product.id : item.hainanProduct.id})}" method="post" style="display: inline;">
                                     <input type="hidden" name="quantity" th:value="${item.quantity + 1}">
                                     <button type="submit" class="add-item">
                                         <i class="fa fa-plus"></i>

@@ -267,8 +267,8 @@ $(document).ready(function () {
     $('.chat-form').on('submit', function (e) {
         var chatInput = $(this).find('.chat-message');
         if(chatInput.val() !== ''){
-            // Add user message
-            chatsContainer.append('<p class="outbound">' + chatInput.val() + '</p>');
+            // 添加用户消息
+            addMessage(chatInput.val(), 'outbound');
             
             // Send message to AI and get response
             $.ajax({
@@ -277,18 +277,14 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 data: JSON.stringify({ message: chatInput.val() }),
                 success: function(response) {
-                    // Add AI response
-                    chatsContainer.append('<p class="inbound">' + response + '</p>');
-                    // Scroll to bottom
-                    chatsContainer.animate({
-                        scrollTop: chatsContainer[0].scrollHeight
-                    }, 500);
+                    // 添加AI回复
+                    addMessage(response, 'inbound');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                     console.error('Status:', status);
                     console.error('Response:', xhr.responseText);
-                    chatsContainer.append('<p class="inbound">Sorry, there was an error processing your message.</p>');
+                    addMessage('抱歉，发生了错误，请稍后重试。', 'inbound');
                 }
             });
             

@@ -3,6 +3,7 @@ package com.example.Secondhand.service;
 import com.example.Secondhand.model.CartItem;
 import com.example.Secondhand.model.Product;
 import com.example.Secondhand.model.User;
+import com.example.Secondhand.model.HainanProduct;
 import com.example.Secondhand.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class CartService {
     private ProductService productService;
 
     @Autowired
+    private HainanProductService hainanProductService;
+
+    @Autowired
     private UserService userService;
 
     public List<CartItem> getCartItems(User user) {
@@ -27,27 +31,46 @@ public class CartService {
     }
 
     @Transactional
-    public void addToCart(Long productId, User user) {
+    public void addToCart(Long productId, User user, boolean isHainanProduct) {
         if (user == null) {
             throw new RuntimeException("User must be logged in to add items to cart");
         }
-        
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            throw new RuntimeException("Product not found with id: " + productId);
-        }
 
-        CartItem existingItem = cartRepository.findByUserAndProductId(user, productId);
-
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-            cartRepository.save(existingItem);
+        CartItem existingItem;
+        if (isHainanProduct) {
+            HainanProduct product = hainanProductService.getProductById(productId);
+            if (product == null) {
+                throw new RuntimeException("Hainan product not found with id: " + productId);
+            }
+            existingItem = cartRepository.findByUserAndHainanProductId(user, productId);
+            
+            if (existingItem != null) {
+                existingItem.setQuantity(existingItem.getQuantity() + 1);
+                cartRepository.save(existingItem);
+            } else {
+                CartItem newItem = new CartItem();
+                newItem.setHainanProduct(product);
+                newItem.setUser(user);
+                newItem.setQuantity(1);
+                cartRepository.save(newItem);
+            }
         } else {
-            CartItem newItem = new CartItem();
-            newItem.setProduct(product);
-            newItem.setUser(user);
-            newItem.setQuantity(1);
-            cartRepository.save(newItem);
+            Product product = productService.getProductById(productId);
+            if (product == null) {
+                throw new RuntimeException("Product not found with id: " + productId);
+            }
+            existingItem = cartRepository.findByUserAndProductId(user, productId);
+            
+            if (existingItem != null) {
+                existingItem.setQuantity(existingItem.getQuantity() + 1);
+                cartRepository.save(existingItem);
+            } else {
+                CartItem newItem = new CartItem();
+                newItem.setProduct(product);
+                newItem.setUser(user);
+                newItem.setQuantity(1);
+                cartRepository.save(newItem);
+            }
         }
     }
 

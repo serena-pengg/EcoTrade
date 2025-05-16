@@ -30,6 +30,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 @Controller
 public class UserController {
@@ -245,5 +246,80 @@ public class UserController {
     public String refreshEcoPoints() {
         userService.recalculateAllUsersEcoPoints();
         return "Eco points refreshed!";
+    }
+
+    @GetMapping("/api/recommended-products")
+    @ResponseBody
+    public List<Product> getRecommendedProducts(
+            @RequestParam(required = false) String sort,
+            Authentication authentication) {
+        List<Product> recommendedProducts = getRecommendedProductsList(authentication);
+        
+        // 根据排序参数对商品进行排序
+        if (sort != null) {
+            switch (sort) {
+                case "eco-score":
+                    recommendedProducts.sort((p1, p2) -> Float.compare(
+                        p2.getEcoScore() != null ? p2.getEcoScore() : 0,
+                        p1.getEcoScore() != null ? p1.getEcoScore() : 0));
+                    break;
+                case "price-asc":
+                    recommendedProducts.sort(Comparator.comparing(Product::getPrice));
+                    break;
+                case "date":
+                    recommendedProducts.sort((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()));
+                    break;
+            }
+        }
+        
+        return recommendedProducts;
+    }
+
+    private List<Product> getRecommendedProductsList(Authentication authentication) {
+        // 获取所有交易记录
+        List<Set<Long>> transactionList = getTransactionHistory();
+        
+        // 获取所有商品
+        List<Product> allProducts = productService.getAllProducts();
+        
+        if (!allProducts.isEmpty()) {
+            // 选择一个随机商品作为基准商品
+            Product randomProduct = allProducts.get(new Random().nextInt(allProducts.size()));
+            
+            // 获取推荐商品
+            List<Product> recommendedProducts = new ArrayList<>(
+                recommendationService.getEcoWeightedRecommendations(transactionList, randomProduct)
+            );
+            
+            // 如果推荐商品不足8个，补充商品
+            if (recommendedProducts.size() < 8) {
+                // 获取环保评分高的商品
+                List<Product> ecoFriendlyProducts = allProducts.stream()
+                    .filter(p -> !recommendedProducts.contains(p))
+                    .filter(p -> p.getEcoScore() != null)
+                    .sorted((p1, p2) -> Float.compare(
+                        p2.getEcoScore() != null ? p2.getEcoScore() : 0,
+                        p1.getEcoScore() != null ? p1.getEcoScore() : 0))
+                    .limit(8 - recommendedProducts.size())
+                    .collect(Collectors.toList());
+                recommendedProducts.addAll(ecoFriendlyProducts);
+                
+                // 如果还不足8个，用最新商品补充
+                if (recommendedProducts.size() < 8) {
+                    List<Product> latestProducts = allProducts.stream()
+                        .filter(p -> !recommendedProducts.contains(p))
+                        .sorted((p1, p2) -> p2.getCreatedAt().compareTo(p1.getCreatedAt()))
+                        .limit(8 - recommendedProducts.size())
+                        .collect(Collectors.toList());
+                    recommendedProducts.addAll(latestProducts);
+                }
+            }
+            
+            return recommendedProducts.stream()
+                .limit(8)
+                .collect(Collectors.toList());
+        }
+        
+        return Collections.emptyList();
     }
 } 

@@ -25,7 +25,7 @@ public class HainanProductPageController {
             Model model) {
         int pageSize = 3;
         Page<HainanProduct> productPage = hainanProductService.getFilteredProducts(
-            category, ecoScore, priceRange, PageRequest.of(page, pageSize, Sort.by("createdAt").descending())
+            null, category, ecoScore, priceRange, PageRequest.of(page, pageSize, Sort.by("createdAt").descending())
         );
         model.addAttribute("searchResults", productPage.getContent());
         model.addAttribute("totalPages", productPage.getTotalPages());

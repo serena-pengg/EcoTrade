@@ -16,6 +16,10 @@ public class CartItem {
     private Product product;
 
     @ManyToOne
+    @JoinColumn(name = "hainan_product_id")
+    private HainanProduct hainanProduct;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -23,6 +27,11 @@ public class CartItem {
 
     @Transient
     public double getTotal() {
-        return product.getPrice() * quantity;
+        if (product != null) {
+            return product.getPrice() * quantity;
+        } else if (hainanProduct != null) {
+            return hainanProduct.getPrice() * quantity;
+        }
+        return 0;
     }
 } 

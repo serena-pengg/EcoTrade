@@ -41,6 +41,16 @@ body, h1, h2, h3, h4, h5, h6, input[type="text"], input[type="password"], input[
 body {
   background: #edf3f9; }
 
+  span {
+    font: inherit;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    display: inline-block;
+    vertical-align: middle;
+  }
 /*
 ---------------------------
 1) Buttons
@@ -488,15 +498,6 @@ a.ui-btn:hover {
   @media (max-width: 29.6875em) {
   .site-top-nav {
       padding: 0 1.5rem; } }
-      .site-menu a span[data-i18n] {
-        font: inherit;
-        color: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        letter-spacing: inherit;
-        text-transform: inherit;
-        /* 你可以根据需要加更多 */
-    }
 
   /* Language Switcher Styles */
   .language-switcher {
@@ -705,6 +706,7 @@ a.ui-btn:hover {
       font-size: 0.9rem; }
       .footer .footer-item a i {
         color: inherit; }
+
   @media (max-width: 63.125em) {
     .footer {
       padding: 2rem 3rem; } }
@@ -718,7 +720,7 @@ a.ui-btn:hover {
   @media (max-width: 30.625em) {
     .footer .footer-item {
       flex-basis: 100%; } }
-
+  
 .bottom-strip {
   width: 100%;
   min-height: 60px;
@@ -810,8 +812,66 @@ a.ui-btn:hover {
   box-shadow: 1px 3px 35px -1px rgba(0, 0, 0, 0.54);
   opacity: 0;
   visibility: hidden;
-  transition: all 400ms; }
-  .chat-box .chat-top {
+  transition: all 400ms;
+  overflow: hidden;
+  min-width: 300px;
+  min-height: 450px;
+  max-width: 800px;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nw-resize;
+  background: linear-gradient(135deg, #17a3ff 50%, transparent 50%);
+  border-radius: 8px 0 0 0;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+.chat-box .chat-flow {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.chat-box .chat-top {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.chat-box .chat-input {
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.chat-box.show-chat {
+  visibility: visible;
+  opacity: 1;
+}
+
+.chat-box::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  cursor: nw-resize;
+  background: linear-gradient(135deg, #ccc 50%, transparent 50%);
+  border-radius: 8px 0 0 0;
+}
+
+.chat-box .chat-top {
     width: 100%;
     height: 150px;
     background: linear-gradient(to bottom, #17a3ff, #35349a);
@@ -856,15 +916,28 @@ a.ui-btn:hover {
       background: #f4f7f9;
       border-radius: 14px;
       padding: 0.8rem;
-      font-size: 0.8rem; }
+      font-size: 0.9rem;
+      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      word-wrap: break-word;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
     .chat-box .chat-flow .inbound {
       width: 80%;
       margin: 0 19% 1rem 0;
       background: rgba(0, 138, 249, 0.6);
       border-radius: 14px;
       padding: 0.8rem;
-      color: whitesmoke;
-      font-size: 0.8rem; }
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      word-wrap: break-word;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
   .chat-box form {
     position: absolute;
     bottom: 0;
@@ -876,9 +949,6 @@ a.ui-btn:hover {
       border: none;
       border-radius: 0 0 8px 8px;
       height: 54px; }
-  .chat-box.show-chat {
-    visibility: visible;
-    opacity: 1; }
   @media (max-width: 47.5em) {
     .chat-box {
       display: none; } }
@@ -1742,7 +1812,10 @@ a.ui-btn:hover {
   padding: 2rem; }
   .search-banner h5 {
     color: whitesmoke;
-    text-align: center; }
+    text-align: center; 
+    font-size: 3rem;
+    font-weight: bold;
+  }
   .search-banner form {
     width: 60%;
     margin: 0 auto; }
@@ -1829,10 +1902,11 @@ a.ui-btn:hover {
         flex-direction: column;
         align-items: center; }
         .results-wrapper .results-section .result-item .result-item-price .add-to-cart {
+          margin-top: 10px;
           display: inline-block;
           padding: 5px 1rem;
           background: #1c1c1c;
-          font-size: 0.8rem;
+          font-size: 1rem;
           color: whitesmoke;
           border-radius: 3px;
           text-decoration: none;
@@ -4103,3 +4177,7 @@ a.ui-btn:hover {
     }
 }
 
+.chat-flow p {
+    word-break: break-all;
+    white-space: pre-wrap;
+}

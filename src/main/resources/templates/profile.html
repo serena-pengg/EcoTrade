@@ -275,12 +275,14 @@
                         <div class="row">
                             <div th:each="item : ${order.orderItems}" class="col-md-4 mb-3">
                                 <div class="d-flex">
-                                    <img th:if="${item.product.imageUrl}" th:src="${item.product.imageUrl}" 
+                                    <img th:if="${item.product != null ? item.product.imageUrl : item.hainanProduct.imageUrl}" 
+                                         th:src="${item.product != null ? item.product.imageUrl : item.hainanProduct.imageUrl}" 
                                          class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-                                    <img th:unless="${item.product.imageUrl}" th:src="@{/img/default-product.png}" 
+                                    <img th:unless="${item.product != null ? item.product.imageUrl : item.hainanProduct.imageUrl}" 
+                                         th:src="@{/img/default-product.png}" 
                                          class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
                                     <div class="ml-3">
-                                        <h6 th:text="${item.product.name}">Product Name</h6>
+                                        <h6 th:text="${item.product != null ? item.product.name : item.hainanProduct.name}">Product Name</h6>
                                         <p class="mb-1"><span data-i18n="profile.quantity">Quantity:</span> <span th:text="${item.quantity}">1</span></p>
                                         <p class="mb-1"><span data-i18n="profile.price">Price:</span> <span th:text="${'¥' + item.price}">¥0.00</span></p>
                                     </div>

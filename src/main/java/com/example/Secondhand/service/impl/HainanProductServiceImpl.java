@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.annotation.PostConstruct;
+import org.springframework.data.jpa.domain.Specification;
 
 @Service
 public class HainanProductServiceImpl implements HainanProductService {
@@ -65,9 +66,16 @@ public class HainanProductServiceImpl implements HainanProductService {
     }
 
     @Override
-    public Page<HainanProduct> getFilteredProducts(String category, String ecoScore, String priceRange, Pageable pageable) {
-        return hainanProductRepository.findAll((root, query, cb) -> {
+    public Page<HainanProduct> getFilteredProducts(
+        String query, String category, String ecoScore, String priceRange, Pageable pageable) {
+        return hainanProductRepository.findAll((Specification<HainanProduct>) (root, query1, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            if (query != null && !query.trim().isEmpty()) {
+                predicates.add(cb.or(
+                    cb.like(root.get("name"), "%" + query.trim() + "%"),
+                    cb.like(root.get("description"), "%" + query.trim() + "%")
+                ));
+            }
             if (category != null && !"All".equals(category)) {
                 predicates.add(cb.equal(root.get("category"), category));
             }

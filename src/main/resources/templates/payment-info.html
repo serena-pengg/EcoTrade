@@ -105,15 +105,17 @@
 <!--end navigation bars-->
 
 <!--payment info-->
-<div class="container mt-4">
-    <h2 data-i18n="payment.deliveryInfo">Delivery Information</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card mb-4">
+<div class="container-fluid mt-4" style="max-width:1400px;">
+    <div class="section-header" style="display: flex; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px solid #000000;">
+        <i class="fa fa-truck" style="font-size: 2.5rem; color: #000000; margin-right: 1rem;"></i>
+        <h2 style="margin: 0; color: #000000; font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;" data-i18n="payment.deliveryInfo">Delivery Information</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-12">
+            <div class="card mb-4 shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title" data-i18n="payment.shippingDetails">Shipping Details</h5>
-                    <p class="text-muted" data-i18n="payment.secureDelivery">Secure delivery</p>
-                    
+                    <h5 class="card-title mb-3" data-i18n="payment.shippingDetails" style="font-weight:600; color:#0a1b2e;">Shipping Details</h5>
+                    <p class="text-muted mb-4" data-i18n="payment.secureDelivery">Secure delivery</p>
                     <!-- 已保存的地址列表 -->
                     <div th:if="${savedAddresses != null && !savedAddresses.empty}" class="saved-addresses mb-4">
                         <h6 class="mb-3" style="color: #333; font-weight: 600;">
@@ -122,9 +124,9 @@
                         </h6>
                         <div class="address-list">
                             <div th:each="address : ${savedAddresses}" 
-                                 class="address-item mb-3 p-3 border rounded" 
+                                 class="address-item mb-3 p-3 border rounded bg-light" 
                                  th:classappend="${address.isDefault ? 'border-primary' : ''}"
-                                 style="background-color: #fff; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                 style="background-color: #f8fafc; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <p class="mb-1">
@@ -150,7 +152,7 @@
                                             th:data-fullname="${address.fullName}"
                                             th:data-phone="${address.phoneNumber}"
                                             th:data-address="${address.address}"
-                                            style="background-color: #0c2d4f; color: white; border: none; padding: 8px 15px; border-radius: 20px;">
+                                            style="background-color: #0c2d4f; color: white; border: none; padding: 8px 15px; border-radius: 20px; box-shadow:0 1px 4px rgba(44,62,80,0.08);">
                                         <i class="fa fa-check" style="margin-right: 5px;"></i>
                                         <span data-i18n="payment.useThisAddress">Use This Address</span>
                                     </button>
@@ -165,71 +167,81 @@
                         <p class="text-muted" data-i18n="payment.noSavedAddresses">No saved addresses found.</p>
                         <p class="text-muted" style="font-size: 0.9rem;" data-i18n="payment.addAddressPrompt">Please add an address to continue.</p>
                     </div>
-
+                    <hr style="margin:2rem 0;">
                     <form th:action="@{/order/checkout}" method="post">
-                        <div class="form-group">
-                            <label for="fullName" data-i18n="payment.fullName">Full Name</label> <i class="fa fa-star ui-text-danger"></i>
+                        <div class="form-group mb-3">
+                            <label for="fullName" data-i18n="payment.fullName" style="font-weight:500;">Full Name</label> <i class="fa fa-star ui-text-danger"></i>
                             <input type="text" id="fullName" name="fullName" class="form-control" 
                                    th:value="${defaultAddress?.fullName}" data-i18n-placeholder="payment.fullNamePlaceholder" placeholder="Your full name" required>
                         </div>
-                        <div class="form-group">
-                            <label for="phone" data-i18n="payment.phoneNumber">Phone Number</label> <i class="fa fa-star ui-text-danger"></i>
+                        <div class="form-group mb-3">
+                            <label for="phone" data-i18n="payment.phoneNumber" style="font-weight:500;">Phone Number</label> <i class="fa fa-star ui-text-danger"></i>
                             <input type="tel" class="form-control" name="phoneNumber" id="phone" 
                                    th:value="${defaultAddress?.phoneNumber}" data-i18n-placeholder="payment.phonePlaceholder" placeholder="Your contact number" required>
                         </div>
-                        <div class="form-group">
-                            <label for="address" data-i18n="payment.deliveryAddress">Delivery Address</label> <i class="fa fa-star ui-text-danger"></i>
+                        <div class="form-group mb-3">
+                            <label for="address" data-i18n="payment.deliveryAddress" style="font-weight:500;">Delivery Address</label> <i class="fa fa-star ui-text-danger"></i>
                             <input type="text" class="form-control" name="address" id="address" 
                                    th:value="${defaultAddress?.address}" data-i18n-placeholder="payment.addressPlaceholder" placeholder="Province, city and street address" required>
                         </div>
-                        <div class="form-group">
-                            <label for="deliveryNotes" data-i18n="payment.deliveryNotes">Delivery Notes</label>
+                        <div class="form-group mb-3">
+                            <label for="deliveryNotes" data-i18n="payment.deliveryNotes" style="font-weight:500;">Delivery Notes</label>
                             <textarea class="form-control" name="deliveryNotes" id="deliveryNotes" rows="3" data-i18n-placeholder="payment.notesPlaceholder" placeholder="Any special instructions for delivery"></textarea>
                         </div>
-                        <div class="save-address">
+                        <div class="save-address mb-3">
                             <label class="label--checkbox">
                                 <input type="checkbox" class="checkbox" name="saveAddress" value="true" checked>
                                 <strong data-i18n="payment.saveAddress">Save this address for future use</strong>
                             </label>
                         </div>
-                        <div class="payment-bottom">
-                            <a th:href="@{/cart}" data-i18n="payment.backToCart"><i class="fa fa-angle-left"></i> Shopping Cart</a>
-                            <button type="submit" class="ui-btn ui-btn-info-outline" data-i18n="payment.proceedToPayment">Proceed to Payment <i class="fa fa-credit-card"></i></button>
+                        <div class="payment-bottom d-flex justify-content-between align-items-center mt-4">
+                            <a th:href="@{/cart}" data-i18n="payment.backToCart" class="btn" style="background: #f8f9fa; color: #0a1b2e; border: 2px solid #e3e6eb; padding: 12px 25px; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; text-decoration: none;">
+                                <i class="fa fa-angle-left" style="margin-right: 8px;"></i> 
+                                <span data-i18n="payment.backToCart">Shopping Cart</span>
+                            </a>
+                            <button type="submit" class="btn" style="background: linear-gradient(135deg, #0a1b2e 0%, #1a3a5f 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(10, 27, 46, 0.1);">
+                                <span data-i18n="payment.proceedToPayment">Proceed to Payment</span>
+                                <i class="fa fa-credit-card" style="margin-left: 8px;"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4">
-            <div class="card">
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card shadow border-0" style="background:linear-gradient(135deg,#f8fafc 80%,#e3f0ff 100%);">
                 <div class="card-body">
-                    <h5 class="card-title" data-i18n="payment.orderSummary">Order Summary</h5>
-                    <div class="order-item" th:each="item : ${cartItems}">
-                        <div>
-                            <strong th:text="${item.product.name}">Product Name</strong>
-                            <span th:text="${item.quantity} + 'x'">1x</span>
-                        </div>
-                        <div>
-                            <span th:text="${item.product.description}">Description</span>
-                            <strong th:text="${'¥' + #numbers.formatDecimal(item.total, 0, 2)}">¥0.00</strong>
+                    <h5 class="card-title mb-4" data-i18n="payment.orderSummary" style="font-weight:600; color:#0a1b2e;">Order Summary</h5>
+                    <div class="order-item-list mb-3">
+                        <div class="order-item mb-3 p-2 rounded" th:each="item : ${cartItems}" style="background:#fff; box-shadow:0 1px 4px rgba(44,62,80,0.04);">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong th:text="${item.product != null ? item.product.name : item.hainanProduct.name}" style="font-size:1.1rem; color:#0a1b2e;">Product Name</strong>
+                                    <span class="badge badge-light ml-2" style="font-size:0.95rem; color:#2e7d32; background:#eafaf1; border-radius:12px; padding:2px 10px;" th:text="${item.quantity} + 'x'">1x</span>
+                                </div>
+                                <strong th:text="${'¥' + #numbers.formatDecimal(item.total, 0, 2)}" style="font-size:1.1rem; color:#2e7d32;">¥0.00</strong>
+                            </div>
+                            <div class="text-muted mt-1" style="font-size:0.95rem;">
+                                <span th:text="${item.product != null ? item.product.description : item.hainanProduct.description}">Description</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="order-item">
-                        <div>
-                            <span data-i18n="payment.subtotal">Sub total</span>
-                            <strong id="subtotal" th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}">¥0.00</strong>
+                    <div class="order-item p-3 rounded" style="background:#f4f8fb; box-shadow:0 1px 4px rgba(44,62,80,0.03);">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span data-i18n="payment.subtotal" style="font-weight:500;">Sub total</span>
+                            <strong id="subtotal" th:text="${'¥' + #numbers.formatDecimal(subtotal, 0, 2)}" style="color:#0a1b2e;">¥0.00</strong>
                         </div>
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                            <div style="display: flex; align-items: center;">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="d-flex align-items-center">
                                 <input type="checkbox" id="donateCheckbox" style="margin-right: 10px;" checked>
                                 <i class="fa fa-leaf" style="color: #2e7d32; font-size: 1.2em; margin-right: 10px;"></i>
                                 <span style="color: #2e7d32; font-weight: 500;" data-i18n="payment.oceanProtectionFee">Ocean Protection Fee</span>
                             </div>
-                            <div style="display: flex; align-items: center;">
+                            <div class="d-flex align-items-center">
                                 <span style="color: #2e7d32; margin-right: 5px;">¥</span>
                                 <input type="number" id="donationAmount" 
-                                       style="width: 80px; border: 1px solid #2e7d32; border-radius: 4px; padding: 2px 5px; color: #2e7d32; font-weight: bold;"
+                                       style="width: 80px; border: 1px solid #2e7d32; border-radius: 4px; padding: 2px 5px; color: #2e7d32; font-weight: bold; background:#fff;"
                                        value="1.00" min="0" step="1.00" onchange="updateDonationAmount(this.value)">
                             </div>
                         </div>
@@ -238,8 +250,8 @@
                             <span data-i18n="payment.donationInfo">Your donation will help protect marine ecosystems and support ocean conservation efforts. Every contribution makes a difference!</span>
                         </div>
                         <hr>
-                        <div>
-                            <span data-i18n="payment.total">Total</span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span data-i18n="payment.total" style="font-weight:600; font-size:1.1rem;">Total</span>
                             <h4><strong class="ui-text-info" id="total" th:text="${'¥' + #numbers.formatDecimal(total, 1, 2)}">¥0.00</strong></h4>
                         </div>
                     </div>
@@ -248,14 +260,6 @@
         </div>
     </div>
     
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between">
-                <a href="/cart" class="btn btn-outline-secondary" data-i18n="payment.backToCart">Shopping Cart</a>
-                <button class="btn btn-primary" data-i18n="payment.proceedToPayment">Proceed to Payment</button>
-            </div>
-        </div>
-    </div>
 </div>
 <!--end payment info-->
 

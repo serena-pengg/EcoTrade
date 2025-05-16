@@ -66,6 +66,22 @@ public class HainanProduct {
         calculateEcoScore();
     }
 
+    private float calculateCarbonScore(float carbonFootprint) {
+        if (carbonFootprint <= 0) {
+            return 5.0f; // 零碳足迹或负碳足迹（如碳汇）给予最高分
+        } else if (carbonFootprint <= 2) {
+            return 5.0f; // 极低碳足迹
+        } else if (carbonFootprint <= 5) {
+            return 4.0f; // 低碳足迹
+        } else if (carbonFootprint <= 10) {
+            return 3.0f; // 中等碳足迹
+        } else if (carbonFootprint <= 20) {
+            return 2.0f; // 较高碳足迹
+        } else {
+            return 1.0f; // 高碳足迹
+        }
+    }
+
     private void calculateEcoScore() {
         if (recycleScore != null && durabilityScore != null && carbonFootprint != null) {
             float recycleWeight = 0.4f;
@@ -74,7 +90,7 @@ public class HainanProduct {
 
             float normalizedRecycleScore = Math.min(Math.max(recycleScore, 1f), 5f);
             float normalizedDurabilityScore = Math.min(Math.max(durabilityScore, 1f), 5f);
-            float normalizedCarbonScore = Math.min(Math.max(carbonFootprint, 1f), 5f);
+            float normalizedCarbonScore = calculateCarbonScore(carbonFootprint);
 
             ecoScore = (normalizedRecycleScore * recycleWeight) +
                       (normalizedDurabilityScore * durabilityWeight) +

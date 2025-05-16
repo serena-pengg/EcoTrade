@@ -176,7 +176,7 @@
                     <i class="fa fa-leaf"></i> <span data-i18n="recommended.sortEcoScore">Highest Eco Score</span>
                 </a>
                 <a href="#" class="sort-btn" data-sort="price-asc">
-                    <i class="fa fa-rmb"></i> <span data-i18n="recommended.sortPrice">Lowest Price</span>
+                    <i class="fa fa-rmb"></i> <span data-i18n="recommended.sortPrice"> Lowest Price</span>
                 </a>
                 <a href="#" class="sort-btn" data-sort="date">
                     <i class="fa fa-clock-o"></i> <span data-i18n="recommended.sortLatest">Latest</span>
@@ -899,6 +899,7 @@
     line-height: 1;
     vertical-align: middle;
     transform: none !important;
+    display: flex;
 }
 
 #voiceInputButton:hover {
@@ -1373,10 +1374,10 @@
             Hi, Vincent here. How may I be of service.
         </p>
     </div>
-    <div class="chat-input" style="position: absolute; bottom: 0; width: 100%; padding: 10px; background: white; border-top: 1px solid #eee;">
+    <div class="chat-input">
         <form class="chat-form" style="display: flex; align-items: center; gap: 10px;">
             <input type="text" class="form-control chat-message" data-i18n-placeholder="chat.placeholder" placeholder="Type a message" id="messageInput">
-            <button type="button" class="ui-btn" id="voiceInputButton" title="Voice Input" data-i18n="chat.voiceInput">
+            <button type="button" class="ui-btn" id="voiceInputButton" title="Voice Input"  style="display: flex;">
                 <i class="fa fa-microphone"></i>
             </button>
             <button type="submit" class="ui-btn ui-btn-prim send-message">
@@ -1404,10 +1405,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 切换聊天框显示状态
         if (chatBox.classList.contains('active')) {
             chatBox.classList.remove('active');
-            chatBoxBtn.innerHTML = '<i class="fa fa-comment icon-sw"></i>';
+            chatBoxBtn.innerHTML = '<i class="fa fa-times icon-sw"></i>';
         } else {
             chatBox.classList.add('active');
-            chatBoxBtn.innerHTML = '<i class="fa fa-times icon-sw"></i>';
+            chatBoxBtn.innerHTML = '<i class="fa fa-comment icon-sw"></i>';
         }
     });
 
@@ -1535,10 +1536,15 @@ document.addEventListener('DOMContentLoaded', function() {
             speakButton.onclick = function() {
                 speakText(text, this);
             };
-            messageContent.appendChild(speakButton);
+            // 用flex布局，左气泡右按钮
+            messageWrapper.style.display = 'flex';
+            messageWrapper.style.alignItems = 'center';
+            messageWrapper.style.justifyContent = 'space-between';
+            messageWrapper.appendChild(messageContent);
+            messageWrapper.appendChild(speakButton);
+        } else {
+            messageWrapper.appendChild(messageContent);
         }
-        
-        messageWrapper.appendChild(messageContent);
         chatFlow.appendChild(messageWrapper);
         
         // 滚动到底部
@@ -1603,6 +1609,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 初始化语音识别
     initSpeechRecognition();
+
+    // 保证按钮一开始就有麦克风图标
+    voiceInputButton.innerHTML = '<i class="fa fa-microphone"></i>';
 });
 </script>
 
@@ -2006,6 +2015,86 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: rgba(40, 167, 69, 0.1);
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+        // 封装点击事件绑定函数
+        function bindProductNameClickEvents() {
+            const productNameLinks = document.querySelectorAll('.product-name-link');
+
+            productNameLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const productCard = this.closest('.product-card');
+                    const productImage = productCard.querySelector('.product-main-image');
+                    const productName = this.textContent; // 获取商品名称
+
+                    if (productImage) {
+                        const imageUrl = productImage.src;
+                        const previewImage = document.getElementById('previewImage');
+                        const modalTitle = document.getElementById('imagePreviewModalLabel');
+
+                        previewImage.src = imageUrl;
+                        modalTitle.textContent = productName; // 设置模态框标题为商品名称
+
+                        // 显示模态框
+                        $('#imagePreviewModal').modal('show');
+                    }
+                });
+            });
+        }
+
+        // 初始绑定点击事件
+        bindProductNameClickEvents();
+
+        // 添加排序功能
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        const productGrid = document.querySelector('.recommended-grid');
+        let products = Array.from(productGrid.children);
+
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // 移除所有按钮的active类
+                sortButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加当前按钮的active类
+                this.classList.add('active');
+
+                const sortType = this.dataset.sort;
+
+                // 根据排序类型重新排序产品
+                products.sort((a, b) => {
+                    switch(sortType) {
+                        case 'eco-score':
+                            const scoreA = parseFloat(a.querySelector('.eco-score-value').textContent);
+                            const scoreB = parseFloat(b.querySelector('.eco-score-value').textContent);
+                            return scoreB - scoreA;
+                        case 'price-asc':
+                            const priceA = parseFloat(a.querySelector('.price').textContent.replace('¥', ''));
+                            const priceB = parseFloat(b.querySelector('.price').textContent.replace('¥', ''));
+                            return priceA - priceB;
+                        case 'date':
+                            const dateA = new Date(a.querySelector('.date').textContent.split('/').reverse().join('-'));
+                            const dateB = new Date(b.querySelector('.date').textContent.split('/').reverse().join('-'));
+                            return dateB - dateA;
+                        default:
+                            return 0;
+                    }
+                });
+
+                // 清空并重新添加排序后的产品
+                productGrid.innerHTML = '';
+                products.forEach(product => {
+                    productGrid.appendChild(product);
+                });
+
+                // 重新绑定点击事件
+                bindProductNameClickEvents();
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -51,13 +52,36 @@ public class HainanProductController {
     @GetMapping("/filtered")
     public Page<HainanProduct> getFilteredProducts(
             @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "query", required = false) String query,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "ecoScore", required = false) String ecoScore,
             @RequestParam(value = "priceRange", required = false) String priceRange) {
         int pageSize = 3;
         return hainanProductService.getFilteredProducts(
-            category, ecoScore, priceRange, PageRequest.of(page, pageSize, Sort.by("createdAt").descending())
+            query, category, ecoScore, priceRange, PageRequest.of(page, pageSize, Sort.by("createdAt").descending())
         );
+    }
+
+    @GetMapping("/HainanProduct")
+    public String hainanProductPage(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "ecoScore", required = false) String ecoScore,
+            @RequestParam(value = "priceRange", required = false) String priceRange,
+            Model model) {
+        int pageSize = 3;
+        Page<HainanProduct> productPage = hainanProductService.getFilteredProducts(
+            query, category, ecoScore, priceRange, PageRequest.of(page, pageSize, Sort.by("createdAt").descending())
+        );
+        model.addAttribute("searchResults", productPage.getContent());
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("selectedCategory", category);
+        model.addAttribute("selectedEcoScore", ecoScore);
+        model.addAttribute("selectedPriceRange", priceRange);
+        model.addAttribute("query", query);
+        return "HainanProduct";
     }
 
 }

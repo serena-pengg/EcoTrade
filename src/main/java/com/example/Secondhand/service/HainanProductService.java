@@ -13,6 +13,7 @@ public interface HainanProductService {
     void deleteProduct(Long id);
     List<HainanProduct> getProductsByCategory(String category);
     Page<HainanProduct> getProductsPaged(Pageable pageable);
-    Page<HainanProduct> getFilteredProducts(String category, String ecoScore, String priceRange, Pageable pageable);
+    Page<HainanProduct> getFilteredProducts(
+        String query, String category, String ecoScore, String priceRange, Pageable pageable);
 } 
  

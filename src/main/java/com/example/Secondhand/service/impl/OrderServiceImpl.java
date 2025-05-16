@@ -59,22 +59,33 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setPrice(cartItem.getProduct().getPrice());
-            order.getOrderItems().add(orderItem);
             
-            // 计算环保积分
-            Product product = cartItem.getProduct();
-            if (product.getEcoScore() != null) {
-                // 根据商品的环保评分计算积分（1-5分，每分50点）
-                // 基础积分 = 环保评分 * 50
-                // 数量加成 = 购买数量 * 10
-                int basePoints = (int)(product.getEcoScore() * 50);
-                int quantityBonus = cartItem.getQuantity() * 10;
-                int itemEcoPoints = basePoints + quantityBonus;
-                ecoPoints += itemEcoPoints;
+            if (cartItem.getProduct() != null) {
+                orderItem.setProduct(cartItem.getProduct());
+                orderItem.setPrice(cartItem.getProduct().getPrice());
+                
+                // 计算环保积分
+                if (cartItem.getProduct().getEcoScore() != null) {
+                    int basePoints = (int)(cartItem.getProduct().getEcoScore() * 50);
+                    int quantityBonus = cartItem.getQuantity() * 10;
+                    int itemEcoPoints = basePoints + quantityBonus;
+                    ecoPoints += itemEcoPoints;
+                }
+            } else if (cartItem.getHainanProduct() != null) {
+                orderItem.setHainanProduct(cartItem.getHainanProduct());
+                orderItem.setPrice(cartItem.getHainanProduct().getPrice());
+                
+                // 计算环保积分
+                if (cartItem.getHainanProduct().getEcoScore() != null) {
+                    int basePoints = (int)(cartItem.getHainanProduct().getEcoScore() * 50);
+                    int quantityBonus = cartItem.getQuantity() * 10;
+                    int itemEcoPoints = basePoints + quantityBonus;
+                    ecoPoints += itemEcoPoints;
+                }
             }
+            
+            orderItem.setQuantity(cartItem.getQuantity());
+            order.getOrderItems().add(orderItem);
         }
         
         // 更新用户的积分

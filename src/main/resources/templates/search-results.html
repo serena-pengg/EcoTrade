@@ -629,7 +629,7 @@
            style="background: linear-gradient(90deg, #4d0b04 0%, #9c0505 100%); color: #fff; font-weight: bold; font-size: 1.08rem; border: none; border-radius: 24px; box-shadow: 0 2px 8px rgba(67,160,71,0.12); padding: 0.6em 1.6em 0.6em 1.2em; margin-left: auto; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; transition: background 0.2s, box-shadow 0.2s;">
             <span style="font-size: 1.3em;">🌴</span>
             <span data-i18n="search.hainanSelect">海南甄选</span>
-            <span style="font-size: 1.1em; margin-left: 2px;" data-i18n="search.hainanProducts">Hainan Products</span>
+            <span style="font-size: 1.1em; margin-left: 2px;" data-i18n="search.hainanProducts">Products</span>
         </a>
     </div>
 </div>
@@ -841,7 +841,7 @@
                 <span>Sale At:</span>
                 <h3 style="color: #657a7e"; th:text="${'¥' + #numbers.formatDecimal(item.price, 0, 2)}">¥126.00</h3>
                 <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="add-to-cart">Add to Cart <i class="fa fa-cart-plus"></i></button>
+                    <button type="submit" class="add-to-cart"><span data-i18n="product.addToCart">Add to Cart</span> <i class="fa fa-cart-plus"></i></button>
                 </form>
             </div>
         </div>
@@ -1495,7 +1495,7 @@ const translations = {
         'search.banner.title': 'The Easiest Way to find Items on the Market',
         'search.placeholder': 'Search Item Here...',
         'search.hainanSelect': 'Hainan Selection',
-        'search.hainanProducts': 'Hainan Products',
+        'search.hainanProducts': 'Products',
         'filter.category.title': 'By Category:',
         'filter.category.all': 'All',
         'filter.category.beauty': 'Beauty',

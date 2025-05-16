@@ -85,7 +85,7 @@
             font-size: 1.18em;
             letter-spacing: 1px;
         }
-        .add-to-cart {
+        .add-to-cart.span{
             background: linear-gradient(90deg, #2E8B57 0%, #FF6B35 100%);
             color: #fff;
             border: none;
@@ -96,7 +96,7 @@
             box-shadow: 0 2px 12px rgba(46,139,87,0.15);
             transition: background 0.2s, box-shadow 0.2s, color 0.2s;
         }
-        .add-to-cart:hover {
+        .add-to-cart.span:hover {
             background: linear-gradient(90deg, #FF6B35 0%, #2E8B57 100%);
             color: #fffbe6;
             box-shadow: 0 4px 18px rgba(46,139,87,0.18);
@@ -542,9 +542,9 @@
 <div class="search-banner" style="background-image: url('../img/hainan_banner.jpg'); background-size: cover; background-repeat: no-repeat;">
     <h5 data-i18n="search.banner.title" style="font-size: 1.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">Discover <strong class="ui-text-info" style="color: #FFD700; font-size: 1.2em; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); display: inline-block; padding: 0 5px;" !important>Tropical Treasures</strong> from Hainan Paradise</h5>
     <div class="search-container">
-        <form th:action="@{/search}" method="get" class="search-form">
+        <form th:action="@{/HainanProduct}" method="get" class="search-form">
             <div class="mega-search">
-                <input class="form-control" type="text" name="query" data-i18n-placeholder="search.placeholder" placeholder="Search Item Here...">
+                <input class="form-control" type="text" name="query" th:value="${query}" data-i18n-placeholder="search.placeholder" placeholder="Search Item Here...">
                 <button type="submit" class="search-btn">
                     <i class="fa fa-search"></i>
                 </button>
@@ -753,7 +753,11 @@
                 <span data-i18n="product.saleAt">Sale At:</span>
                 <h3 style="color: #657a7e"; th:text="${'¥' + #numbers.formatDecimal(item.price, 0, 2)}">¥126.00</h3>
                 <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="add-to-cart"><span data-i18n="product.addToCart">Add to Cart</span> <i class="fa fa-cart-plus"></i></button>
+                    <input type="hidden" name="isHainanProduct" value="true">
+                    <button type="submit" class="add-to-cart" style="background: linear-gradient(90deg, #2E8B57 0%, #FF6B35 100%);">
+                        <span data-i18n="product.addToCart" style="color: #fff;">Add to Cart</span> 
+                        <i class="fa fa-cart-plus"></i>
+                    </button>
                 </form>
             </div>
         </div>
@@ -892,15 +896,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--footer section-->
 <footer class="footer">
     <div class="footer-item">
-        <strong data-i18n="footer.followUs">Get In Touch</strong>
-        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.facebook">Facebook</span></a>
-        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.twitter">Twitter</span></a>
-        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.flickr">Flickr</span></a>
-        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.youtube">Youtube</span></a>
-        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.linkedin">LinkedIn</span></a>
+        <strong data-i18n="footer.getInTouch">Get In Touch</strong>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.getSupport">Get Support</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.advertise">Advertise</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.communityForum">Community Forum</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.affiliateProgram">Affiliate Program</span></a>
+        <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contactUs">Contact Us</span></a>
     </div>
     <div class="footer-item">
-        <strong data-i18n="footer.importantLinks">Questions?</strong>
+        <strong data-i18n="footer.questions">Questions?</strong>
         <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.help">Help</span></a>
         <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.contact">Contact</span></a>
         <a href="#"><i class="fa fa-angle-right"></i> <span data-i18n="footer.liveSupport">Live Support</span></a>
@@ -915,7 +919,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="footer-item">
         <strong data-i18n="footer.importantLinks">Important Links</strong>
-        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.home">Home</span></a>
+        <a th:href="@{/home}"><i class="fa fa-angle-right"></i> <span data-i18n="nav.home">Home</span></a>
         <a th:href="@{/items}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.products">Products</span></a>
         <a th:href="@{/services}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.services">Services</span></a>
         <a th:href="@{/about}"><i class="fa fa-angle-right"></i> <span data-i18n="footer.aboutUs">About Us</span></a>

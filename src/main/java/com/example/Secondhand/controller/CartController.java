@@ -73,9 +73,11 @@ public class CartController {
     }
 
     @PostMapping("/add/{id}")
-    public String addToCart(@PathVariable("id") Long productId, Authentication authentication) {
+    public String addToCart(@PathVariable("id") Long productId, 
+                          @RequestParam(value = "isHainanProduct", defaultValue = "false") boolean isHainanProduct,
+                          Authentication authentication) {
         User user = userService.getCurrentUser(authentication);
-        cartService.addToCart(productId, user);
+        cartService.addToCart(productId, user, isHainanProduct);
         return "redirect:/cart";
     }
 

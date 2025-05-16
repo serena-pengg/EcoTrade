@@ -19,11 +19,25 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "hainan_product_id")
+    private HainanProduct hainanProduct;
+
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "price")
     private Double price;
+
+    @Transient
+    public double getTotal() {
+        if (product != null) {
+            return product.getPrice() * quantity;
+        } else if (hainanProduct != null) {
+            return hainanProduct.getPrice() * quantity;
+        }
+        return 0;
+    }
 
     // Getters and Setters
     public Long getId() {

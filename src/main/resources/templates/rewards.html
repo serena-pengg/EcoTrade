@@ -398,23 +398,40 @@
     <div class="row mt-5">
         <div class="col-12">
             <div class="redemption-history">
-                <h3 class="mb-4" data-i18n="rewards.redemptionHistory">Redemption History</h3>
+                <div class="section-header" style="display: flex; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px solid #28a745;">
+                    <i class="fa fa-history" style="font-size: 2.5rem; color: #28a745; margin-right: 1rem;"></i>
+                    <h3 data-i18n="rewards.redemptionHistory" style="margin: 0; color: #28a745; font-size: 2.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Redemption History</h3>
+                </div>
                 <div th:if="${redemptions.empty}" class="text-center text-muted">
                     <i class="fa fa-history fa-3x mb-3"></i>
                     <p data-i18n="rewards.noHistory">No redemption history yet.</p>
                 </div>
-                <div th:each="redemption : ${redemptions}" class="history-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 th:text="${redemption.reward.name}">Reward Name</h5>
-                            <small class="text-muted" th:text="${#temporals.format(redemption.redemptionDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</small>
-                        </div>
-                        <span class="points-badge"><span th:text="${redemption.pointsSpent}"></span> <span data-i18n="rewards.points">points</span></span>
+                <div th:each="redemption : ${redemptions}" class="history-item mb-4" 
+                     style="background:#fff; border-radius:16px; box-shadow:0 2px 12px rgba(44,62,80,0.08); padding:20px; display:flex; align-items:center;">
+                    <!-- 图片 -->
+                    <div style="flex:0 0 80px; margin-right:20px;">
+                        <img th:src="${redemption.reward.imageUrl}" alt="Reward Image" style="width:80px; height:80px; object-fit:cover; border-radius:12px; border:1px solid #eee;">
                     </div>
-                    <div class="mt-2">
-                        <span class="badge" th:classappend="${redemption.status == 'COMPLETED' ? 'badge-success' : 
-                                                           redemption.status == 'PENDING' ? 'badge-warning' : 'badge-danger'}"
-                              th:text="${redemption.status}" data-i18n="rewards.status">Status</span>
+                    <!-- 信息 -->
+                    <div style="flex:1;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 th:text="${redemption.reward.name}" style="font-weight:600; color:#1a3a5f;">Reward Name</h5>
+                                <small class="text-muted" th:text="${#temporals.format(redemption.redemptionDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</small>
+                            </div>
+                            <span class="points-badge" style="background:#eafaf1; color:#2e7d32; border-radius:12px; padding:6px 16px; font-weight:600;">
+                                <span th:text="${redemption.pointsSpent}"></span> <span data-i18n="rewards.points">points</span>
+                            </span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge"
+                                  th:classappend="${redemption.status == 'COMPLETED' ? 'badge-success' : 
+                                                   redemption.status == 'PENDING' ? 'badge-warning' : 'badge-danger'}"
+                                  th:text="${redemption.status}" data-i18n="rewards.status"
+                                  style="font-size:1rem; padding:6px 18px; border-radius:16px;">
+                                Status
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
