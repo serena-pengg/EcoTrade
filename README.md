@@ -91,7 +91,7 @@ src/
 本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
 
 ## 联系方式
-- 项目负责人：[彭思静，罗语涵，张浩辰，闫闪闪]
+- 项目负责人：[彭思静，罗语涵，张浩辰，熊静思，闫闪闪]
 - 邮箱：[396889003@qq.com]
 - 项目链接：[https://github.com/your-username/ecotrade-global]
 
